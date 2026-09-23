@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://duc74batbvoh"]
+
+[ext_resource type="Texture2D" uid="uid://ct6x12qmmd50q" path="res://Textures/Tracks/concrete-plates-floor.png" id="1_7x1xs"]
+[ext_resource type="PackedScene" uid="uid://cijncu4lvb8kx" path="res://Prefabs/Cars/Gamma.tscn" id="2_ks1um"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ks1um"]
+points = PackedVector3Array(-150, 0, -150, -150, 0, 150, 150, 0, -150, 150, 0, 150)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_egltl"]
+albedo_texture = ExtResource("1_7x1xs")
+uv1_scale = Vector3(20, 20, 20)
+
+[sub_resource type="QuadMesh" id="QuadMesh_mnpnk"]
+material = SubResource("StandardMaterial3D_egltl")
+size = Vector2(300, 300)
+orientation = 1
+
+[node name="Playground1" type="Node3D" unique_id=538869074]
+
+[node name="Gamma" parent="." unique_id=1584282954 instance=ExtResource("2_ks1um")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1352415093]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=330511515]
+shape = SubResource("ConvexPolygonShape3D_ks1um")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D/CollisionShape3D" unique_id=614637651]
+mesh = SubResource("QuadMesh_mnpnk")

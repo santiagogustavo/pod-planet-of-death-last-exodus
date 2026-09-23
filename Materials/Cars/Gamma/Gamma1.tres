@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bdr0wlwc88r1a"]
+
+[ext_resource type="Texture2D" uid="uid://bj84ugwnnclk1" path="res://Textures/Cars/Gamma/gamma_1.png" id="1_4s4dq"]
+[ext_resource type="Texture2D" uid="uid://c35jkqfmsnemv" path="res://Textures/Cars/Gamma/gamma_1_occ.png" id="2_5pg5u"]
+
+[resource]
+albedo_texture = ExtResource("1_4s4dq")
+ao_enabled = true
+ao_light_affect = 1.0
+ao_texture = ExtResource("2_5pg5u")

@@ -1,0 +1,13 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://cthhcwn6te8rk"]
+
+[ext_resource type="Texture2D" uid="uid://ca7x2cnttxeoq" path="res://Textures/Cars/Gamma/gamma_0.png" id="1_tq6ld"]
+[ext_resource type="Texture2D" uid="uid://c8c3yayi3m1no" path="res://Textures/Cars/Gamma/gamma_0_em1.png" id="2_tdb83"]
+[ext_resource type="Texture2D" uid="uid://c16l46uwt3mtr" path="res://Textures/Cars/Gamma/gamma_0_occ.png" id="2_u6itb"]
+
+[resource]
+albedo_texture = ExtResource("1_tq6ld")
+emission_enabled = true
+emission_texture = ExtResource("2_tdb83")
+ao_enabled = true
+ao_light_affect = 1.0
+ao_texture = ExtResource("2_u6itb")
