@@ -1,19 +1,18 @@
 [gd_scene format=4 uid="uid://cijncu4lvb8kx"]
 
+[ext_resource type="PhysicsMaterial" uid="uid://bpmxavckcgys7" path="res://Prefabs/Cars/Common/CarPhysicsMaterial.tres" id="1_dwnck"]
 [ext_resource type="Texture2D" uid="uid://thrgpje6k884" path="res://Models/Cars/Gamma_gamma_1.png" id="1_fa6gs"]
-[ext_resource type="Script" uid="uid://pmc1ay5ilqj4" path="res://Scripts/Car.gd" id="1_mnpnk"]
+[ext_resource type="Script" uid="uid://pmc1ay5ilqj4" path="res://Scripts/Cars/Car.gd" id="1_mnpnk"]
 [ext_resource type="Texture2D" uid="uid://cnlt5rx4oh5hc" path="res://Models/Cars/Gamma_gamma_0.png" id="2_mnpnk"]
 [ext_resource type="Material" uid="uid://cthhcwn6te8rk" path="res://Materials/Cars/Gamma/Gamma0.tres" id="4_c3dav"]
-[ext_resource type="Script" uid="uid://d070hhqucoddt" path="res://Scripts/ChaseCamera.gd" id="4_kr5br"]
 [ext_resource type="Material" uid="uid://bdr0wlwc88r1a" path="res://Materials/Cars/Gamma/Gamma1.tres" id="4_xv73x"]
-[ext_resource type="Texture2D" uid="uid://bjn3swyv8w8hg" path="res://Textures/pod-10.webp" id="5_ejm2k"]
-[ext_resource type="Shader" uid="uid://djnkwxncn0e5e" path="res://Materials/Shaders/RadialBlur.gdshader" id="5_h4c6r"]
-[ext_resource type="Texture2D" uid="uid://ceyaayj2qbu2d" path="res://Textures/Flares/corona.png" id="6_7lllc"]
-[ext_resource type="AudioStream" uid="uid://crle3jsh5d71x" path="res://Sounds/Cars/engine_rev.ogg" id="10_7lllc"]
-[ext_resource type="AudioStream" uid="uid://g21eb18kjaxr" path="res://Sounds/Cars/engine_idle.ogg" id="10_vf6f5"]
-[ext_resource type="AudioStream" uid="uid://c0i1ucqnes8cs" path="res://Sounds/Cars/brake1.wav" id="11_fef0o"]
-[ext_resource type="AudioStream" uid="uid://bxg13k2swmjxt" path="res://Sounds/Cars/brake2.wav" id="12_uft3x"]
-[ext_resource type="AudioStream" uid="uid://cg8f25uug57lw" path="res://Sounds/Cars/brake3.wav" id="13_1bk2c"]
+[ext_resource type="PackedScene" uid="uid://bd5hqg65dlqyx" path="res://Prefabs/Cars/Common/HeadLight.tscn" id="6_d8ndu"]
+[ext_resource type="PackedScene" uid="uid://dux2wltrvg6ei" path="res://Prefabs/Cars/Common/SFX/Running.tscn" id="7_s24sc"]
+[ext_resource type="PackedScene" uid="uid://boibhgtrwkg3m" path="res://Prefabs/Cars/Common/BrakeLight.tscn" id="7_vf6f5"]
+[ext_resource type="PackedScene" uid="uid://bpods5df3vvpp" path="res://Prefabs/Cars/Common/SkidMarks.tscn" id="8_7lllc"]
+[ext_resource type="PackedScene" uid="uid://ci6nprtopkryr" path="res://Prefabs/Cars/Common/SFX/Brake.tscn" id="8_vf6f5"]
+[ext_resource type="PackedScene" uid="uid://cc1b66b8ghrq8" path="res://Prefabs/Cars/Common/SFX/Idle.tscn" id="9_7lllc"]
+[ext_resource type="PackedScene" uid="uid://cpxaheq5yghc1" path="res://Prefabs/Cars/Common/WindTrail.tscn" id="9_d8ndu"]
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_fa6gs"]
 points = PackedVector3Array(-2.4451785, -0.566864, -1.6650543, -3.6090546, -0.34325093, -0.958659, -3.5038893, 0.11030078, -1.022788, -2.4451785, 0.0377236, -1.6650543, -1.236131, -0.566864, -1.6650543, -2.4451785, -0.566864, 1.6605377, -3.6090546, -0.34325093, 0.9499104, -3.5038893, 0.11030078, 1.0179458, -3.3528466, 0.3022862, -0.6070889, -2.4451785, 0.56684875, -0.45604408, -1.236131, 0.0377236, -1.6650543, 1.3337126, -0.566864, -1.5140095, -2.4451785, 0.0377236, 1.6605377, -1.236131, -0.566864, 1.6605377, -2.4451785, 0.56684875, 0.45087647, -3.3528466, 0.3022862, 0.60224676, -1.5382166, 0.56684875, -0.45604408, 1.3337126, 0.0377236, -1.5140095, 2.5427604, -0.5291328, -1.4235127, 1.3337126, -0.566864, 1.5091672, -1.236131, 0.0377236, 1.6605377, -1.5382166, 0.56684875, 0.45087647, 1.3337126, 0.34001744, -0.7581339, 2.5427604, -0.015211105, -1.4235127, 3.601471, -0.04539609, -0.7581339, 3.2986798, -0.43846682, -0.9482421, 2.5427604, -0.5291328, 1.4186704, 1.3337126, 0.0377236, 1.5091672, 1.3337126, 0.34001744, 0.7532916, 2.5427604, 0.24180526, -0.7581339, 3.601471, -0.04539609, 0.7532916, 3.2986798, -0.43846682, 0.9433999, 2.5427604, -0.015211105, 1.4186704, 2.5427604, 0.24180526, 0.7532916)
@@ -88,43 +87,6 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_w5cjn")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ckb4l"]
-transparency = 1
-blend_mode = 1
-shading_mode = 0
-albedo_color = Color(1, 0.8771666, 0.32999998, 0.13333334)
-albedo_texture = ExtResource("6_7lllc")
-disable_receive_shadows = true
-billboard_mode = 1
-billboard_keep_scale = true
-proximity_fade_enabled = true
-proximity_fade_distance = 0.25
-stencil_flags = 2
-
-[sub_resource type="QuadMesh" id="QuadMesh_0i88t"]
-material = SubResource("StandardMaterial3D_ckb4l")
-size = Vector2(2, 2)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7lllc"]
-transparency = 1
-blend_mode = 1
-shading_mode = 0
-vertex_color_use_as_albedo = true
-albedo_color = Color(1, 0.28466666, 0.26, 0.14901961)
-albedo_texture = ExtResource("6_7lllc")
-disable_receive_shadows = true
-billboard_mode = 3
-billboard_keep_scale = true
-particles_anim_h_frames = 1
-particles_anim_v_frames = 1
-particles_anim_loop = false
-proximity_fade_enabled = true
-proximity_fade_distance = 0.1
-stencil_flags = 2
-
-[sub_resource type="QuadMesh" id="QuadMesh_d8ndu"]
-material = SubResource("StandardMaterial3D_7lllc")
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s24sc"]
 resource_name = "gamma1"
 transparency = 4
@@ -197,6 +159,60 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_8o1u4")
 
+[sub_resource type="ArrayMesh" id="ArrayMesh_xrpdj"]
+_surfaces = [{
+"aabb": AABB(-0.3702106, -0.37411496, -0.36627254, 0.74823, 0.7482147, 0.6877899),
+"format": 34896613377,
+"index_count": 12,
+"index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUA"),
+"name": "gamma1",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 8,
+"vertex_data": PackedByteArray("//8AAAEAAAAAAP3/AAAAAAAAAAABAAAA///9/wAAAAD//wAA/f8AAAAA///9/wAA///9//z/AAAAAAEA//8AAA==")
+}, {
+"aabb": AABB(-0.5251636, -0.529068, -0.36627254, 1.058136, 1.0581207, 0.6877899),
+"format": 34896613377,
+"index_count": 72,
+"index_data": PackedByteArray("AAABAAIAAwAAAAIABAACAAEABAADAAIABQAEAAEABgADAAQAAwAGAAAABAAFAAcABQABAAgABwAFAAgAAQAJAAgABwAIAAkABgAKAAAACwAHAAkABgAMAAoADQAAAAoADAANAAoADgAMAAYADAAOAA0ABwALAA4ACQANAA8ACwAJAA8ADgAPAA0ADgALAA8A"),
+"name": "gamma0",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 16,
+"vertex_data": PackedByteArray("gtp9JQEAAAB8JX0lAQAAAP9/AAABAAAA/38AAP3/AAB8JX4l//8AAAAA/3///wAAgtp9Jf3/AAB8JYHa/f8AAAAA/38AAAAAfCWA2gAAAAD///9/AAAAAP9////8/wAA////f/z/AACC2oDaAAAAAILagNr8/wAA/3///wAAAAA=")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_ty325"]
+resource_name = "Gamma_group20"
+_surfaces = [{
+"aabb": AABB(-0.3702106, -0.37411496, -0.36627254, 0.74823, 0.7482147, 0.6877899),
+"attribute_data": PackedByteArray("e4CDf/X/CQB7gAkA9f+Df3uAg3/1/wkA9f+Df3uACQA="),
+"format": 34896613399,
+"index_count": 12,
+"index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUA"),
+"material": SubResource("StandardMaterial3D_s24sc"),
+"name": "gamma1",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 8,
+"vertex_data": PackedByteArray("//8AAAEAAAAAAP3/AAAAAAAAAAABAAAA///9/wAAAAD//wAA/f//vwAA///9//+////9//z//78AAAEA////v/+//7//v/+//7//v/+//7//////////////////////")
+}, {
+"aabb": AABB(-0.5251636, -0.529068, -0.36627254, 1.058136, 1.0581207, 0.6877899),
+"attribute_data": PackedByteArray("e4CDf/X/CQB7gAkAe4CDf/X/g397gAkAe4CDf/X/CQB7gIN/9f+Df3uACQB7gIN/9f8JAHuAg3/1/4N/e4AJAHuAg3/1/wkAe4CDf/X/g397gIN/9f8JAHuACQD1/4N/e4AJAPX/CQB7gIN/9f8JAHuACQD1/4N/e4AJAPX/CQB7gIN/9f8JAHuACQD1/4N/e4AJAPX/CQB7gIN/9f8JAHuACQD1/4N/e4AJAPX/CQA="),
+"format": 34896613399,
+"index_count": 72,
+"index_data": PackedByteArray("AAABAAIAAwAEAAEAAwABAAUABgAHAAUACAAJAAcACAAHAAoACwAMAAoADQAOAAwADQAMAA8AEAARAA8AEgARAAIAEgATABEAFAAVABYAFAAXABUAFAAYABkAGgAbABwAGgAdABsAGgAeAB8AIAAhACIAIAAjACEAIAAkACUAJgAnACgAJgApACcAJgAqACsA"),
+"material": SubResource("StandardMaterial3D_vf6f5"),
+"name": "gamma0",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 44,
+"vertex_data": PackedByteArray("gtp9JQEAsht8JX0lAQDeIv9/AAABAOYjAAD/f///20B8JX4l//9WSQAA/38AAKwVfCV9JQEAkQN8JYDaAACOEf9////8/2MJfCWB2v3/dBP/f///AAB2BHwlgNoAAGgWgtqA2gAAMgn///9//P+kL4LagNr8/+4l////fwAAShyC2oDaAAAEJILafSUBACcf/38AAP3/aVqC2n0l/f8zVoLafSX9/374////fwAArBWC2n0lAQDeIv///3/8/9pA/38AAP3/m/Z8JX4l//+K7HwlfiX//87A/38AAAEA5iN8JX0lAQAnH/9/AAD9/2haAAD/f///JL98JYHa/f+otnwlgdr9/xilAAD/fwAAShx8JYDaAAAyCQAA/3///6Qv/3////z/laWC2oDa/P/LqYLagNr8/5DO/3///wAAdgSC2oDaAACOEf9////8/2MJ////f/z/WtCC2n0l/f8Q2qx23yRxNbmqZBQvct5itKWaScKOE0f3qzlLBVWOa0/LFoWmpzttv6A6sD0KG/fcVt484SKIGQ4hhCj/Cs07MS7Mu4k35xZjVMALbqQ8If85Hxea4/gr6zi5Ko1KtSUgHaYn5/o/3zrtkDSe+tANY5ScK+aWcCQ+dEra3uI78ZnJ3rE9vc1RzbsdXd688V6ImY/bwIv/ucNeu67HhD2KxM9PS3AUWNgXBQ2hdmb+inpX")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_xrpdj")
+
 [sub_resource type="ArrayMesh" id="ArrayMesh_f43nk"]
 _surfaces = [{
 "aabb": AABB(-0.4183429, -0.41687012, -0.40697208, 0.83374023, 0.833725, 0.83895874),
@@ -253,60 +269,6 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_f43nk")
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_xrpdj"]
-_surfaces = [{
-"aabb": AABB(-0.3702106, -0.37411496, -0.36627254, 0.74823, 0.7482147, 0.6877899),
-"format": 34896613377,
-"index_count": 12,
-"index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUA"),
-"name": "gamma1",
-"primitive": 3,
-"uv_scale": Vector4(0, 0, 0, 0),
-"vertex_count": 8,
-"vertex_data": PackedByteArray("//8AAAEAAAAAAP3/AAAAAAAAAAABAAAA///9/wAAAAD//wAA/f8AAAAA///9/wAA///9//z/AAAAAAEA//8AAA==")
-}, {
-"aabb": AABB(-0.5251636, -0.529068, -0.36627254, 1.058136, 1.0581207, 0.6877899),
-"format": 34896613377,
-"index_count": 72,
-"index_data": PackedByteArray("AAABAAIAAwAAAAIABAACAAEABAADAAIABQAEAAEABgADAAQAAwAGAAAABAAFAAcABQABAAgABwAFAAgAAQAJAAgABwAIAAkABgAKAAAACwAHAAkABgAMAAoADQAAAAoADAANAAoADgAMAAYADAAOAA0ABwALAA4ACQANAA8ACwAJAA8ADgAPAA0ADgALAA8A"),
-"name": "gamma0",
-"primitive": 3,
-"uv_scale": Vector4(0, 0, 0, 0),
-"vertex_count": 16,
-"vertex_data": PackedByteArray("gtp9JQEAAAB8JX0lAQAAAP9/AAABAAAA/38AAP3/AAB8JX4l//8AAAAA/3///wAAgtp9Jf3/AAB8JYHa/f8AAAAA/38AAAAAfCWA2gAAAAD///9/AAAAAP9////8/wAA////f/z/AACC2oDaAAAAAILagNr8/wAA/3///wAAAAA=")
-}]
-blend_shape_mode = 0
-
-[sub_resource type="ArrayMesh" id="ArrayMesh_ty325"]
-resource_name = "Gamma_group20"
-_surfaces = [{
-"aabb": AABB(-0.3702106, -0.37411496, -0.36627254, 0.74823, 0.7482147, 0.6877899),
-"attribute_data": PackedByteArray("e4CDf/X/CQB7gAkA9f+Df3uAg3/1/wkA9f+Df3uACQA="),
-"format": 34896613399,
-"index_count": 12,
-"index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUA"),
-"material": SubResource("StandardMaterial3D_s24sc"),
-"name": "gamma1",
-"primitive": 3,
-"uv_scale": Vector4(0, 0, 0, 0),
-"vertex_count": 8,
-"vertex_data": PackedByteArray("//8AAAEAAAAAAP3/AAAAAAAAAAABAAAA///9/wAAAAD//wAA/f//vwAA///9//+////9//z//78AAAEA////v/+//7//v/+//7//v/+//7//////////////////////")
-}, {
-"aabb": AABB(-0.5251636, -0.529068, -0.36627254, 1.058136, 1.0581207, 0.6877899),
-"attribute_data": PackedByteArray("e4CDf/X/CQB7gAkAe4CDf/X/g397gAkAe4CDf/X/CQB7gIN/9f+Df3uACQB7gIN/9f8JAHuAg3/1/4N/e4AJAHuAg3/1/wkAe4CDf/X/g397gIN/9f8JAHuACQD1/4N/e4AJAPX/CQB7gIN/9f8JAHuACQD1/4N/e4AJAPX/CQB7gIN/9f8JAHuACQD1/4N/e4AJAPX/CQB7gIN/9f8JAHuACQD1/4N/e4AJAPX/CQA="),
-"format": 34896613399,
-"index_count": 72,
-"index_data": PackedByteArray("AAABAAIAAwAEAAEAAwABAAUABgAHAAUACAAJAAcACAAHAAoACwAMAAoADQAOAAwADQAMAA8AEAARAA8AEgARAAIAEgATABEAFAAVABYAFAAXABUAFAAYABkAGgAbABwAGgAdABsAGgAeAB8AIAAhACIAIAAjACEAIAAkACUAJgAnACgAJgApACcAJgAqACsA"),
-"material": SubResource("StandardMaterial3D_vf6f5"),
-"name": "gamma0",
-"primitive": 3,
-"uv_scale": Vector4(0, 0, 0, 0),
-"vertex_count": 44,
-"vertex_data": PackedByteArray("gtp9JQEAsht8JX0lAQDeIv9/AAABAOYjAAD/f///20B8JX4l//9WSQAA/38AAKwVfCV9JQEAkQN8JYDaAACOEf9////8/2MJfCWB2v3/dBP/f///AAB2BHwlgNoAAGgWgtqA2gAAMgn///9//P+kL4LagNr8/+4l////fwAAShyC2oDaAAAEJILafSUBACcf/38AAP3/aVqC2n0l/f8zVoLafSX9/374////fwAArBWC2n0lAQDeIv///3/8/9pA/38AAP3/m/Z8JX4l//+K7HwlfiX//87A/38AAAEA5iN8JX0lAQAnH/9/AAD9/2haAAD/f///JL98JYHa/f+otnwlgdr9/xilAAD/fwAAShx8JYDaAAAyCQAA/3///6Qv/3////z/laWC2oDa/P/LqYLagNr8/5DO/3///wAAdgSC2oDaAACOEf9////8/2MJ////f/z/WtCC2n0l/f8Q2qx23yRxNbmqZBQvct5itKWaScKOE0f3qzlLBVWOa0/LFoWmpzttv6A6sD0KG/fcVt484SKIGQ4hhCj/Cs07MS7Mu4k35xZjVMALbqQ8If85Hxea4/gr6zi5Ko1KtSUgHaYn5/o/3zrtkDSe+tANY5ScK+aWcCQ+dEra3uI78ZnJ3rE9vc1RzbsdXd688V6ImY/bwIv/ucNeu67HhD2KxM9PS3AUWNgXBQ2hdmb+inpX")
-}]
-blend_shape_mode = 0
-shadow_mesh = SubResource("ArrayMesh_xrpdj")
-
 [sub_resource type="ArrayMesh" id="ArrayMesh_7itgm"]
 _surfaces = [{
 "aabb": AABB(-0.41834292, -0.41686976, -0.45198667, 0.83374023, 0.8337097, 0.83895874),
@@ -361,42 +323,30 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_7itgm")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ejm2k"]
-shader = ExtResource("5_h4c6r")
-shader_parameter/blur_center = Vector2(0.5, 0.5)
-shader_parameter/blur_power = 0.010000000475
-shader_parameter/sampling_count = 12
-
-[sub_resource type="Gradient" id="Gradient_ejm2k"]
-offsets = PackedFloat32Array(0.6, 1)
-colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1)
-metadata/_snap_enabled = true
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_0i88t"]
-gradient = SubResource("Gradient_ejm2k")
-fill = 1
-fill_from = Vector2(0.5, 0.5)
-fill_to = Vector2(0.5, 0)
-metadata/_snap_enabled = true
-
-[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_7lllc"]
-streams_count = 3
-stream_0/stream = ExtResource("11_fef0o")
-stream_1/stream = ExtResource("12_uft3x")
-stream_2/stream = ExtResource("13_1bk2c")
-
-[node name="Gamma" type="VehicleBody3D" unique_id=1584282954 node_paths=PackedStringArray("brake_lights")]
-collision_mask = 2
+[node name="Gamma" type="VehicleBody3D" unique_id=1584282954 node_paths=PackedStringArray("wheels", "brake_lights", "skid_marks", "wind_trails")]
+collision_mask = 6
 mass = 100.0
+physics_material_override = ExtResource("1_dwnck")
 gravity_scale = 4.0
 center_of_mass_mode = 1
 center_of_mass = Vector3(0, -0.1, 0.5)
+contact_monitor = true
+max_contacts_reported = 1
 script = ExtResource("1_mnpnk")
-brake_lights = [NodePath("CollisionShape3D/Damage 0/OmniLight3D"), NodePath("CollisionShape3D/Damage 0/OmniLight3D2"), NodePath("CollisionShape3D/Damage 0/OmniLight3D3")]
+wheels = [NodePath("FR"), NodePath("FL"), NodePath("BR"), NodePath("BL")]
+brake_lights = [NodePath("CollisionShape3D/Damage 0/BrakeLight"), NodePath("CollisionShape3D/Damage 0/BrakeLight2"), NodePath("CollisionShape3D/Damage 0/BrakeLight3")]
+skid_marks = [NodePath("SkidMarks/SkidMarks"), NodePath("SkidMarks/SkidMarks2"), NodePath("SkidMarks/SkidMarks3"), NodePath("SkidMarks/SkidMarks4")]
+wind_trails = [NodePath("CollisionShape3D/WindTrail"), NodePath("CollisionShape3D/WindTrail2")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=559839928]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.021666668, 0, 0.03833332)
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.021666668, 1, 0.03833332)
 shape = SubResource("ConvexPolygonShape3D_fa6gs")
+
+[node name="WindTrail" parent="CollisionShape3D" unique_id=986200328 instance=ExtResource("9_d8ndu")]
+transform = Transform3D(-2.1855695e-09, 0, -0.05, 0, 0.05, 0, 0.05, 0, -2.1855695e-09, -2.404841, 0.049999952, -1.6096003)
+
+[node name="WindTrail2" parent="CollisionShape3D" unique_id=855292252 instance=ExtResource("9_d8ndu")]
+transform = Transform3D(-2.1855695e-09, 0, -0.05, 0, 0.05, 0, 0.05, 0, -2.1855695e-09, -2.4046667, 0.049999952, 1.5663333)
 
 [node name="Damage 0" type="MeshInstance3D" parent="CollisionShape3D" unique_id=600341727]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.03833332, 0, -0.021666666)
@@ -404,66 +354,23 @@ mesh = SubResource("ArrayMesh_7s82t")
 surface_material_override/0 = ExtResource("4_xv73x")
 surface_material_override/1 = ExtResource("4_c3dav")
 
-[node name="SpotLight3D" type="SpotLight3D" parent="CollisionShape3D/Damage 0" unique_id=667982772]
+[node name="HeadLight" parent="CollisionShape3D/Damage 0" unique_id=1203718260 instance=ExtResource("6_d8ndu")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 3.5886018, 0.058941305, -0.49517682)
-light_color = Color(1, 1, 0.68, 1)
-light_energy = 5.0
-light_size = 3.825
-shadow_enabled = true
-spot_range = 10.0
-spot_angle = 60.0
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D/Damage 0/SpotLight3D" unique_id=1638233781]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05423689, 0.24847388)
-cast_shadow = 0
-mesh = SubResource("QuadMesh_0i88t")
-
-[node name="SpotLight3D2" type="SpotLight3D" parent="CollisionShape3D/Damage 0" unique_id=1564911545]
+[node name="HeadLight2" parent="CollisionShape3D/Damage 0" unique_id=221841143 instance=ExtResource("6_d8ndu")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 3.5881352, 0.059, 0.495)
-light_color = Color(1, 1, 0.68, 1)
-light_energy = 5.0
-light_size = 3.825
-shadow_enabled = true
-spot_range = 10.0
-spot_angle = 60.0
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D/Damage 0/SpotLight3D2" unique_id=9121721]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05426238, 0.2479999)
-cast_shadow = 0
-mesh = SubResource("QuadMesh_0i88t")
-
-[node name="OmniLight3D" type="OmniLight3D" parent="CollisionShape3D/Damage 0" unique_id=1371276028]
+[node name="BrakeLight" parent="CollisionShape3D/Damage 0" unique_id=1199073536 instance=ExtResource("7_vf6f5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.564825, -0.09049453, -0.58821446)
-light_color = Color(0.972549, 0.29803923, 0.36862746, 1)
-light_energy = 0.15
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D/Damage 0/OmniLight3D" unique_id=1523685694]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -0.09046078, 0, 0)
-cast_shadow = 0
-mesh = SubResource("QuadMesh_d8ndu")
-
-[node name="OmniLight3D2" type="OmniLight3D" parent="CollisionShape3D/Damage 0" unique_id=1853413525]
+[node name="BrakeLight2" parent="CollisionShape3D/Damage 0" unique_id=31755374 instance=ExtResource("7_vf6f5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.565, -0.09, 0)
-light_color = Color(0.972549, 0.29803923, 0.36862746, 1)
-light_energy = 0.15
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D/Damage 0/OmniLight3D2" unique_id=1157951124]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -0.09046078, 0, 0)
-cast_shadow = 0
-mesh = SubResource("QuadMesh_d8ndu")
-
-[node name="OmniLight3D3" type="OmniLight3D" parent="CollisionShape3D/Damage 0" unique_id=250849030]
+[node name="BrakeLight3" parent="CollisionShape3D/Damage 0" unique_id=1607276155 instance=ExtResource("7_vf6f5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.565, -0.09, 0.588)
-light_color = Color(0.972549, 0.29803923, 0.36862746, 1)
-light_energy = 0.15
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D/Damage 0/OmniLight3D3" unique_id=1197082336]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -0.09046078, 0, 0)
-cast_shadow = 0
-mesh = SubResource("QuadMesh_d8ndu")
-
-[node name="VehicleWheel3D" type="VehicleWheel3D" parent="." unique_id=1989313680]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 1.1366665, -0.39999998, -1.8916667)
+[node name="FR" type="VehicleWheel3D" parent="." unique_id=1989313680]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 1.1366665, 0.6, -1.8916667)
 use_as_traction = true
 use_as_steering = true
 wheel_roll_influence = 0.01
@@ -474,31 +381,14 @@ suspension_stiffness = 120.0
 damping_compression = 2.0
 damping_relaxation = 2.0
 
-[node name="Wheel FR" type="MeshInstance3D" parent="VehicleWheel3D" unique_id=201550458]
+[node name="Wheel FR" type="MeshInstance3D" parent="FR" unique_id=201550458]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0)
 mesh = SubResource("ArrayMesh_25bs6")
 surface_material_override/0 = ExtResource("4_xv73x")
 surface_material_override/1 = ExtResource("4_c3dav")
 
-[node name="VehicleWheel3D2" type="VehicleWheel3D" parent="." unique_id=1632969205]
-transform = Transform3D(-1, 0, -1.0331603e-07, 0, 1, 0, 1.0331603e-07, 0, -1, 1.1816669, -0.39999998, 1.8783332)
-use_as_traction = true
-wheel_roll_influence = 0.01
-wheel_radius = 0.6
-wheel_rest_length = 0.07
-wheel_friction_slip = 3.5
-suspension_stiffness = 120.0
-damping_compression = 2.0
-damping_relaxation = 2.0
-
-[node name="Wheel BR" type="MeshInstance3D" parent="VehicleWheel3D2" unique_id=1292466230]
-transform = Transform3D(-5.9604645e-08, 0, -1, 0, 1, 0, 1, 0, -5.9604645e-08, 0, 0, 0)
-mesh = SubResource("ArrayMesh_8ubu4")
-surface_material_override/0 = ExtResource("4_xv73x")
-surface_material_override/1 = ExtResource("4_c3dav")
-
-[node name="VehicleWheel3D3" type="VehicleWheel3D" parent="." unique_id=283000605]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -1.0583335, -0.39999998, -1.8916667)
+[node name="FL" type="VehicleWheel3D" parent="." unique_id=283000605]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -1.0583335, 0.6, -1.8916667)
 use_as_traction = true
 use_as_steering = true
 wheel_roll_influence = 0.01
@@ -509,14 +399,14 @@ suspension_stiffness = 120.0
 damping_compression = 2.0
 damping_relaxation = 2.0
 
-[node name="Wheel FL" type="MeshInstance3D" parent="VehicleWheel3D3" unique_id=1719159285]
+[node name="Wheel FL" type="MeshInstance3D" parent="FL" unique_id=1719159285]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0)
 mesh = SubResource("ArrayMesh_ty325")
 surface_material_override/0 = ExtResource("4_xv73x")
 surface_material_override/1 = ExtResource("4_c3dav")
 
-[node name="VehicleWheel3D4" type="VehicleWheel3D" parent="." unique_id=1202892249]
-transform = Transform3D(-0.9999999, 0, -4.371138e-08, 0, 1, 0, 4.371138e-08, 0, -0.9999999, -1.1233333, -0.39999998, 1.8783333)
+[node name="BR" type="VehicleWheel3D" parent="." unique_id=1632969205]
+transform = Transform3D(-1, 0, -1.0331603e-07, 0, 1, 0, 1.0331603e-07, 0, -1, 1.1816669, 0.6, 1.8783332)
 use_as_traction = true
 wheel_roll_influence = 0.01
 wheel_radius = 0.6
@@ -526,57 +416,53 @@ suspension_stiffness = 120.0
 damping_compression = 2.0
 damping_relaxation = 2.0
 
-[node name="Wheel BL" type="MeshInstance3D" parent="VehicleWheel3D4" unique_id=20898442]
+[node name="Wheel BR" type="MeshInstance3D" parent="BR" unique_id=1292466230]
+transform = Transform3D(-5.9604645e-08, 0, -1, 0, 1, 0, 1, 0, -5.9604645e-08, 0, 0, 0)
+mesh = SubResource("ArrayMesh_8ubu4")
+surface_material_override/0 = ExtResource("4_xv73x")
+surface_material_override/1 = ExtResource("4_c3dav")
+
+[node name="BL" type="VehicleWheel3D" parent="." unique_id=1202892249]
+transform = Transform3D(-0.9999999, 0, -4.371138e-08, 0, 1, 0, 4.371138e-08, 0, -0.9999999, -1.1233333, 0.6, 1.8783333)
+use_as_traction = true
+wheel_roll_influence = 0.01
+wheel_radius = 0.6
+wheel_rest_length = 0.07
+wheel_friction_slip = 3.5
+suspension_stiffness = 120.0
+damping_compression = 2.0
+damping_relaxation = 2.0
+
+[node name="Wheel BL" type="MeshInstance3D" parent="BL" unique_id=20898442]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0, 0, 0)
 mesh = SubResource("ArrayMesh_whx31")
 surface_material_override/0 = ExtResource("4_xv73x")
 surface_material_override/1 = ExtResource("4_c3dav")
 
-[node name="CameraPivot" type="Node3D" parent="." unique_id=1900001208]
-script = ExtResource("4_kr5br")
-smooth_speed = 5.0
+[node name="SkidMarks" type="Node3D" parent="." unique_id=1507464641]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
-[node name="Camera3D" type="Camera3D" parent="CameraPivot" unique_id=303627390]
-transform = Transform3D(1, 0, 0, 0, 0.9659259, 0.25881907, 0, -0.25881907, 0.9659258, 0, 3, 7)
+[node name="SkidMarks" parent="SkidMarks" unique_id=556581797 node_paths=PackedStringArray("wheel") instance=ExtResource("8_7lllc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0775696, -0.93565756, -1.9045349)
+wheel = NodePath("../../FL")
 
-[node name="Control" type="Control" parent="CameraPivot/Camera3D" unique_id=1617296834]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="SkidMarks2" parent="SkidMarks" unique_id=740041601 node_paths=PackedStringArray("wheel") instance=ExtResource("8_7lllc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1218902, -0.93565756, -1.9045349)
+wheel = NodePath("../../FR")
 
-[node name="TextureRect" type="TextureRect" parent="CameraPivot/Camera3D/Control" unique_id=1074747767]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("5_ejm2k")
+[node name="SkidMarks3" parent="SkidMarks" unique_id=1130173687 node_paths=PackedStringArray("wheel") instance=ExtResource("8_7lllc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1444086, -0.93565756, 1.8331625)
+wheel = NodePath("../../BL")
 
-[node name="RadialBlur" type="TextureRect" parent="CameraPivot/Camera3D/Control" unique_id=1366175680]
-material = SubResource("ShaderMaterial_ejm2k")
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = SubResource("GradientTexture2D_0i88t")
+[node name="SkidMarks4" parent="SkidMarks" unique_id=1896952771 node_paths=PackedStringArray("wheel") instance=ExtResource("8_7lllc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2263266, -0.93565756, 1.8331625)
+wheel = NodePath("../../BR")
 
-[node name="Running" type="AudioStreamPlayer3D" parent="." unique_id=798680302]
-stream = ExtResource("10_7lllc")
-autoplay = true
-bus = &"Engine"
+[node name="Running" parent="." unique_id=1395768302 instance=ExtResource("7_s24sc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
-[node name="Brake" type="AudioStreamPlayer3D" parent="." unique_id=1968534266]
-stream = SubResource("AudioStreamRandomizer_7lllc")
-bus = &"Engine"
+[node name="Brake" parent="." unique_id=222941043 instance=ExtResource("8_vf6f5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
-[node name="Idle" type="AudioStreamPlayer3D" parent="." unique_id=263452527]
-stream = ExtResource("10_vf6f5")
-autoplay = true
-bus = &"Engine"
+[node name="Idle" parent="." unique_id=2022874409 instance=ExtResource("9_7lllc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://bp7l8dgivvw2y"]
+
+[ext_resource type="Script" uid="uid://ciu67sb4wxvre" path="res://Scripts/Player.gd" id="1_c4lgr"]
+[ext_resource type="Resource" uid="uid://bq4kdbpflqs0n" path="res://Resources/Cars/Scorp.tres" id="2_c4lgr"]
+[ext_resource type="Texture2D" uid="uid://cd2s6w6v4g521" path="res://Textures/Gizmos/position-marker.png" id="4_op78j"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ckb4l"]
+transparency = 4
+shading_mode = 0
+albedo_color = Color(0, 1, 0.7176471, 1)
+albedo_texture = ExtResource("4_op78j")
+billboard_mode = 2
+
+[sub_resource type="QuadMesh" id="QuadMesh_0i88t"]
+material = SubResource("StandardMaterial3D_ckb4l")
+size = Vector2(2, 2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0j0tx"]
+transparency = 1
+albedo_color = Color(0, 1, 0.7166667, 0.1254902)
+disable_receive_shadows = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_0i88t"]
+material = SubResource("StandardMaterial3D_0j0tx")
+size = Vector3(5, 2, 8)
+
+[node name="Player" type="Node3D" unique_id=326649129]
+script = ExtResource("1_c4lgr")
+car_data = ExtResource("2_c4lgr")
+
+[node name="Gizmo" type="MeshInstance3D" parent="." unique_id=864948161]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+mesh = SubResource("QuadMesh_0i88t")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Gizmo" unique_id=1828733165]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
+cast_shadow = 0
+mesh = SubResource("BoxMesh_0i88t")

@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://bd5hqg65dlqyx"]
+
+[ext_resource type="Texture2D" uid="uid://ceyaayj2qbu2d" path="res://Textures/Flares/corona.png" id="1_w0fy2"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ckb4l"]
+transparency = 1
+blend_mode = 1
+shading_mode = 0
+albedo_color = Color(1, 0.8771666, 0.32999998, 0.13333334)
+albedo_texture = ExtResource("1_w0fy2")
+disable_receive_shadows = true
+billboard_mode = 1
+billboard_keep_scale = true
+proximity_fade_enabled = true
+proximity_fade_distance = 0.25
+stencil_flags = 2
+
+[sub_resource type="QuadMesh" id="QuadMesh_0i88t"]
+material = SubResource("StandardMaterial3D_ckb4l")
+size = Vector2(2, 2)
+
+[node name="HeadLight" type="SpotLight3D" unique_id=1203718260]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0)
+light_color = Color(1, 1, 0.68, 1)
+light_energy = 5.0
+light_size = 3.825
+shadow_enabled = true
+spot_range = 10.0
+spot_angle = 60.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1596724439]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05423689, 0.24847388)
+cast_shadow = 0
+mesh = SubResource("QuadMesh_0i88t")

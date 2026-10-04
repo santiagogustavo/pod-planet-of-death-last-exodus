@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://ci6nprtopkryr"]
+
+[ext_resource type="AudioStream" uid="uid://c0i1ucqnes8cs" path="res://Sounds/Cars/brake1.wav" id="1_s8sjd"]
+[ext_resource type="AudioStream" uid="uid://bxg13k2swmjxt" path="res://Sounds/Cars/brake2.wav" id="2_2unux"]
+[ext_resource type="AudioStream" uid="uid://cg8f25uug57lw" path="res://Sounds/Cars/brake3.wav" id="3_egxa7"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_7lllc"]
+streams_count = 3
+stream_0/stream = ExtResource("1_s8sjd")
+stream_1/stream = ExtResource("2_2unux")
+stream_2/stream = ExtResource("3_egxa7")
+
+[node name="Brake" type="AudioStreamPlayer3D" unique_id=222941043]
+stream = SubResource("AudioStreamRandomizer_7lllc")
+bus = &"Engine"

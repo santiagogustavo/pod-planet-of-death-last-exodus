@@ -1,0 +1,84 @@
+[gd_scene format=3 uid="uid://c6y42mv324yax"]
+
+[ext_resource type="Script" uid="uid://d070hhqucoddt" path="res://Scripts/ChaseCamera.gd" id="1_s6rlj"]
+[ext_resource type="Texture2D" uid="uid://bjn3swyv8w8hg" path="res://Textures/pod-10.webp" id="2_wrxoa"]
+[ext_resource type="Shader" uid="uid://djnkwxncn0e5e" path="res://Materials/Shaders/RadialBlur.gdshader" id="3_ecuig"]
+[ext_resource type="Shader" uid="uid://dnw21us1inoy1" path="res://Materials/Shaders/SpeedLines.gdshader" id="4_wrxoa"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ejm2k"]
+shader = ExtResource("3_ecuig")
+shader_parameter/blur_center = Vector2(0.5, 0.5)
+shader_parameter/blur_power = 0.010000000475
+shader_parameter/sampling_count = 12
+
+[sub_resource type="Gradient" id="Gradient_ejm2k"]
+offsets = PackedFloat32Array(0.4, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1)
+metadata/_snap_enabled = true
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_0i88t"]
+gradient = SubResource("Gradient_ejm2k")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0)
+metadata/_snap_enabled = true
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_s6rlj"]
+frequency = 0.0161
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_0i88t"]
+noise = SubResource("FastNoiseLite_s6rlj")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ecuig"]
+shader = ExtResource("4_wrxoa")
+shader_parameter/center = Vector2(0.5, 0.5)
+shader_parameter/noise = SubResource("NoiseTexture2D_0i88t")
+shader_parameter/sample_radius = 1.0
+shader_parameter/line_color = Color(1, 1, 1, 1)
+shader_parameter/center_radius = 0.5
+shader_parameter/hole_smoothness = 0.4
+shader_parameter/hole_radius = 0.34
+shader_parameter/transparency = 0.250000011875
+
+[node name="ChaseCamera" type="Node3D" unique_id=665073057]
+script = ExtResource("1_s6rlj")
+smooth_speed = 5.0
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=409683162]
+transform = Transform3D(1, 0, 0, 0, 0.9659259, 0.25881907, 0, -0.25881907, 0.9659258, 0, 4, 7)
+
+[node name="Control" type="Control" parent="Camera3D" unique_id=1125825462]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DebugTexture" type="TextureRect" parent="Camera3D/Control" unique_id=164895882]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_wrxoa")
+
+[node name="RadialBlur" type="TextureRect" parent="Camera3D/Control" unique_id=1634254876]
+material = SubResource("ShaderMaterial_ejm2k")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_0i88t")
+
+[node name="SpeedLines" type="ColorRect" parent="Camera3D/Control" unique_id=2062662582]
+material = SubResource("ShaderMaterial_ecuig")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

@@ -1,0 +1,136 @@
+[gd_scene format=3 uid="uid://dba4av2dxf5e6"]
+
+[ext_resource type="Script" uid="uid://bigvcab6hin0u" path="res://Scripts/PlayerHUD.gd" id="1_s7acx"]
+[ext_resource type="Shader" uid="uid://dop1o7bvebylc" path="res://Materials/Shaders/SquishY.gdshader" id="1_uhd0b"]
+[ext_resource type="Texture2D" uid="uid://fco2c5hl5wpj" path="res://Textures/UI/speedometer.png" id="1_vlq7a"]
+[ext_resource type="PackedScene" uid="uid://culkmod7tioe6" path="res://Prefabs/UI/PlayerAvatar.tscn" id="3_nfgng"]
+[ext_resource type="Texture2D" uid="uid://belik3im0vfqn" path="res://Textures/UI/speed_gauge_full.png" id="5_gkp7e"]
+[ext_resource type="Shader" uid="uid://ce0vqngkrgmf4" path="res://Materials/Shaders/ProgressBarVertical.gdshader" id="5_tl6lm"]
+[ext_resource type="FontFile" uid="uid://brbja0q7gswro" path="res://Fonts/MoonGlossDisplayThick.otf" id="6_15iyh"]
+[ext_resource type="FontVariation" uid="uid://b8opprjomfioi" path="res://Fonts/Oxanium-SemiBold-Italic.tres" id="7_uhlr2"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_s7acx"]
+shader = ExtResource("1_uhd0b")
+shader_parameter/uv_mode = false
+shader_parameter/y_factor = 1.0
+shader_parameter/bulge = 4.7499999933364734e-08
+
+[sub_resource type="LabelSettings" id="LabelSettings_0i88t"]
+font = ExtResource("7_uhlr2")
+font_size = 60
+font_color = Color(0.85882354, 0.7647059, 0.6745098, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_nfgng"]
+font = ExtResource("6_15iyh")
+font_color = Color(0.85882354, 0.7647059, 0.6745098, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uhlr2"]
+shader = ExtResource("5_tl6lm")
+shader_parameter/fill_color = Color(1, 1, 1, 1)
+shader_parameter/min_val = 0.0
+shader_parameter/current_val = 0.5
+shader_parameter/max_val = 1.0
+
+[node name="PlayerHUD" type="CanvasLayer" unique_id=138282145]
+script = ExtResource("1_s7acx")
+
+[node name="SwayContainer" type="SubViewportContainer" parent="." unique_id=182720599]
+material = SubResource("ShaderMaterial_s7acx")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="SwayContainer" unique_id=2033651088]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="SwayContainer/SubViewport" unique_id=1988304685]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 48
+theme_override_constants/margin_right = 48
+theme_override_constants/margin_bottom = 48
+
+[node name="Control" type="Control" parent="SwayContainer/SubViewport/MarginContainer" unique_id=567100667]
+layout_mode = 2
+
+[node name="PlayerAvatar" parent="SwayContainer/SubViewport/MarginContainer/Control" unique_id=458921752 instance=ExtResource("3_nfgng")]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_right = 0.0
+offset_left = 17.0
+offset_top = -208.0
+offset_right = 119.0
+offset_bottom = -106.0
+grow_horizontal = 1
+grow_vertical = 0
+pivot_offset_ratio = Vector2(0, 1)
+
+[node name="Speedometer" type="TextureRect" parent="SwayContainer/SubViewport/MarginContainer/Control" unique_id=746122037]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -112.0
+offset_right = 200.28828
+grow_vertical = 0
+pivot_offset_ratio = Vector2(0, 1)
+texture = ExtResource("1_vlq7a")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="SpeedLabel" type="Label" parent="SwayContainer/SubViewport/MarginContainer/Control/Speedometer" unique_id=524404832]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -65.14414
+offset_top = -35.0
+offset_right = 38.855858
+offset_bottom = 26.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0, 0.5)
+text = "000"
+label_settings = SubResource("LabelSettings_0i88t")
+
+[node name="SpeedUnit" type="Label" parent="SwayContainer/SubViewport/MarginContainer/Control/Speedometer/SpeedLabel" unique_id=2119124745]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -48.5
+offset_top = -17.5
+offset_right = 48.5
+offset_bottom = 39.5
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(1, 1)
+text = "KMH"
+label_settings = SubResource("LabelSettings_nfgng")
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="SpeedGauge" type="TextureRect" parent="SwayContainer/SubViewport/MarginContainer/Control/Speedometer" unique_id=1986090493]
+material = SubResource("ShaderMaterial_uhlr2")
+layout_mode = 0
+offset_left = 146.0
+offset_top = 24.0
+offset_right = 192.0
+offset_bottom = 95.0
+texture = ExtResource("5_gkp7e")
+expand_mode = 1

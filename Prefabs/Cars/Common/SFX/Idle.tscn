@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://cc1b66b8ghrq8"]
+
+[ext_resource type="AudioStream" uid="uid://g21eb18kjaxr" path="res://Sounds/Cars/engine_idle.ogg" id="1_0mvui"]
+
+[node name="Idle" type="AudioStreamPlayer3D" unique_id=2022874409]
+stream = ExtResource("1_0mvui")
+autoplay = true
+bus = &"Engine"

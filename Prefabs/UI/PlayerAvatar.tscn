@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://culkmod7tioe6"]
+
+[ext_resource type="Texture2D" uid="uid://dcuq5eg2opf6p" path="res://Textures/UI/avatar_decoration.png" id="1_wmb77"]
+[ext_resource type="Script" uid="uid://bm3hwufjgv2st" path="res://Scripts/PlayerAvatar.gd" id="2_c2cua"]
+[ext_resource type="Texture2D" uid="uid://63y31bd3ndgc" path="res://Textures/UI/avatar_decoration_mask.png" id="3_y2ejo"]
+[ext_resource type="Texture2D" uid="uid://dbplofx2vjqje" path="res://Textures/UI/Avatars/avatar_1.png" id="4_pgyq3"]
+
+[node name="PlayerAvatar" type="TextureRect" unique_id=458921752]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -786.0
+offset_bottom = -261.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_wmb77")
+expand_mode = 1
+stretch_mode = 4
+script = ExtResource("2_c2cua")
+
+[node name="Mask" type="TextureRect" parent="." unique_id=859339506]
+show_behind_parent = true
+clip_children = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture = ExtResource("3_y2ejo")
+expand_mode = 1
+
+[node name="Avatar" type="TextureRect" parent="Mask" unique_id=1493258589]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture = ExtResource("4_pgyq3")
+expand_mode = 1
+stretch_mode = 5

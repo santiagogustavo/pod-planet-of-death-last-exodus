@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://dux2wltrvg6ei"]
+
+[ext_resource type="AudioStream" uid="uid://crle3jsh5d71x" path="res://Sounds/Cars/engine_rev.ogg" id="1_s00ud"]
+
+[node name="Running" type="AudioStreamPlayer3D" unique_id=1395768302]
+stream = ExtResource("1_s00ud")
+autoplay = true
+bus = &"Engine"

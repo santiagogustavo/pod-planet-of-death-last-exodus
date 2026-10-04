@@ -1,0 +1,7 @@
+[gd_resource type="FontVariation" format=3 uid="uid://b8opprjomfioi"]
+
+[ext_resource type="FontFile" uid="uid://i5x1he6a201y" path="res://Fonts/Oxanium-SemiBold.ttf" id="1_lbaao"]
+
+[resource]
+base_font = ExtResource("1_lbaao")
+variation_transform = Transform2D(1, 0.25, 0, 1, 0, 0)

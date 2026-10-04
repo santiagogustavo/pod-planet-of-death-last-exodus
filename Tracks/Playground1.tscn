@@ -2,7 +2,9 @@
 
 [ext_resource type="Texture2D" uid="uid://dwrwywrqhn4s1" path="res://Textures/Skyboxes/Panorama_Sky_09-512x512.png" id="1_0j0tx"]
 [ext_resource type="Texture2D" uid="uid://ct6x12qmmd50q" path="res://Textures/Tracks/concrete-plates-floor.png" id="1_7x1xs"]
-[ext_resource type="PackedScene" uid="uid://cijncu4lvb8kx" path="res://Prefabs/Cars/Gamma.tscn" id="2_ks1um"]
+[ext_resource type="PackedScene" uid="uid://bp7l8dgivvw2y" path="res://Prefabs/Player/Player.tscn" id="2_0j0tx"]
+[ext_resource type="Texture2D" uid="uid://bs1dsqnsfaehm" path="res://Textures/UI/Avatars/avatar_24.png" id="3_0lat7"]
+[ext_resource type="Script" uid="uid://kklog68nroj3" path="res://Resources/PlayerDetails.gd" id="4_iv1r6"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_3si4x"]
 panorama = ExtResource("1_0j0tx")
@@ -14,6 +16,11 @@ sky_material = SubResource("PanoramaSkyMaterial_3si4x")
 [sub_resource type="Environment" id="Environment_0i88t"]
 background_mode = 2
 sky = SubResource("Sky_ckb4l")
+
+[sub_resource type="Resource" id="Resource_0j0tx"]
+script = ExtResource("4_iv1r6")
+player_avatar = ExtResource("3_0lat7")
+metadata/_custom_type_script = "uid://kklog68nroj3"
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ks1um"]
 points = PackedVector3Array(-150, 0, -150, -150, 0, 150, 150, 0, -150, 150, 0, 150)
@@ -27,6 +34,18 @@ material = SubResource("StandardMaterial3D_egltl")
 size = Vector2(300, 300)
 orientation = 1
 
+[sub_resource type="BoxMesh" id="BoxMesh_0i88t"]
+size = Vector3(10, 3, 10)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_0j0tx"]
+points = PackedVector3Array(-5, -1.5, -5, -5, 1.5, -5, 5, -1.5, -5, -5, -1.5, 5, -5, 1.5, 5, 5, 1.5, -5, 5, -1.5, 5, 5, 1.5, 5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ckb4l"]
+size = Vector3(1, 10, 50)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_l1obr"]
+points = PackedVector3Array(-0.5, -5, -25, 0.5, -5, -25, -0.5, -5, 25, -0.5, 5, -25, 0.5, 5, -25, 0.5, -5, 25, -0.5, 5, 25, 0.5, 5, 25)
+
 [node name="Playground1" type="Node3D" unique_id=538869074]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1124827985]
@@ -37,8 +56,8 @@ transform = Transform3D(0.9659258, -1.131334e-08, 0.25881904, -0.25881904, -4.22
 light_energy = 0.1
 shadow_enabled = true
 
-[node name="Gamma" parent="." unique_id=1584282954 instance=ExtResource("2_ks1um")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+[node name="Player" parent="." unique_id=326649129 instance=ExtResource("2_0j0tx")]
+player_details = SubResource("Resource_0j0tx")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1352415093]
 collision_layer = 2
@@ -49,3 +68,25 @@ shape = SubResource("ConvexPolygonShape3D_ks1um")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D/CollisionShape3D" unique_id=614637651]
 mesh = SubResource("QuadMesh_mnpnk")
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="." unique_id=446141770]
+transform = Transform3D(1, 0, 0, 0, 0.9659258, -0.25881904, 0, 0.25881904, 0.9659258, 0, 1, -27)
+collision_layer = 2
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2" unique_id=258109228]
+transform = Transform3D(1, 0, 0, 0, 1.0000012, 0, 0, 0, 1.0000012, 0, -1.2500005, 0)
+mesh = SubResource("BoxMesh_0i88t")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2" unique_id=1224537272]
+transform = Transform3D(1, 0, 0, 0, 1.0000012, 0, 0, 0, 1.0000012, 0, -1.2500005, 0)
+shape = SubResource("ConvexPolygonShape3D_0j0tx")
+
+[node name="StaticBody3D3" type="StaticBody3D" parent="." unique_id=1498483815]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29, 5, 0)
+collision_layer = 4
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D3" unique_id=1386908436]
+mesh = SubResource("BoxMesh_ckb4l")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D3" unique_id=1214353785]
+shape = SubResource("ConvexPolygonShape3D_l1obr")

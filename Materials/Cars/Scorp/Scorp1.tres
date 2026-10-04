@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dw4gdaqpcntj6"]
+
+[ext_resource type="Texture2D" uid="uid://bsdeh12y5uca1" path="res://Textures/Cars/Scorp/scorp_1.png" id="1_icguk"]
+[ext_resource type="Texture2D" uid="uid://bmsvminfrreg8" path="res://Textures/Cars/Scorp/scorp_1_occ.png" id="2_uwrib"]
+
+[resource]
+albedo_texture = ExtResource("1_icguk")
+ao_enabled = true
+ao_light_affect = 1.0
+ao_texture = ExtResource("2_uwrib")
