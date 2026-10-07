@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dny45mgb7kqcf"]
+
+[ext_resource type="Texture2D" uid="uid://33eotcmn31ek" path="res://Textures/Cars/Shivan/shivan_0.png" id="1_wbed8"]
+[ext_resource type="Texture2D" uid="uid://dtswta64yo1d7" path="res://Textures/Cars/Shivan/shivan_0_occ.png" id="2_jmbe4"]
+
+[resource]
+albedo_texture = ExtResource("1_wbed8")
+ao_enabled = true
+ao_light_affect = 1.0
+ao_texture = ExtResource("2_jmbe4")

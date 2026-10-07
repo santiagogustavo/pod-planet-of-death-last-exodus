@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dtswta64yo1d7"
-path.s3tc="res://.godot/imported/shivan_0_occ.png-f2b7bcca3ed52e05e11ca19de480ed87.s3tc.ctex"
+uid="uid://6wyn11vi2f7t"
+path.s3tc="res://.godot/imported/arc_1_emm.png-8b1cefa3c9e7dc525869f9041703b469.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Textures/Cars/Shivan/shivan_0_occ.png"
-dest_files=["res://.godot/imported/shivan_0_occ.png-f2b7bcca3ed52e05e11ca19de480ed87.s3tc.ctex"]
+source_file="res://Textures/Cars/Arc/arc_1_emm.png"
+dest_files=["res://.godot/imported/arc_1_emm.png-8b1cefa3c9e7dc525869f9041703b469.s3tc.ctex"]
 
 [params]
 

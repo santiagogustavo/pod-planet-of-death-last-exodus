@@ -1,0 +1,47 @@
+[gd_resource type="VisualShader" format=3 uid="uid://du3jqkxf5emfc"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_74tcl"]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeVectorDecompose" id="VisualShaderNodeVectorDecompose_egu76"]
+default_input_values = [0, Vector2(0, 0)]
+op_type = 0
+
+[sub_resource type="VisualShaderNodeTexture2DParameter" id="VisualShaderNodeTexture2DParameter_x15nk"]
+parameter_name = "Texture2DParameter"
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_6xk25"]
+source = 5
+
+[sub_resource type="VisualShaderNodeVectorDecompose" id="VisualShaderNodeVectorDecompose_5rxgp"]
+default_input_values = [0, Quaternion(0, 0, 0, 0)]
+op_type = 2
+
+[sub_resource type="VisualShaderNodeVectorCompose" id="VisualShaderNodeVectorCompose_i7xfa"]
+output_port_for_preview = 0
+op_type = 0
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_8rwtd"]
+output_port_for_preview = 0
+input_name = "time"
+
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_a5nmo"]
+
+[resource]
+nodes/vertex/2/node = SubResource("VisualShaderNodeInput_74tcl")
+nodes/vertex/2/position = Vector2(-900, 560)
+nodes/vertex/3/node = SubResource("VisualShaderNodeVectorDecompose_egu76")
+nodes/vertex/3/position = Vector2(-480, 560)
+nodes/vertex/4/node = SubResource("VisualShaderNodeTexture2DParameter_x15nk")
+nodes/vertex/4/position = Vector2(-920, -20)
+nodes/vertex/5/node = SubResource("VisualShaderNodeTexture_6xk25")
+nodes/vertex/5/position = Vector2(-500, 40)
+nodes/vertex/6/node = SubResource("VisualShaderNodeVectorDecompose_5rxgp")
+nodes/vertex/6/position = Vector2(-180, 180)
+nodes/vertex/7/node = SubResource("VisualShaderNodeVectorCompose_i7xfa")
+nodes/vertex/7/position = Vector2(-20, 660)
+nodes/vertex/8/node = SubResource("VisualShaderNodeInput_8rwtd")
+nodes/vertex/8/position = Vector2(-740, 820)
+nodes/vertex/9/node = SubResource("VisualShaderNodeFloatOp_a5nmo")
+nodes/vertex/9/position = Vector2(-240, 520)
+nodes/vertex/connections = PackedInt32Array(2, 0, 3, 0, 4, 0, 5, 2, 5, 0, 6, 0, 5, 0, 0, 6, 6, 3, 0, 7, 7, 0, 0, 4, 3, 1, 7, 1, 8, 0, 9, 1, 3, 0, 9, 0, 9, 0, 7, 0)

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="CarData" format=3 uid="uid://db76wikpidtqx"]
+
+[ext_resource type="Script" uid="uid://6ipu2ji27twk" path="res://Resources/CarData.gd" id="1_upwgx"]
+
+[resource]
+script = ExtResource("1_upwgx")
+car_name = "Arc"
+scene_path = "res://Prefabs/Cars/Arc.tscn"
+metadata/_custom_type_script = "uid://6ipu2ji27twk"
