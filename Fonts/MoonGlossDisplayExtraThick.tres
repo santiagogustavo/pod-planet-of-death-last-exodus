@@ -1,0 +1,7 @@
+[gd_resource type="FontVariation" format=3 uid="uid://b60fegx7eq7ja"]
+
+[ext_resource type="FontFile" uid="uid://brbja0q7gswro" path="res://Fonts/MoonGlossDisplayThick.otf" id="1_2q8rg"]
+
+[resource]
+base_font = ExtResource("1_2q8rg")
+variation_embolden = 1.0

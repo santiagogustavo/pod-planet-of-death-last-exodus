@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://d5uy3jx36tvx" path="res://addons/gputrail/GPUTrail3D.gd" id="4_7wjxm"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fef0o"]
+resource_local_to_scene = true
 shader = ExtResource("1_qo0wj")
 
 [sub_resource type="Gradient" id="Gradient_fef0o"]
@@ -35,6 +36,7 @@ shader_parameter/emmission_transform = Projection(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 
 shader_parameter/flags = 46
 
 [sub_resource type="QuadMesh" id="QuadMesh_t8p7w"]
+resource_local_to_scene = true
 material = SubResource("ShaderMaterial_8qou6")
 
 [node name="WindTrail" type="GPUParticles3D" unique_id=986200328]

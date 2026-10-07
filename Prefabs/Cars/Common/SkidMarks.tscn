@@ -26,6 +26,7 @@ size = Vector2(0.5, 1)
 orientation = 1
 
 [node name="SkidMarks" type="GPUParticles3D" unique_id=556581797]
+emitting = false
 amount = 150
 lifetime = 3.0
 fixed_fps = 60

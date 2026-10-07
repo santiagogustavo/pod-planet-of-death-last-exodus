@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://cauynapb07dmw"]
+
+[ext_resource type="Script" uid="uid://7im3vnc0vcdo" path="res://Scripts/Tracks/CircuitGate.gd" id="1_hcyup"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0i88t"]
+size = Vector3(20, 10, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ckb4l"]
+transparency = 1
+albedo_color = Color(1, 0, 0, 0.2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_0i88t"]
+material = SubResource("StandardMaterial3D_ckb4l")
+size = Vector3(20, 10, 0.1)
+
+[node name="CircuitGate" type="Area3D" unique_id=517762930]
+collision_layer = 8
+script = ExtResource("1_hcyup")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1241356675]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+shape = SubResource("BoxShape3D_0i88t")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D" unique_id=1041130471]
+mesh = SubResource("BoxMesh_0i88t")

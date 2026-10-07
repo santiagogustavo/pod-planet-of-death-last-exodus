@@ -2,13 +2,13 @@
 
 importer="wav"
 type="AudioStreamWAV"
-uid="uid://qkfj5qqc4sle"
-path="res://.godot/imported/crash2.wav-b421218dd9e9c3f05a3c36c571444f6e.sample"
+uid="uid://cmmqmm5ugw5ne"
+path="res://.godot/imported/near_miss.wav-5b5c6ed6098e55f324369d9fd3d5051e.sample"
 
 [deps]
 
-source_file="res://Sounds/Cars/crash2.wav"
-dest_files=["res://.godot/imported/crash2.wav-b421218dd9e9c3f05a3c36c571444f6e.sample"]
+source_file="res://Sounds/Cars/near_miss.wav"
+dest_files=["res://.godot/imported/near_miss.wav-5b5c6ed6098e55f324369d9fd3d5051e.sample"]
 
 [params]
 

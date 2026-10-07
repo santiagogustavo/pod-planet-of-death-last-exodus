@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cgu3cyfmer4ik"
-path.s3tc="res://.godot/imported/avatar_13.png-b4e498026316602dd9ad9af065932b45.s3tc.ctex"
+uid="uid://bwofyd6rf0wrm"
+path.s3tc="res://.godot/imported/Panorama do Deserto Pós-Apocalíptico.png-fadb241d814a8b076d72f56d20f10e54.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Textures/UI/Avatars/avatar_13.png"
-dest_files=["res://.godot/imported/avatar_13.png-b4e498026316602dd9ad9af065932b45.s3tc.ctex"]
+source_file="res://Textures/Skyboxes/Panorama do Deserto Pós-Apocalíptico.png"
+dest_files=["res://.godot/imported/Panorama do Deserto Pós-Apocalíptico.png-fadb241d814a8b076d72f56d20f10e54.s3tc.ctex"]
 
 [params]
 

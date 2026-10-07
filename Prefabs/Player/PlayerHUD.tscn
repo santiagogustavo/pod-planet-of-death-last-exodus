@@ -8,6 +8,9 @@
 [ext_resource type="Shader" uid="uid://ce0vqngkrgmf4" path="res://Materials/Shaders/ProgressBarVertical.gdshader" id="5_tl6lm"]
 [ext_resource type="FontFile" uid="uid://brbja0q7gswro" path="res://Fonts/MoonGlossDisplayThick.otf" id="6_15iyh"]
 [ext_resource type="FontVariation" uid="uid://b8opprjomfioi" path="res://Fonts/Oxanium-SemiBold-Italic.tres" id="7_uhlr2"]
+[ext_resource type="Texture2D" uid="uid://drp6j41jiqgh4" path="res://Textures/UI/lap_time_decoration.png" id="9_nfgng"]
+[ext_resource type="Texture2D" uid="uid://uule52kkqqal" path="res://Textures/UI/race_stats_decoration.png" id="10_qesgt"]
+[ext_resource type="FontVariation" uid="uid://b60fegx7eq7ja" path="res://Fonts/MoonGlossDisplayExtraThick.tres" id="11_f0vpv"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_s7acx"]
 shader = ExtResource("1_uhd0b")
@@ -31,7 +34,62 @@ shader_parameter/min_val = 0.0
 shader_parameter/current_val = 0.5
 shader_parameter/max_val = 1.0
 
+[sub_resource type="LabelSettings" id="LabelSettings_ckb4l"]
+font = ExtResource("6_15iyh")
+font_color = Color(0.85882354, 0.7647059, 0.6745098, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_etsbr"]
+font = ExtResource("6_15iyh")
+font_size = 12
+font_color = Color(0.85882354, 0.7647059, 0.6745098, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_h0y6g"]
+font = ExtResource("7_uhlr2")
+font_size = 41
+font_color = Color(0.9372549, 0.627451, 0.007843138, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_1t8f0"]
+font = ExtResource("7_uhlr2")
+font_size = 26
+font_color = Color(0.85882354, 0.7647059, 0.6745098, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_bf77d"]
+font = ExtResource("6_15iyh")
+font_size = 12
+font_color = Color(0.85882354, 0.7647059, 0.6745098, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_3w5fx"]
+font = ExtResource("7_uhlr2")
+font_size = 20
+font_color = Color(0.9372549, 0.627451, 0.007843138, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_15wkl"]
+font = ExtResource("7_uhlr2")
+font_size = 14
+font_color = Color(0.85882354, 0.7647059, 0.6745098, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_3si4x"]
+font = ExtResource("11_f0vpv")
+font_size = 9
+font_color = Color(0.9372549, 0.627451, 0.007843138, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_qesgt"]
+font = ExtResource("6_15iyh")
+font_size = 14
+font_color = Color(0.9372549, 0.627451, 0.007843138, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_f0vpv"]
+font = ExtResource("11_f0vpv")
+font_size = 9
+font_color = Color(0.85882354, 0.7647059, 0.6745098, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_fe8wy"]
+font = ExtResource("6_15iyh")
+font_size = 14
+font_color = Color(0.85882354, 0.7647059, 0.6745098, 1)
+
 [node name="PlayerHUD" type="CanvasLayer" unique_id=138282145]
+layer = 2
 script = ExtResource("1_s7acx")
 
 [node name="SwayContainer" type="SubViewportContainer" parent="." unique_id=182720599]
@@ -134,3 +192,160 @@ offset_right = 192.0
 offset_bottom = 95.0
 texture = ExtResource("5_gkp7e")
 expand_mode = 1
+
+[node name="RaceTime" type="TextureRect" parent="SwayContainer/SubViewport/MarginContainer/Control" unique_id=973373417]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -102.0
+offset_top = 16.0
+offset_right = 101.63635
+offset_bottom = 48.0
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset_ratio = Vector2(0.5, 1)
+texture = ExtResource("9_nfgng")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Label" type="Label" parent="SwayContainer/SubViewport/MarginContainer/Control/RaceTime" unique_id=845760046]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+text = "02'28\"62"
+label_settings = SubResource("LabelSettings_ckb4l")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RaceStats" type="TextureRect" parent="SwayContainer/SubViewport/MarginContainer/Control" unique_id=1557458106]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -198.58508
+offset_bottom = 164.0
+grow_horizontal = 0
+pivot_offset_ratio = Vector2(1, 0)
+texture = ExtResource("10_qesgt")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="PositionLabel" type="Label" parent="SwayContainer/SubViewport/MarginContainer/Control/RaceStats" unique_id=1006663938]
+layout_mode = 0
+offset_left = 40.585083
+offset_top = 73.0
+offset_right = 121.58508
+offset_bottom = 91.0
+text = "Position"
+label_settings = SubResource("LabelSettings_etsbr")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CurrentPositionlabel" type="Label" parent="SwayContainer/SubViewport/MarginContainer/Control/RaceStats/PositionLabel" unique_id=818310511]
+layout_mode = 0
+offset_top = -50.0
+offset_right = 47.0
+offset_bottom = -8.0
+text = "11"
+label_settings = SubResource("LabelSettings_h0y6g")
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="TotalPositionsLabel" type="Label" parent="SwayContainer/SubViewport/MarginContainer/Control/RaceStats/PositionLabel" unique_id=1768513681]
+layout_mode = 0
+offset_left = 47.0
+offset_top = -50.0
+offset_right = 88.0
+offset_bottom = -12.0
+text = "/11"
+label_settings = SubResource("LabelSettings_1t8f0")
+vertical_alignment = 2
+
+[node name="LapLabel" type="Label" parent="SwayContainer/SubViewport/MarginContainer/Control/RaceStats" unique_id=1612767078]
+layout_mode = 0
+offset_left = 140.58508
+offset_top = 67.0
+offset_right = 179.58508
+offset_bottom = 87.0
+text = "Lap"
+label_settings = SubResource("LabelSettings_bf77d")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CurrentLapLabel" type="Label" parent="SwayContainer/SubViewport/MarginContainer/Control/RaceStats/LapLabel" unique_id=589315704]
+layout_mode = 0
+offset_left = -3.0
+offset_top = -32.0
+offset_right = 26.0
+offset_bottom = -3.0
+text = "11"
+label_settings = SubResource("LabelSettings_3w5fx")
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="TotalLapsLabel" type="Label" parent="SwayContainer/SubViewport/MarginContainer/Control/RaceStats/LapLabel" unique_id=1395471891]
+layout_mode = 0
+offset_left = 26.0
+offset_top = -32.0
+offset_right = 50.0
+offset_bottom = -3.0
+text = "/11"
+label_settings = SubResource("LabelSettings_15wkl")
+vertical_alignment = 1
+
+[node name="CurrentLap" type="HBoxContainer" parent="SwayContainer/SubViewport/MarginContainer/Control/RaceStats" unique_id=1306573736]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -132.0
+offset_top = -56.0
+offset_right = -13.0
+offset_bottom = -35.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="Label" type="Label" parent="SwayContainer/SubViewport/MarginContainer/Control/RaceStats/CurrentLap" unique_id=1399936501]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Current"
+label_settings = SubResource("LabelSettings_3si4x")
+
+[node name="Value" type="Label" parent="SwayContainer/SubViewport/MarginContainer/Control/RaceStats/CurrentLap" unique_id=955011456]
+layout_mode = 2
+text = "00'00\"000"
+label_settings = SubResource("LabelSettings_qesgt")
+
+[node name="BestLap" type="HBoxContainer" parent="SwayContainer/SubViewport/MarginContainer/Control/RaceStats" unique_id=1288508236]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -132.0
+offset_top = -35.0
+offset_right = -13.0
+offset_bottom = -14.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="Label" type="Label" parent="SwayContainer/SubViewport/MarginContainer/Control/RaceStats/BestLap" unique_id=1919822495]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Best"
+label_settings = SubResource("LabelSettings_f0vpv")
+
+[node name="Value" type="Label" parent="SwayContainer/SubViewport/MarginContainer/Control/RaceStats/BestLap" unique_id=1962860996]
+layout_mode = 2
+text = "00'00\"000"
+label_settings = SubResource("LabelSettings_fe8wy")

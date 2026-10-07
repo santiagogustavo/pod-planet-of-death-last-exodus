@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cgu3cyfmer4ik"
-path.s3tc="res://.godot/imported/avatar_13.png-b4e498026316602dd9ad9af065932b45.s3tc.ctex"
+uid="uid://drp6j41jiqgh4"
+path.s3tc="res://.godot/imported/lap_time_decoration.png-07916c71000d887faf7fa4bde223aefa.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Textures/UI/Avatars/avatar_13.png"
-dest_files=["res://.godot/imported/avatar_13.png-b4e498026316602dd9ad9af065932b45.s3tc.ctex"]
+source_file="res://Textures/UI/lap_time_decoration.png"
+dest_files=["res://.godot/imported/lap_time_decoration.png-07916c71000d887faf7fa4bde223aefa.s3tc.ctex"]
 
 [params]
 

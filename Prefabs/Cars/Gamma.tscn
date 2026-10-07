@@ -5,17 +5,165 @@
 [ext_resource type="Script" uid="uid://pmc1ay5ilqj4" path="res://Scripts/Cars/Car.gd" id="1_mnpnk"]
 [ext_resource type="Texture2D" uid="uid://cnlt5rx4oh5hc" path="res://Models/Cars/Gamma_gamma_0.png" id="2_mnpnk"]
 [ext_resource type="Material" uid="uid://cthhcwn6te8rk" path="res://Materials/Cars/Gamma/Gamma0.tres" id="4_c3dav"]
+[ext_resource type="Shader" uid="uid://1cpiujcq4qbx" path="res://addons/gputrail/shaders/trail_draw_pass.gdshader" id="4_dwnck"]
 [ext_resource type="Material" uid="uid://bdr0wlwc88r1a" path="res://Materials/Cars/Gamma/Gamma1.tres" id="4_xv73x"]
+[ext_resource type="Texture2D" uid="uid://crk6pkb7e5rwc" path="res://addons/gputrail/defaults/texture.tres" id="5_fef0o"]
 [ext_resource type="PackedScene" uid="uid://bd5hqg65dlqyx" path="res://Prefabs/Cars/Common/HeadLight.tscn" id="6_d8ndu"]
-[ext_resource type="PackedScene" uid="uid://dux2wltrvg6ei" path="res://Prefabs/Cars/Common/SFX/Running.tscn" id="7_s24sc"]
 [ext_resource type="PackedScene" uid="uid://boibhgtrwkg3m" path="res://Prefabs/Cars/Common/BrakeLight.tscn" id="7_vf6f5"]
 [ext_resource type="PackedScene" uid="uid://bpods5df3vvpp" path="res://Prefabs/Cars/Common/SkidMarks.tscn" id="8_7lllc"]
-[ext_resource type="PackedScene" uid="uid://ci6nprtopkryr" path="res://Prefabs/Cars/Common/SFX/Brake.tscn" id="8_vf6f5"]
-[ext_resource type="PackedScene" uid="uid://cc1b66b8ghrq8" path="res://Prefabs/Cars/Common/SFX/Idle.tscn" id="9_7lllc"]
 [ext_resource type="PackedScene" uid="uid://cpxaheq5yghc1" path="res://Prefabs/Cars/Common/WindTrail.tscn" id="9_d8ndu"]
+[ext_resource type="PackedScene" uid="uid://bx4skjijo1uxf" path="res://Prefabs/Cars/Common/SFX/SFX.tscn" id="11_7lllc"]
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_fa6gs"]
 points = PackedVector3Array(-2.4451785, -0.566864, -1.6650543, -3.6090546, -0.34325093, -0.958659, -3.5038893, 0.11030078, -1.022788, -2.4451785, 0.0377236, -1.6650543, -1.236131, -0.566864, -1.6650543, -2.4451785, -0.566864, 1.6605377, -3.6090546, -0.34325093, 0.9499104, -3.5038893, 0.11030078, 1.0179458, -3.3528466, 0.3022862, -0.6070889, -2.4451785, 0.56684875, -0.45604408, -1.236131, 0.0377236, -1.6650543, 1.3337126, -0.566864, -1.5140095, -2.4451785, 0.0377236, 1.6605377, -1.236131, -0.566864, 1.6605377, -2.4451785, 0.56684875, 0.45087647, -3.3528466, 0.3022862, 0.60224676, -1.5382166, 0.56684875, -0.45604408, 1.3337126, 0.0377236, -1.5140095, 2.5427604, -0.5291328, -1.4235127, 1.3337126, -0.566864, 1.5091672, -1.236131, 0.0377236, 1.6605377, -1.5382166, 0.56684875, 0.45087647, 1.3337126, 0.34001744, -0.7581339, 2.5427604, -0.015211105, -1.4235127, 3.601471, -0.04539609, -0.7581339, 3.2986798, -0.43846682, -0.9482421, 2.5427604, -0.5291328, 1.4186704, 1.3337126, 0.0377236, 1.5091672, 1.3337126, 0.34001744, 0.7532916, 2.5427604, 0.24180526, -0.7581339, 3.601471, -0.04539609, 0.7532916, 3.2986798, -0.43846682, 0.9433999, 2.5427604, -0.015211105, 1.4186704, 2.5427604, 0.24180526, 0.7532916)
+
+[sub_resource type="Shader" id="Shader_uft3x"]
+resource_local_to_scene = true
+code = "shader_type particles;
+
+render_mode keep_data,disable_force,disable_velocity;
+
+
+
+void process() {
+	// CUSTOM.w tracks the particles place in the trail, in range (0..LIFETIME]
+	// requires that LIFETIME = number of particles
+	float amount = LIFETIME;
+
+	vec4 a = EMISSION_TRANSFORM * vec4(0,1,0,1);
+	vec4 b = EMISSION_TRANSFORM * vec4(0,-1,0,1);
+
+	// start
+	if(CUSTOM.w == 0.0){
+		CUSTOM.w = float(INDEX)+1.0;
+
+		// needed to pass to draw pass
+		CUSTOM.z = amount;
+
+		// needed to initialize in case of CUSTOM.w == 2.0
+		TRANSFORM = mat4(a,a,b,b);
+	}
+
+	// restart
+	if(CUSTOM.w == amount+1.0){
+		CUSTOM.w = 1.0;
+	}
+
+	if(CUSTOM.w == 1.0){
+		// sets the quad to the line to cache this frame, it is not yet visible
+		TRANSFORM = mat4(a,a,b,b);
+	}
+
+	if(CUSTOM.w == 2.0){
+		// sets the right edge of the quad
+		TRANSFORM[1] = a;
+		TRANSFORM[2] = b;
+	}
+
+	CUSTOM.w++;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1bk2c"]
+resource_local_to_scene = true
+shader = SubResource("Shader_uft3x")
+
+[sub_resource type="Gradient" id="Gradient_mpicf"]
+colors = PackedColorArray(1, 1, 1, 0.09803922, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_igf7g"]
+gradient = SubResource("Gradient_mpicf")
+
+[sub_resource type="Curve" id="Curve_jdgw7"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.1, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+metadata/_snap_enabled = true
+
+[sub_resource type="CurveTexture" id="CurveTexture_rmx2k"]
+curve = SubResource("Curve_jdgw7")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1vvmp"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("4_dwnck")
+shader_parameter/tex = ExtResource("5_fef0o")
+shader_parameter/mask_strength = 1.0
+shader_parameter/uv_offset = Vector2(0, 0)
+shader_parameter/color_ramp = SubResource("GradientTexture1D_igf7g")
+shader_parameter/curve = SubResource("CurveTexture_rmx2k")
+shader_parameter/emmission_transform = Projection(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
+shader_parameter/flags = 46
+
+[sub_resource type="QuadMesh" id="QuadMesh_3pafd"]
+resource_local_to_scene = true
+material = SubResource("ShaderMaterial_1vvmp")
+
+[sub_resource type="Shader" id="Shader_8qou6"]
+resource_local_to_scene = true
+code = "shader_type particles;
+
+render_mode keep_data,disable_force,disable_velocity;
+
+
+
+void process() {
+	// CUSTOM.w tracks the particles place in the trail, in range (0..LIFETIME]
+	// requires that LIFETIME = number of particles
+	float amount = LIFETIME;
+
+	vec4 a = EMISSION_TRANSFORM * vec4(0,1,0,1);
+	vec4 b = EMISSION_TRANSFORM * vec4(0,-1,0,1);
+
+	// start
+	if(CUSTOM.w == 0.0){
+		CUSTOM.w = float(INDEX)+1.0;
+
+		// needed to pass to draw pass
+		CUSTOM.z = amount;
+
+		// needed to initialize in case of CUSTOM.w == 2.0
+		TRANSFORM = mat4(a,a,b,b);
+	}
+
+	// restart
+	if(CUSTOM.w == amount+1.0){
+		CUSTOM.w = 1.0;
+	}
+
+	if(CUSTOM.w == 1.0){
+		// sets the quad to the line to cache this frame, it is not yet visible
+		TRANSFORM = mat4(a,a,b,b);
+	}
+
+	if(CUSTOM.w == 2.0){
+		// sets the right edge of the quad
+		TRANSFORM[1] = a;
+		TRANSFORM[2] = b;
+	}
+
+	CUSTOM.w++;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_t8p7w"]
+resource_local_to_scene = true
+shader = SubResource("Shader_8qou6")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u2k05"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("4_dwnck")
+shader_parameter/tex = ExtResource("5_fef0o")
+shader_parameter/mask_strength = 1.0
+shader_parameter/uv_offset = Vector2(0, 0)
+shader_parameter/color_ramp = SubResource("GradientTexture1D_igf7g")
+shader_parameter/curve = SubResource("CurveTexture_rmx2k")
+shader_parameter/emmission_transform = Projection(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
+shader_parameter/flags = 46
+
+[sub_resource type="QuadMesh" id="QuadMesh_0nh0g"]
+resource_local_to_scene = true
+material = SubResource("ShaderMaterial_u2k05")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_csloh"]
 resource_name = "gamma1"
@@ -323,8 +471,8 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_7itgm")
 
-[node name="Gamma" type="VehicleBody3D" unique_id=1584282954 node_paths=PackedStringArray("wheels", "brake_lights", "skid_marks", "wind_trails")]
-collision_mask = 6
+[node name="Gamma" type="VehicleBody3D" unique_id=19254653 node_paths=PackedStringArray("wheels", "brake_lights", "skid_marks", "wind_trails")]
+collision_mask = 7
 mass = 100.0
 physics_material_override = ExtResource("1_dwnck")
 gravity_scale = 4.0
@@ -337,6 +485,7 @@ wheels = [NodePath("FR"), NodePath("FL"), NodePath("BR"), NodePath("BL")]
 brake_lights = [NodePath("CollisionShape3D/Damage 0/BrakeLight"), NodePath("CollisionShape3D/Damage 0/BrakeLight2"), NodePath("CollisionShape3D/Damage 0/BrakeLight3")]
 skid_marks = [NodePath("SkidMarks/SkidMarks"), NodePath("SkidMarks/SkidMarks2"), NodePath("SkidMarks/SkidMarks3"), NodePath("SkidMarks/SkidMarks4")]
 wind_trails = [NodePath("CollisionShape3D/WindTrail"), NodePath("CollisionShape3D/WindTrail2")]
+metadata/_custom_type_script = "uid://pmc1ay5ilqj4"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=559839928]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.021666668, 1, 0.03833332)
@@ -344,9 +493,13 @@ shape = SubResource("ConvexPolygonShape3D_fa6gs")
 
 [node name="WindTrail" parent="CollisionShape3D" unique_id=986200328 instance=ExtResource("9_d8ndu")]
 transform = Transform3D(-2.1855695e-09, 0, -0.05, 0, 0.05, 0, 0.05, 0, -2.1855695e-09, -2.404841, 0.049999952, -1.6096003)
+process_material = SubResource("ShaderMaterial_1bk2c")
+draw_pass_1 = SubResource("QuadMesh_3pafd")
 
 [node name="WindTrail2" parent="CollisionShape3D" unique_id=855292252 instance=ExtResource("9_d8ndu")]
 transform = Transform3D(-2.1855695e-09, 0, -0.05, 0, 0.05, 0, 0.05, 0, -2.1855695e-09, -2.4046667, 0.049999952, 1.5663333)
+process_material = SubResource("ShaderMaterial_t8p7w")
+draw_pass_1 = SubResource("QuadMesh_0nh0g")
 
 [node name="Damage 0" type="MeshInstance3D" parent="CollisionShape3D" unique_id=600341727]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.03833332, 0, -0.021666666)
@@ -458,11 +611,4 @@ wheel = NodePath("../../BL")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2263266, -0.93565756, 1.8331625)
 wheel = NodePath("../../BR")
 
-[node name="Running" parent="." unique_id=1395768302 instance=ExtResource("7_s24sc")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-
-[node name="Brake" parent="." unique_id=222941043 instance=ExtResource("8_vf6f5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-
-[node name="Idle" parent="." unique_id=2022874409 instance=ExtResource("9_7lllc")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+[node name="SFX" parent="." unique_id=1223152630 instance=ExtResource("11_7lllc")]

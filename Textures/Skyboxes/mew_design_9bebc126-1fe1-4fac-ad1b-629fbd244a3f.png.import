@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cgu3cyfmer4ik"
-path.s3tc="res://.godot/imported/avatar_13.png-b4e498026316602dd9ad9af065932b45.s3tc.ctex"
+uid="uid://fkukxqldopmn"
+path.s3tc="res://.godot/imported/mew_design_9bebc126-1fe1-4fac-ad1b-629fbd244a3f.png-4af7af1af5cfe32130fdcce212bff52f.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Textures/UI/Avatars/avatar_13.png"
-dest_files=["res://.godot/imported/avatar_13.png-b4e498026316602dd9ad9af065932b45.s3tc.ctex"]
+source_file="res://Textures/Skyboxes/mew_design_9bebc126-1fe1-4fac-ad1b-629fbd244a3f.png"
+dest_files=["res://.godot/imported/mew_design_9bebc126-1fe1-4fac-ad1b-629fbd244a3f.png-4af7af1af5cfe32130fdcce212bff52f.s3tc.ctex"]
 
 [params]
 

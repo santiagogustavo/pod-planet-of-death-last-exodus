@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ciu67sb4wxvre" path="res://Scripts/Player.gd" id="1_c4lgr"]
 [ext_resource type="Resource" uid="uid://bq4kdbpflqs0n" path="res://Resources/Cars/Scorp.tres" id="2_c4lgr"]
+[ext_resource type="PackedScene" uid="uid://b7dtljjp6jfhl" path="res://Prefabs/Player/NearMissDetector.tscn" id="4_hnr8y"]
 [ext_resource type="Texture2D" uid="uid://cd2s6w6v4g521" path="res://Textures/Gizmos/position-marker.png" id="4_op78j"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ckb4l"]
@@ -30,9 +31,13 @@ car_data = ExtResource("2_c4lgr")
 
 [node name="Gizmo" type="MeshInstance3D" parent="." unique_id=864948161]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+layers = 2
 mesh = SubResource("QuadMesh_0i88t")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Gizmo" unique_id=1828733165]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
+layers = 2
 cast_shadow = 0
 mesh = SubResource("BoxMesh_0i88t")
+
+[node name="NearMissDetector" parent="." unique_id=1762425396 instance=ExtResource("4_hnr8y")]

@@ -4,17 +4,20 @@ class_name ChaseCamera
 @export var car: Car
 @export var fov_increase: float = 15.0
 @export var camera_up_degrees: float = 7.5
-@export var camera_tilt_x_position: float = 2.0
+@export var camera_tilt_x_position: float = 5.0
+@export var camera_tilt_y_angle: float = 1.0
 @export var camera_tilt_x_smooth: float = 5.0
+@export var camera_tilt_y_smooth: float = 5.0
 @export_range(1.0, 10.0, 0.1) var smooth_speed: float = 2.5
 var direction: Vector3 = Vector3.FORWARD
 
 @onready var camera: Camera3D = $Camera3D
-@onready var camera_debug_texture = $Camera3D/Control/DebugTexture
-@onready var radial_blur: TextureRect = $Camera3D/Control/RadialBlur
-@onready var speed_lines: ColorRect = $Camera3D/Control/SpeedLines
+@onready var camera_debug_texture = $Camera3D/CameraEffects/Control/DebugTexture
+@onready var radial_blur: TextureRect = $Camera3D/CameraEffects/Control/RadialBlur
+@onready var speed_lines: ColorRect = $Camera3D/CameraEffects/Control/SpeedLines
 @onready var initial_fov: float = camera.fov
 @onready var initial_rotation_x: float = camera.rotation_degrees.x
+@onready var spring_position: Node3D = $SpringArm3D/SpringPosition
 
 var speed_lines_sampling: float = 0.9
 
@@ -24,6 +27,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	update_direction_and_basis(delta)
+	update_camera_collision(delta)
 	update_camera(delta)
 	update_radial_blur_intensity()
 	update_speed_lines()
@@ -54,6 +58,19 @@ func update_camera(delta: float) -> void:
 		camera.position.x,
 		-car.steering * camera_tilt_x_position * intensity,
 		delta * camera_tilt_x_smooth
+	)
+	if car.engine_status != Car.EngineStatus.Reverse:
+		rotation.y = lerp_angle(
+			rotation.y,
+			-car.steering * camera_tilt_y_angle * intensity / 2,
+			delta * camera_tilt_y_smooth
+		)
+
+func update_camera_collision(delta: float) -> void:
+	camera.global_transform.origin = lerp(
+		camera.global_transform.origin,
+		spring_position.global_transform.origin,
+		50 * delta
 	)
 
 func update_radial_blur_intensity() -> void:

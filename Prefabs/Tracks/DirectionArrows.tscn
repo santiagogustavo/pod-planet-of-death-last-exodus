@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://46gclodm1vd1"]
+
+[ext_resource type="Script" uid="uid://ydos8x5qm8qn" path="res://Scripts/Tracks/DirectionArrows.gd" id="1_ws2s5"]
+[ext_resource type="Texture2D" uid="uid://ctur0cpa8sqwh" path="res://Textures/Tracks/direction_arrows.png" id="2_p1p8o"]
+
+[sub_resource type="Curve3D" id="Curve3D_gjnrv"]
+_data = {
+"points": PackedVector3Array(10, 0, 7, -10, 0, -7, 0, 0, 0, 11, 0, -10, -11, 0, 10, -37.1024, 0, 0.62815094),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_74tcl"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(0, 1, 0.79999995, 0.09803922)
+albedo_texture = ExtResource("2_p1p8o")
+uv1_scale = Vector3(1, 8, 1)
+proximity_fade_enabled = true
+proximity_fade_distance = 3.0
+
+[node name="DirectionArrows" type="Node3D" unique_id=1821511901]
+script = ExtResource("1_ws2s5")
+
+[node name="Path3D" type="Path3D" parent="." unique_id=2078843458]
+curve = SubResource("Curve3D_gjnrv")
+
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="." unique_id=10979171]
+polygon = PackedVector2Array(0, 0, 0, 5, 0.001, 5, 0.001, 0)
+mode = 2
+path_node = NodePath("../Path3D")
+path_interval_type = 0
+path_interval = 1.0
+path_simplify_angle = 0.0
+path_rotation = 2
+path_rotation_accurate = false
+path_local = true
+path_continuous_u = true
+path_u_distance = 10.0
+path_joined = false
+material = SubResource("StandardMaterial3D_74tcl")

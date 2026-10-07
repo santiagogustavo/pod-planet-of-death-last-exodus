@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://dkn735kmaf3jw"
-path="res://.godot/imported/crash1.wav-2f9a2871dfd544c288bdc61c8b85b36f.sample"
+path="res://.godot/imported/crash_road_1.wav-6dd3d19a0cd92d0692291184e7b65db8.sample"
 
 [deps]
 
-source_file="res://Sounds/Cars/crash1.wav"
-dest_files=["res://.godot/imported/crash1.wav-2f9a2871dfd544c288bdc61c8b85b36f.sample"]
+source_file="res://Sounds/Cars/crash_road_1.wav"
+dest_files=["res://.godot/imported/crash_road_1.wav-6dd3d19a0cd92d0692291184e7b65db8.sample"]
 
 [params]
 
@@ -17,7 +17,7 @@ force/mono=false
 force/max_rate=false
 force/max_rate_hz=44100
 edit/trim=false
-edit/normalize=false
+edit/normalize=true
 edit/loop_mode=0
 edit/loop_begin=0
 edit/loop_end=-1

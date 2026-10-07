@@ -5,6 +5,19 @@
 [ext_resource type="Shader" uid="uid://djnkwxncn0e5e" path="res://Materials/Shaders/RadialBlur.gdshader" id="3_ecuig"]
 [ext_resource type="Shader" uid="uid://dnw21us1inoy1" path="res://Materials/Shaders/SpeedLines.gdshader" id="4_wrxoa"]
 
+[sub_resource type="Gradient" id="Gradient_wrxoa"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0.5, 1)
+colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 0.39215687)
+metadata/_snap_enabled = true
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ckb4l"]
+gradient = SubResource("Gradient_wrxoa")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0)
+metadata/_snap_enabled = true
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ejm2k"]
 shader = ExtResource("3_ecuig")
 shader_parameter/blur_center = Vector2(0.5, 0.5)
@@ -12,7 +25,7 @@ shader_parameter/blur_power = 0.010000000475
 shader_parameter/sampling_count = 12
 
 [sub_resource type="Gradient" id="Gradient_ejm2k"]
-offsets = PackedFloat32Array(0.4, 1)
+offsets = PackedFloat32Array(0.6, 1)
 colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1)
 metadata/_snap_enabled = true
 
@@ -40,14 +53,19 @@ shader_parameter/hole_smoothness = 0.4
 shader_parameter/hole_radius = 0.34
 shader_parameter/transparency = 0.250000011875
 
+[sub_resource type="SeparationRayShape3D" id="SeparationRayShape3D_wrxoa"]
+
 [node name="ChaseCamera" type="Node3D" unique_id=665073057]
 script = ExtResource("1_s6rlj")
 smooth_speed = 5.0
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=409683162]
 transform = Transform3D(1, 0, 0, 0, 0.9659259, 0.25881907, 0, -0.25881907, 0.9659258, 0, 4, 7)
+cull_mask = 1048573
 
-[node name="Control" type="Control" parent="Camera3D" unique_id=1125825462]
+[node name="CameraEffects" type="CanvasLayer" parent="Camera3D" unique_id=1082692377]
+
+[node name="Control" type="Control" parent="Camera3D/CameraEffects" unique_id=1125825462]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -55,7 +73,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="DebugTexture" type="TextureRect" parent="Camera3D/Control" unique_id=164895882]
+[node name="DebugTexture" type="TextureRect" parent="Camera3D/CameraEffects/Control" unique_id=164895882]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -64,7 +82,18 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_wrxoa")
 
-[node name="RadialBlur" type="TextureRect" parent="Camera3D/Control" unique_id=1634254876]
+[node name="Vignette" type="TextureRect" parent="Camera3D/CameraEffects/Control" unique_id=295757539]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.5, 1.5)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture = SubResource("GradientTexture2D_ckb4l")
+
+[node name="RadialBlur" type="TextureRect" parent="Camera3D/CameraEffects/Control" unique_id=1634254876]
 material = SubResource("ShaderMaterial_ejm2k")
 layout_mode = 1
 anchors_preset = 15
@@ -74,7 +103,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_0i88t")
 
-[node name="SpeedLines" type="ColorRect" parent="Camera3D/Control" unique_id=2062662582]
+[node name="SpeedLines" type="ColorRect" parent="Camera3D/CameraEffects/Control" unique_id=2062662582]
 material = SubResource("ShaderMaterial_ecuig")
 layout_mode = 1
 anchors_preset = 15
@@ -82,3 +111,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="SpringArm3D" type="SpringArm3D" parent="." unique_id=428741081]
+transform = Transform3D(1, 0, 0, 0, 0.9659258, 0.25881904, 0, -0.25881904, 0.9659258, 0, 2.15, 0)
+collision_mask = 6
+shape = SubResource("SeparationRayShape3D_wrxoa")
+spring_length = 7.0
+
+[node name="SpringPosition" type="Node3D" parent="SpringArm3D" unique_id=2040936659]

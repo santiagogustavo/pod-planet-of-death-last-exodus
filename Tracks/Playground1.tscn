@@ -1,13 +1,18 @@
 [gd_scene format=3 uid="uid://duc74batbvoh"]
 
-[ext_resource type="Texture2D" uid="uid://dwrwywrqhn4s1" path="res://Textures/Skyboxes/Panorama_Sky_09-512x512.png" id="1_0j0tx"]
 [ext_resource type="Texture2D" uid="uid://ct6x12qmmd50q" path="res://Textures/Tracks/concrete-plates-floor.png" id="1_7x1xs"]
+[ext_resource type="Script" uid="uid://ck8p1x0h0qtk" path="res://Scripts/Tracks/Track.gd" id="1_064l1"]
+[ext_resource type="Texture2D" uid="uid://bwofyd6rf0wrm" path="res://Textures/Skyboxes/Panorama do Deserto Pós-Apocalíptico.png" id="1_iv1r6"]
 [ext_resource type="PackedScene" uid="uid://bp7l8dgivvw2y" path="res://Prefabs/Player/Player.tscn" id="2_0j0tx"]
-[ext_resource type="Texture2D" uid="uid://bs1dsqnsfaehm" path="res://Textures/UI/Avatars/avatar_24.png" id="3_0lat7"]
+[ext_resource type="Resource" uid="uid://cc2msqa3wh62g" path="res://Resources/Cars/Shivan.tres" id="3_uemjy"]
 [ext_resource type="Script" uid="uid://kklog68nroj3" path="res://Resources/PlayerDetails.gd" id="4_iv1r6"]
+[ext_resource type="Texture2D" uid="uid://d0e1m4ihuouun" path="res://Textures/UI/Avatars/avatar_9.png" id="4_uemjy"]
+[ext_resource type="PackedScene" uid="uid://cijncu4lvb8kx" path="res://Prefabs/Cars/Gamma.tscn" id="6_iv1r6"]
+[ext_resource type="PackedScene" uid="uid://cauynapb07dmw" path="res://Prefabs/Tracks/CircuitGate.tscn" id="8_aem2t"]
+[ext_resource type="PackedScene" uid="uid://46gclodm1vd1" path="res://Prefabs/Tracks/DirectionArrows.tscn" id="10_wjxlm"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_3si4x"]
-panorama = ExtResource("1_0j0tx")
+panorama = ExtResource("1_iv1r6")
 energy_multiplier = 0.5
 
 [sub_resource type="Sky" id="Sky_ckb4l"]
@@ -16,10 +21,13 @@ sky_material = SubResource("PanoramaSkyMaterial_3si4x")
 [sub_resource type="Environment" id="Environment_0i88t"]
 background_mode = 2
 sky = SubResource("Sky_ckb4l")
+glow_enabled = true
+glow_bloom = 0.3
+glow_blend_mode = 0
 
 [sub_resource type="Resource" id="Resource_0j0tx"]
 script = ExtResource("4_iv1r6")
-player_avatar = ExtResource("3_0lat7")
+player_avatar = ExtResource("4_uemjy")
 metadata/_custom_type_script = "uid://kklog68nroj3"
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ks1um"]
@@ -46,7 +54,17 @@ size = Vector3(1, 10, 50)
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_l1obr"]
 points = PackedVector3Array(-0.5, -5, -25, 0.5, -5, -25, -0.5, -5, 25, -0.5, 5, -25, 0.5, 5, -25, 0.5, -5, 25, -0.5, 5, 25, 0.5, 5, 25)
 
-[node name="Playground1" type="Node3D" unique_id=538869074]
+[sub_resource type="BoxMesh" id="BoxMesh_3si4x"]
+size = Vector3(10, 0.5, 50)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_iv1r6"]
+points = PackedVector3Array(5, 0.25, 25, 5, -0.25, 25, 5, 0.25, -25, -5, 0.25, 25, -5, -0.25, 25, 5, -0.25, -25, -5, 0.25, -25, -5, -0.25, -25)
+
+[node name="Playground1" type="Node3D" unique_id=126344257 node_paths=PackedStringArray("circuit_gates")]
+script = ExtResource("1_064l1")
+track_name = "Playground 1"
+circuit_gates = [NodePath("CircuitGate"), NodePath("CircuitGate2"), NodePath("CircuitGate3")]
+metadata/_custom_type_script = "uid://ck8p1x0h0qtk"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1124827985]
 environment = SubResource("Environment_0i88t")
@@ -57,6 +75,7 @@ light_energy = 0.1
 shadow_enabled = true
 
 [node name="Player" parent="." unique_id=326649129 instance=ExtResource("2_0j0tx")]
+car_data = ExtResource("3_uemjy")
 player_details = SubResource("Resource_0j0tx")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1352415093]
@@ -90,3 +109,30 @@ mesh = SubResource("BoxMesh_ckb4l")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D3" unique_id=1214353785]
 shape = SubResource("ConvexPolygonShape3D_l1obr")
+
+[node name="StaticBody3D4" type="StaticBody3D" parent="." unique_id=86212472]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 4, -56)
+collision_layer = 2
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D4" unique_id=1912355848]
+mesh = SubResource("BoxMesh_3si4x")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D4" unique_id=1929950161]
+shape = SubResource("ConvexPolygonShape3D_iv1r6")
+
+[node name="Gamma" parent="." unique_id=1584282954 instance=ExtResource("6_iv1r6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29, 0, -15)
+
+[node name="CircuitGate" parent="." unique_id=517762930 instance=ExtResource("8_aem2t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
+
+[node name="CircuitGate2" parent="." unique_id=1192715697 instance=ExtResource("8_aem2t")]
+transform = Transform3D(0, 0, 0.99999994, 0, 1, 0, -0.99999994, 0, 0, -28.999998, 0, -55)
+
+[node name="CircuitGate3" parent="." unique_id=717695175 instance=ExtResource("8_aem2t")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -58.999996, 0, 0)
+
+[node name="DirectionArrows" parent="." unique_id=1821511901 instance=ExtResource("10_wjxlm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -81)
+
+[editable path="DirectionArrows"]

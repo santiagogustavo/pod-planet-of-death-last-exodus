@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://bx4skjijo1uxf"]
+
+[ext_resource type="PackedScene" uid="uid://dux2wltrvg6ei" path="res://Prefabs/Cars/Common/SFX/Running.tscn" id="1_jwmki"]
+[ext_resource type="PackedScene" uid="uid://ci6nprtopkryr" path="res://Prefabs/Cars/Common/SFX/Brake.tscn" id="2_dkbj8"]
+[ext_resource type="AudioStream" uid="uid://qkfj5qqc4sle" path="res://Sounds/Cars/crash2.wav" id="4_medjk"]
+[ext_resource type="AudioStream" uid="uid://dxlnm6oc2x8xh" path="res://Sounds/Cars/crash_wall1.wav" id="5_7420g"]
+[ext_resource type="PackedScene" uid="uid://cc1b66b8ghrq8" path="res://Prefabs/Cars/Common/SFX/Idle.tscn" id="7_rxtnj"]
+[ext_resource type="AudioStream" uid="uid://bqqe8fb34vlwb" path="res://Sounds/Cars/grinding.wav" id="8_rjcf7"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_u2k05"]
+random_pitch = 1.2599211
+streams_count = 1
+stream_0/stream = ExtResource("4_medjk")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_jwmki"]
+random_pitch = 1.122462
+streams_count = 1
+stream_0/stream = ExtResource("5_7420g")
+
+[node name="SFX" type="Node3D" unique_id=1223152630]
+
+[node name="Running" parent="." unique_id=1395768302 instance=ExtResource("1_jwmki")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Brake" parent="." unique_id=222941043 instance=ExtResource("2_dkbj8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="CollisionRoad" parent="." unique_id=1180905024 instance=ExtResource("2_dkbj8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+stream = SubResource("AudioStreamRandomizer_u2k05")
+volume_db = -6.5
+bus = &"Reverb"
+attenuation_filter_db = 0.0
+
+[node name="CollisionWall" parent="." unique_id=441621484 instance=ExtResource("2_dkbj8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+stream = SubResource("AudioStreamRandomizer_jwmki")
+volume_db = 5.0
+bus = &"Reverb"
+attenuation_filter_db = 0.0
+
+[node name="Idle" parent="." unique_id=2022874409 instance=ExtResource("7_rxtnj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Grinding" parent="." unique_id=1476506371 instance=ExtResource("7_rxtnj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+stream = ExtResource("8_rjcf7")
+volume_db = 2.5
+autoplay = false
+bus = &"Reverb"
