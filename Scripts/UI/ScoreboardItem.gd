@@ -5,6 +5,7 @@ class_name ScoreboardItem
 @export var player_resource_name: String
 @export var player_details: PlayerDetails
 @export var is_current_player: bool = false
+@export var is_player_ahead: bool = false
 @export var par_time: float = 0.0
 
 @onready var position_label: Label = $MarginContainer/HBoxContainer/Position
@@ -39,5 +40,5 @@ func show_name_or_time_timeout() -> void:
 	create_name_or_time_timeout()
 
 func format_par_time() -> String:
-	var prefix: String = "+" if par_time >= 0.0 else "-"
+	var prefix: String = "-" if is_player_ahead else "+"
 	return prefix + GameManager.format_lap_time(absf(par_time))

@@ -112,7 +112,7 @@ func update_scoreboard() -> void:
 			item.par_time = 0.0
 		else:
 			item.par_time = GameManager.race.get_par_time_between_players(current_position, position)
-		item.par_time *= -1 if current_position < position else 1
+		item.is_player_ahead = position < current_position
 
 func update_player_details() -> void:
 	if player_details:

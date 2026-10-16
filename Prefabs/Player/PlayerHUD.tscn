@@ -21,6 +21,58 @@
 [ext_resource type="Shader" uid="uid://o7w4l7bh0eme" path="res://Materials/Shaders/CRT.gdshader" id="18_tp8h6"]
 [ext_resource type="PackedScene" uid="uid://bce0cmhcx24i0" path="res://Prefabs/UI/PlayerIndicator.tscn" id="20_7n8ah"]
 
+[sub_resource type="Animation" id="Animation_7n8ah"]
+resource_name = "FadeIn"
+length = 0.19999999999999998
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_g720x"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8qtgk"]
+_data = {
+&"FadeIn": SubResource("Animation_7n8ah"),
+&"RESET": SubResource("Animation_g720x")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_7n8ah"]
+animation = &"FadeIn"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_g720x"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8qtgk"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_bhtsl"]
+states/FadeIn/node = SubResource("AnimationNodeAnimation_7n8ah")
+states/FadeIn/position = Vector2(528, 100)
+transitions = ["Start", "FadeIn", SubResource("AnimationNodeStateMachineTransition_g720x"), "FadeIn", "End", SubResource("AnimationNodeStateMachineTransition_8qtgk")]
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_s7acx"]
 shader = ExtResource("1_uhd0b")
 shader_parameter/uv_mode = false
@@ -236,6 +288,22 @@ background_mode = 1
 [node name="PlayerHUD" type="CanvasLayer" unique_id=138282145]
 layer = 2
 script = ExtResource("1_s7acx")
+
+[node name="FadeRect" type="ColorRect" parent="." unique_id=658190718]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="FadeRect" unique_id=1153638278]
+libraries/ = SubResource("AnimationLibrary_8qtgk")
+
+[node name="AnimationTree" type="AnimationTree" parent="FadeRect" unique_id=551535288]
+tree_root = SubResource("AnimationNodeStateMachine_bhtsl")
+anim_player = NodePath("../AnimationPlayer")
 
 [node name="SwayContainer" type="SubViewportContainer" parent="." unique_id=182720599]
 material = SubResource("ShaderMaterial_s7acx")
