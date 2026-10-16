@@ -11,6 +11,9 @@
 [ext_resource type="AudioStream" uid="uid://biob0u6x8j5ec" path="res://Sounds/UI/Countdown/countdown_2.wav" id="9_brcfm"]
 [ext_resource type="AudioStream" uid="uid://cmq4x3hma8c4t" path="res://Sounds/UI/Countdown/countdown_1.wav" id="10_m2aq7"]
 [ext_resource type="AudioStream" uid="uid://ciqmkdc7l5ee0" path="res://Sounds/UI/Countdown/countdown_go.wav" id="11_auh62"]
+[ext_resource type="AudioStream" uid="uid://bao7rp5obiicc" path="res://Music/Countdown/Countdown1.mp3" id="12_brcfm"]
+[ext_resource type="AudioStream" uid="uid://c8ibki38tcj5e" path="res://Music/Countdown/Countdown2.mp3" id="13_m2aq7"]
+[ext_resource type="AudioStream" uid="uid://lh3xpgyjm4so" path="res://Music/Countdown/Countdown3.mp3" id="14_auh62"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_3si4x"]
 font = ExtResource("2_f0pnn")
@@ -81,7 +84,7 @@ _data = {
 
 [sub_resource type="Animation" id="Animation_drced"]
 resource_name = "CountDown"
-length = 6.35
+length = 15.0
 step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -138,7 +141,7 @@ tracks/4/path = NodePath(".")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(5.35, 6.35),
+"times": PackedFloat32Array(5.35, 15),
 "transitions": PackedFloat32Array(1, 1),
 "values": [{
 "args": [],
@@ -240,6 +243,18 @@ tracks/12/interp = 1
 tracks/12/loop_wrap = true
 tracks/12/keys = {
 "times": PackedFloat32Array(5.35),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("Music:playing")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
@@ -379,6 +394,18 @@ tracks/10/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("Music:playing")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_f0pnn"]
 _data = {
@@ -400,6 +427,12 @@ advance_mode = 2
 states/Countdown/node = SubResource("AnimationNodeAnimation_oiqkq")
 states/Countdown/position = Vector2(540, 100)
 transitions = ["Start", "Countdown", SubResource("AnimationNodeStateMachineTransition_q2j1f"), "Countdown", "End", SubResource("AnimationNodeStateMachineTransition_drced")]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_0i88t"]
+streams_count = 3
+stream_0/stream = ExtResource("12_brcfm")
+stream_1/stream = ExtResource("13_m2aq7")
+stream_2/stream = ExtResource("14_auh62")
 
 [node name="RaceStartCountdown" type="CanvasLayer" unique_id=707674675]
 layer = 3
@@ -566,7 +599,6 @@ offset_bottom = 39.0
 grow_horizontal = 2
 grow_vertical = 0
 pivot_offset_ratio = Vector2(0.5, 0)
-text = "GO!"
 label_settings = SubResource("LabelSettings_oiqkq")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -579,6 +611,7 @@ libraries/ = SubResource("AnimationLibrary_drced")
 libraries/ = SubResource("AnimationLibrary_f0pnn")
 
 [node name="AnimationTree" type="AnimationTree" parent="." unique_id=1934525658]
+callback_mode_method = 1
 callback_mode_discrete = 0
 tree_root = SubResource("AnimationNodeStateMachine_0i88t")
 anim_player = NodePath("../AnimationPlayer")
@@ -612,3 +645,7 @@ bus = &"Announcer"
 stream = ExtResource("11_auh62")
 pitch_scale = 0.5
 bus = &"Announcer"
+
+[node name="Music" type="AudioStreamPlayer2D" parent="." unique_id=635401528]
+stream = SubResource("AudioStreamRandomizer_0i88t")
+bus = &"Music"

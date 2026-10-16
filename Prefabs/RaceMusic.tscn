@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://doq0nhceywslf"]
+
+[ext_resource type="Script" uid="uid://cv6x540jv0o7c" path="res://Scripts/RaceMusic.gd" id="1_ny1m1"]
+[ext_resource type="AudioStream" uid="uid://b3me3ww0uc2br" path="res://Music/Race/HardTechno1.mp3" id="1_vmpci"]
+[ext_resource type="AudioStream" uid="uid://b8twl7vt1s2fr" path="res://Music/Race/HardTechno2.mp3" id="2_18xwa"]
+[ext_resource type="AudioStream" uid="uid://b6bm4kftroemh" path="res://Music/Race/Schranz2.mp3" id="3_m0h6q"]
+[ext_resource type="AudioStream" uid="uid://28fuweika0xb" path="res://Music/Race/Schranz3.mp3" id="4_gmby8"]
+[ext_resource type="AudioStream" uid="uid://hlrwhtc85yj4" path="res://Music/Race/HardTechno3.mp3" id="5_5l2rx"]
+[ext_resource type="AudioStream" uid="uid://38ppxto8vifo" path="res://Music/Race/Neurofunk1.mp3" id="6_a5s88"]
+[ext_resource type="AudioStream" uid="uid://dg5ygf588hah6" path="res://Music/Race/Neurofunk2.mp3" id="7_s6sol"]
+[ext_resource type="AudioStream" uid="uid://ydemrdmtgwop" path="res://Music/Race/Neurofunk3.mp3" id="8_2b7a1"]
+[ext_resource type="AudioStream" uid="uid://cudfns524ub7j" path="res://Music/Race/Psy1.mp3" id="9_gbwnm"]
+[ext_resource type="AudioStream" uid="uid://dps0g2wqwhhwk" path="res://Music/Race/Psy2.mp3" id="10_xbiri"]
+[ext_resource type="AudioStream" uid="uid://t44i3xswjot0" path="res://Music/Race/Psy3.mp3" id="11_bgpfj"]
+[ext_resource type="AudioStream" uid="uid://cl2rp8w0chlpp" path="res://Music/Race/Schranz1.mp3" id="12_br2gl"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_ny1m1"]
+streams_count = 12
+stream_0/stream = ExtResource("1_vmpci")
+stream_1/stream = ExtResource("2_18xwa")
+stream_2/stream = ExtResource("5_5l2rx")
+stream_3/stream = ExtResource("6_a5s88")
+stream_4/stream = ExtResource("7_s6sol")
+stream_5/stream = ExtResource("8_2b7a1")
+stream_6/stream = ExtResource("9_gbwnm")
+stream_7/stream = ExtResource("10_xbiri")
+stream_8/stream = ExtResource("11_bgpfj")
+stream_9/stream = ExtResource("12_br2gl")
+stream_10/stream = ExtResource("3_m0h6q")
+stream_11/stream = ExtResource("4_gmby8")
+
+[node name="RaceMusic" type="AudioStreamPlayer2D" unique_id=942074689]
+stream = SubResource("AudioStreamRandomizer_ny1m1")
+bus = &"Music"
+script = ExtResource("1_ny1m1")

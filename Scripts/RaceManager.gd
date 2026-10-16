@@ -18,6 +18,7 @@ enum RaceStatus {
 @export var predefined_players: Array[PlayerDetails] = []
 
 @onready var player_prefab: PackedScene = load("res://Prefabs/Player/Player.tscn")
+@onready var race_music_prefab: PackedScene = load("res://Prefabs/RaceMusic.tscn")
 
 var status: RaceStatus = RaceStatus.Idle
 
@@ -27,7 +28,12 @@ class PlayerProgress:
 
 func _ready() -> void:
 	GameManager.race = self
+	instantiate_race_music()
 	spawn_players_to_gates()
+
+func instantiate_race_music() -> void:
+	var race_music_instance: RaceMusic = race_music_prefab.instantiate()
+	add_child(race_music_instance)
 
 func spawn_players_to_gates() -> void:
 	var gate_index: int = 0
@@ -65,7 +71,21 @@ func sort_players_by_distance_to_next_gate() -> Array[String]:
 		progress.player_name = player.name
 		
 		var lap_distance = player.compute_total_traveled_distance() 
-		var completed_laps_distance = (player.current_lap - 1) * track_total_distance
+		
+		# Determina quantas voltas inteiras a menos devem ser multiplicadas
+		var lap_modifier = 1
+		
+		# -----------------------------------------------------------------
+		# CORREÇÃO PARA O CORREDOR NO FINAL DA VOLTA (GATE 0)
+		# -----------------------------------------------------------------
+		# Se ele está no Gate 0, a lap_distance calculada por ele é apenas a 
+		# reta final. Porém, ele já percorreu toda a pista da volta anterior. 
+		# Portanto, tratamos o cálculo de voltas concluídas usando a 'current_lap' cheia.
+		# -----------------------------------------------------------------
+		if player.current_gate == 0 and player.current_lap > 0:
+			lap_modifier = 0
+			
+		var completed_laps_distance = (player.current_lap - lap_modifier) * track_total_distance
 		
 		progress.total_distance = completed_laps_distance + lap_distance
 		player_progresses.append(progress)
@@ -95,14 +115,26 @@ func get_par_time_between_players(player_a_position: int, player_b_position: int
 	
 	var track_total_distance = GameManager.race.track.get_total_distance()
 	
-	# Calcula a distância absoluta total (Corrida inteira acumulada)
-	var leader_total = leader.compute_total_traveled_distance() + ((leader.current_lap - 1) * track_total_distance)
-	var follower_total = follower.compute_total_traveled_distance() + ((follower.current_lap - 1) * track_total_distance)
+	# 1. Calcula a distância absoluta contínua de ambos
+	var leader_modifier = 1 if not (leader.current_gate == 0 and leader.current_lap > 0) else 0
+	var follower_modifier = 1 if not (follower.current_gate == 0 and follower.current_lap > 0) else 0
+	
+	var leader_total = leader.compute_total_traveled_distance() + ((leader.current_lap - leader_modifier) * track_total_distance)
+	var follower_total = follower.compute_total_traveled_distance() + ((follower.current_lap - follower_modifier) * track_total_distance)
 	
 	var distance_diff = leader_total - follower_total
 	
-	# Só calcula o tempo se a diferença for positiva e o seguidor estiver se movendo
-	if distance_diff > 0 and follower.car_instance.speed_ms > 0:
-		return distance_diff / follower.car_instance.speed_ms
-	else:
+	if distance_diff <= 0:
 		return 0.0
+
+	# -----------------------------------------------------------------
+	# SOLUÇÃO PARA INVERSÃO DE TEMPOS: VELOCIDADE DE REFERÊNCIA DO SEGUIDOR
+	# -----------------------------------------------------------------
+	# Usando a velocidade do 'follower' como base, o divisor será o mesmo 
+	# quando o 3º colocado olhar para o 2º e para o 1º. 
+	# Adicionamos um max(..., 15.0) para que, se o 3º colocado parar, 
+	# o tempo continue subindo de forma consistente para todos os líderes.
+	# -----------------------------------------------------------------
+	var reference_speed = max(follower.car_instance.speed_ms, 15.0)
+	
+	return distance_diff / reference_speed

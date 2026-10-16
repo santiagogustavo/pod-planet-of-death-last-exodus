@@ -13,7 +13,6 @@
 [ext_resource type="Resource" uid="uid://db76wikpidtqx" path="res://Resources/Cars/Arc.tres" id="8_u5uis"]
 [ext_resource type="Texture2D" uid="uid://bs1dsqnsfaehm" path="res://Textures/UI/Avatars/avatar_24.png" id="8_wjxlm"]
 [ext_resource type="PackedScene" uid="uid://46gclodm1vd1" path="res://Prefabs/Tracks/DirectionArrows.tscn" id="10_wjxlm"]
-[ext_resource type="AudioStream" uid="uid://dt2m8x28byfke" path="res://Music/Ominous Low Drones.mp3" id="14_g1fnq"]
 [ext_resource type="PackedScene" uid="uid://c8mt1nrc3wp1t" path="res://Prefabs/Tracks/StartGate.tscn" id="15_p2v43"]
 
 [sub_resource type="Resource" id="Resource_aem2t"]
@@ -206,11 +205,6 @@ reverb_bus_uniformity = 1.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ReverbZone" unique_id=1391460453]
 shape = SubResource("BoxShape3D_0i88t")
-
-[node name="Music" type="AudioStreamPlayer2D" parent="." unique_id=2067202546]
-stream = ExtResource("14_g1fnq")
-autoplay = true
-bus = &"Music"
 
 [node name="Path3D" type="Path3D" parent="." unique_id=720626260]
 curve = SubResource("Curve3D_g1fnq")
