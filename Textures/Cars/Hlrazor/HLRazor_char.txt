@@ -1,0 +1,5 @@
+Acceleration: 49;
+Brakes: 25;
+Grip: 95;
+Handling: 82;
+Speed: 49;

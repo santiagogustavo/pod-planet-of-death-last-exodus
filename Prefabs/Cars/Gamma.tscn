@@ -17,7 +17,7 @@
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_fa6gs"]
 points = PackedVector3Array(-2.4451785, -0.566864, -1.6650543, -3.6090546, -0.34325093, -0.958659, -3.5038893, 0.11030078, -1.022788, -2.4451785, 0.0377236, -1.6650543, -1.236131, -0.566864, -1.6650543, -2.4451785, -0.566864, 1.6605377, -3.6090546, -0.34325093, 0.9499104, -3.5038893, 0.11030078, 1.0179458, -3.3528466, 0.3022862, -0.6070889, -2.4451785, 0.56684875, -0.45604408, -1.236131, 0.0377236, -1.6650543, 1.3337126, -0.566864, -1.5140095, -2.4451785, 0.0377236, 1.6605377, -1.236131, -0.566864, 1.6605377, -2.4451785, 0.56684875, 0.45087647, -3.3528466, 0.3022862, 0.60224676, -1.5382166, 0.56684875, -0.45604408, 1.3337126, 0.0377236, -1.5140095, 2.5427604, -0.5291328, -1.4235127, 1.3337126, -0.566864, 1.5091672, -1.236131, 0.0377236, 1.6605377, -1.5382166, 0.56684875, 0.45087647, 1.3337126, 0.34001744, -0.7581339, 2.5427604, -0.015211105, -1.4235127, 3.601471, -0.04539609, -0.7581339, 3.2986798, -0.43846682, -0.9482421, 2.5427604, -0.5291328, 1.4186704, 1.3337126, 0.0377236, 1.5091672, 1.3337126, 0.34001744, 0.7532916, 2.5427604, 0.24180526, -0.7581339, 3.601471, -0.04539609, 0.7532916, 3.2986798, -0.43846682, 0.9433999, 2.5427604, -0.015211105, 1.4186704, 2.5427604, 0.24180526, 0.7532916)
 
-[sub_resource type="Shader" id="Shader_uft3x"]
+[sub_resource type="Shader" id="Shader_dwnck"]
 resource_local_to_scene = true
 code = "shader_type particles;
 
@@ -64,9 +64,9 @@ void process() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_1bk2c"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fef0o"]
 resource_local_to_scene = true
-shader = SubResource("Shader_uft3x")
+shader = SubResource("Shader_dwnck")
 
 [sub_resource type="Gradient" id="Gradient_mpicf"]
 colors = PackedColorArray(1, 1, 1, 0.09803922, 1, 1, 1, 0)
@@ -82,7 +82,7 @@ metadata/_snap_enabled = true
 [sub_resource type="CurveTexture" id="CurveTexture_rmx2k"]
 curve = SubResource("Curve_jdgw7")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_1vvmp"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uft3x"]
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("4_dwnck")
@@ -94,11 +94,11 @@ shader_parameter/curve = SubResource("CurveTexture_rmx2k")
 shader_parameter/emmission_transform = Projection(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
 shader_parameter/flags = 46
 
-[sub_resource type="QuadMesh" id="QuadMesh_3pafd"]
+[sub_resource type="QuadMesh" id="QuadMesh_1bk2c"]
 resource_local_to_scene = true
-material = SubResource("ShaderMaterial_1vvmp")
+material = SubResource("ShaderMaterial_uft3x")
 
-[sub_resource type="Shader" id="Shader_8qou6"]
+[sub_resource type="Shader" id="Shader_1vvmp"]
 resource_local_to_scene = true
 code = "shader_type particles;
 
@@ -145,11 +145,11 @@ void process() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_t8p7w"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3pafd"]
 resource_local_to_scene = true
-shader = SubResource("Shader_8qou6")
+shader = SubResource("Shader_1vvmp")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_u2k05"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8qou6"]
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("4_dwnck")
@@ -161,9 +161,9 @@ shader_parameter/curve = SubResource("CurveTexture_rmx2k")
 shader_parameter/emmission_transform = Projection(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
 shader_parameter/flags = 46
 
-[sub_resource type="QuadMesh" id="QuadMesh_0nh0g"]
+[sub_resource type="QuadMesh" id="QuadMesh_t8p7w"]
 resource_local_to_scene = true
-material = SubResource("ShaderMaterial_u2k05")
+material = SubResource("ShaderMaterial_8qou6")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_csloh"]
 resource_name = "gamma1"
@@ -493,13 +493,13 @@ shape = SubResource("ConvexPolygonShape3D_fa6gs")
 
 [node name="WindTrail" parent="CollisionShape3D" unique_id=986200328 instance=ExtResource("9_d8ndu")]
 transform = Transform3D(-2.1855695e-09, 0, -0.05, 0, 0.05, 0, 0.05, 0, -2.1855695e-09, -2.404841, 0.049999952, -1.6096003)
-process_material = SubResource("ShaderMaterial_1bk2c")
-draw_pass_1 = SubResource("QuadMesh_3pafd")
+process_material = SubResource("ShaderMaterial_fef0o")
+draw_pass_1 = SubResource("QuadMesh_1bk2c")
 
 [node name="WindTrail2" parent="CollisionShape3D" unique_id=855292252 instance=ExtResource("9_d8ndu")]
 transform = Transform3D(-2.1855695e-09, 0, -0.05, 0, 0.05, 0, 0.05, 0, -2.1855695e-09, -2.4046667, 0.049999952, 1.5663333)
-process_material = SubResource("ShaderMaterial_t8p7w")
-draw_pass_1 = SubResource("QuadMesh_0nh0g")
+process_material = SubResource("ShaderMaterial_3pafd")
+draw_pass_1 = SubResource("QuadMesh_t8p7w")
 
 [node name="Damage 0" type="MeshInstance3D" parent="CollisionShape3D" unique_id=600341727]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.03833332, 0, -0.021666666)

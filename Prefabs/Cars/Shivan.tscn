@@ -3,6 +3,7 @@
 [ext_resource type="PhysicsMaterial" uid="uid://bpmxavckcgys7" path="res://Prefabs/Cars/Common/CarPhysicsMaterial.tres" id="1_ctr0k"]
 [ext_resource type="Script" uid="uid://pmc1ay5ilqj4" path="res://Scripts/Cars/Car.gd" id="1_mnj72"]
 [ext_resource type="Texture2D" uid="uid://bfb0mu8mcbsns" path="res://Models/Cars/Shivan_SHIVAN0.png" id="2_24any"]
+[ext_resource type="AudioStream" uid="uid://cykjs4yf25o5w" path="res://Sounds/Cars/engine_loop_7.wav" id="3_gsb2i"]
 [ext_resource type="Texture2D" uid="uid://b42bqf1ehju5x" path="res://Models/Cars/Shivan_SHIVAN1.png" id="3_ub6md"]
 [ext_resource type="Material" uid="uid://dny45mgb7kqcf" path="res://Materials/Cars/Shivan/Shivan1.tres" id="4_u71mp"]
 [ext_resource type="Material" uid="uid://bjuqcij5qn34v" path="res://Materials/Cars/Shivan/Shivan0.tres" id="5_ctr0k"]
@@ -137,7 +138,7 @@ stencil_flags = 2
 [sub_resource type="QuadMesh" id="QuadMesh_8hbrq"]
 material = SubResource("StandardMaterial3D_gsb2i")
 
-[sub_resource type="Shader" id="Shader_ogm34"]
+[sub_resource type="Shader" id="Shader_8hbrq"]
 resource_local_to_scene = true
 code = "shader_type particles;
 
@@ -184,9 +185,9 @@ void process() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_gsb2i"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sdk4a"]
 resource_local_to_scene = true
-shader = SubResource("Shader_ogm34")
+shader = SubResource("Shader_8hbrq")
 
 [sub_resource type="Gradient" id="Gradient_fef0o"]
 colors = PackedColorArray(1, 1, 1, 0.09803922, 1, 1, 1, 0)
@@ -202,7 +203,7 @@ metadata/_snap_enabled = true
 [sub_resource type="CurveTexture" id="CurveTexture_sdk4a"]
 curve = SubResource("Curve_8r7kd")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_8hbrq"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h70vq"]
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("8_utqks")
@@ -214,11 +215,11 @@ shader_parameter/curve = SubResource("CurveTexture_sdk4a")
 shader_parameter/emmission_transform = Projection(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
 shader_parameter/flags = 46
 
-[sub_resource type="QuadMesh" id="QuadMesh_sdk4a"]
+[sub_resource type="QuadMesh" id="QuadMesh_pvmid"]
 resource_local_to_scene = true
-material = SubResource("ShaderMaterial_8hbrq")
+material = SubResource("ShaderMaterial_h70vq")
 
-[sub_resource type="Shader" id="Shader_h70vq"]
+[sub_resource type="Shader" id="Shader_fkwa5"]
 resource_local_to_scene = true
 code = "shader_type particles;
 
@@ -265,11 +266,11 @@ void process() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_pvmid"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_krkb0"]
 resource_local_to_scene = true
-shader = SubResource("Shader_h70vq")
+shader = SubResource("Shader_fkwa5")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_fkwa5"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0turk"]
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("8_utqks")
@@ -281,9 +282,9 @@ shader_parameter/curve = SubResource("CurveTexture_sdk4a")
 shader_parameter/emmission_transform = Projection(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
 shader_parameter/flags = 46
 
-[sub_resource type="QuadMesh" id="QuadMesh_krkb0"]
+[sub_resource type="QuadMesh" id="QuadMesh_hv4ic"]
 resource_local_to_scene = true
-material = SubResource("ShaderMaterial_fkwa5")
+material = SubResource("ShaderMaterial_0turk")
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_4msnd"]
 _surfaces = [{
@@ -515,6 +516,7 @@ wheels = [NodePath("FR"), NodePath("RR"), NodePath("FL"), NodePath("RL")]
 brake_lights = [NodePath("CollisionShape3D/ChassisSR0/BrakeLight"), NodePath("CollisionShape3D/ChassisSR0/BrakeLight2")]
 skid_marks = [NodePath("SkidMarks/SkidMarks"), NodePath("SkidMarks/SkidMarks2"), NodePath("SkidMarks/SkidMarks3"), NodePath("SkidMarks/SkidMarks4")]
 wind_trails = [NodePath("CollisionShape3D/WindTrail"), NodePath("CollisionShape3D/WindTrail2")]
+custom_running_sfx = ExtResource("3_gsb2i")
 metadata/_custom_type_script = "uid://pmc1ay5ilqj4"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1717188957]
@@ -549,15 +551,15 @@ mesh = SubResource("QuadMesh_8hbrq")
 
 [node name="WindTrail" parent="CollisionShape3D" unique_id=986200328 instance=ExtResource("7_6gkjx")]
 transform = Transform3D(-2.1855695e-09, 0, -0.05, 0, 0.05, 0, 0.05, 0, -2.1855695e-09, -1.9958292, 0.20418906, -1.6161374)
-process_material = SubResource("ShaderMaterial_gsb2i")
-draw_pass_1 = SubResource("QuadMesh_sdk4a")
+process_material = SubResource("ShaderMaterial_sdk4a")
+draw_pass_1 = SubResource("QuadMesh_pvmid")
 color_ramp = SubResource("GradientTexture1D_8hbrq")
 curve = SubResource("CurveTexture_sdk4a")
 
 [node name="WindTrail2" parent="CollisionShape3D" unique_id=341939609 instance=ExtResource("7_6gkjx")]
 transform = Transform3D(-2.1855695e-09, 0, -0.05, 0, 0.05, 0, 0.05, 0, -2.1855695e-09, -1.996, 0.204, 1.616)
-process_material = SubResource("ShaderMaterial_pvmid")
-draw_pass_1 = SubResource("QuadMesh_krkb0")
+process_material = SubResource("ShaderMaterial_krkb0")
+draw_pass_1 = SubResource("QuadMesh_hv4ic")
 color_ramp = SubResource("GradientTexture1D_8hbrq")
 curve = SubResource("CurveTexture_sdk4a")
 

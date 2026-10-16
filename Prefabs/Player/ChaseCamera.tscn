@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://d070hhqucoddt" path="res://Scripts/ChaseCamera.gd" id="1_s6rlj"]
 [ext_resource type="Texture2D" uid="uid://bjn3swyv8w8hg" path="res://Textures/pod-10.webp" id="2_wrxoa"]
+[ext_resource type="PackedScene" uid="uid://bmda88435d447" path="res://Prefabs/Player/CameraSplatter.tscn" id="3_cbpny"]
 [ext_resource type="Shader" uid="uid://djnkwxncn0e5e" path="res://Materials/Shaders/RadialBlur.gdshader" id="3_ecuig"]
 [ext_resource type="Shader" uid="uid://dnw21us1inoy1" path="res://Materials/Shaders/SpeedLines.gdshader" id="4_wrxoa"]
 
@@ -61,7 +62,7 @@ smooth_speed = 5.0
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=409683162]
 transform = Transform3D(1, 0, 0, 0, 0.9659259, 0.25881907, 0, -0.25881907, 0.9659258, 0, 4, 7)
-cull_mask = 1048573
+cull_mask = 1048565
 
 [node name="CameraEffects" type="CanvasLayer" parent="Camera3D" unique_id=1082692377]
 
@@ -81,6 +82,33 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_wrxoa")
+
+[node name="Splatters" type="Control" parent="Camera3D/CameraEffects/Control" unique_id=669526437]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+
+[node name="Oil" parent="Camera3D/CameraEffects/Control/Splatters" unique_id=1604130101 instance=ExtResource("3_cbpny")]
+modulate = Color(0.12, 0.066, 0, 1)
+position = Vector2(20, 20)
+emitting = false
+one_shot = true
+
+[node name="GreenSludge" parent="Camera3D/CameraEffects/Control/Splatters" unique_id=121294878 instance=ExtResource("3_cbpny")]
+modulate = Color(0.5833334, 1, 0, 1)
+position = Vector2(20, 20)
+emitting = false
+one_shot = true
 
 [node name="Vignette" type="TextureRect" parent="Camera3D/CameraEffects/Control" unique_id=295757539]
 layout_mode = 1

@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://d1ue20qa7ubmm"]
+
+[ext_resource type="Texture2D" uid="uid://b8efb65yjl073" path="res://Textures/Cars/Jaero/jaero_1.png" id="1_voaqu"]
+[ext_resource type="Texture2D" uid="uid://dd4ocxg1tse7f" path="res://Textures/Cars/Jaero/jaero_1_occ.png" id="2_omiod"]
+
+[resource]
+albedo_texture = ExtResource("1_voaqu")
+ao_enabled = true
+ao_light_affect = 1.0
+ao_texture = ExtResource("2_omiod")

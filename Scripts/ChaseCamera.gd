@@ -19,10 +19,15 @@ var direction: Vector3 = Vector3.FORWARD
 @onready var initial_rotation_x: float = camera.rotation_degrees.x
 @onready var spring_position: Node3D = $SpringArm3D/SpringPosition
 
+@onready var oil_splatter: GPUParticles2D = $Camera3D/CameraEffects/Control/Splatters/Oil
+@onready var green_sludge_splatter: GPUParticles2D = $Camera3D/CameraEffects/Control/Splatters/GreenSludge
+
 var speed_lines_sampling: float = 0.9
+const COLLISION_SPEED_THRESHOLD: float = 150.0
 
 func _ready() -> void:
 	camera_debug_texture.queue_free()
+	car.collided.connect(handle_car_collision)
 	set_speed_lines()
 
 func _physics_process(delta: float) -> void:
@@ -65,6 +70,8 @@ func update_camera(delta: float) -> void:
 			-car.steering * camera_tilt_y_angle * intensity / 2,
 			delta * camera_tilt_y_smooth
 		)
+	if Input.is_action_pressed("look_back"):
+		rotation_degrees.y = 180
 
 func update_camera_collision(delta: float) -> void:
 	camera.global_transform.origin = lerp(
@@ -83,4 +90,14 @@ func update_speed_lines() -> void:
 	var intensity = clamp(current_speed / 1000.0, 0.0, 0.4)
 	speed_lines.material.set("shader_parameter/sample_radius", speed_lines_sampling)
 	speed_lines.material.set("shader_parameter/transparency", intensity)
-	
+
+func handle_car_collision(collision_speed: float, collision_layer: int) -> void:
+	if collision_speed < COLLISION_SPEED_THRESHOLD or collision_layer == CollisionLayers.ROAD:
+		return
+	emit_oil_splatter()
+
+func emit_oil_splatter() -> void:
+	oil_splatter.emitting = true
+
+func emit_green_sludge_splatter() -> void:
+	green_sludge_splatter.emitting = true

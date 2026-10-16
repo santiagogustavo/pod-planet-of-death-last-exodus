@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://bmda88435d447"]
+
+[ext_resource type="Texture2D" uid="uid://daj5tmvsdygof" path="res://Textures/Particles/splatter_2.png" id="1_mtyom"]
+
+[sub_resource type="Curve" id="Curve_n70ob"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+metadata/_snap_enabled = true
+
+[sub_resource type="CurveTexture" id="CurveTexture_j81kb"]
+curve = SubResource("Curve_n70ob")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_wrxoa"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 1000.0
+angle_min = -89.99999
+angle_max = 90.000015
+gravity = Vector3(0, 0, 0)
+scale_max = 2.0
+alpha_curve = SubResource("CurveTexture_j81kb")
+
+[node name="CameraSplatter" type="GPUParticles2D" unique_id=1604130101]
+amount = 1
+texture = ExtResource("1_mtyom")
+process_material = SubResource("ParticleProcessMaterial_wrxoa")

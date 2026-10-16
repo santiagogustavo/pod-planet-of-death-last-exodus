@@ -21,26 +21,31 @@ stream_0/stream = ExtResource("5_7420g")
 
 [node name="Running" parent="." unique_id=1395768302 instance=ExtResource("1_jwmki")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+area_mask = 16
 
 [node name="Brake" parent="." unique_id=222941043 instance=ExtResource("2_dkbj8")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+area_mask = 16
 
 [node name="CollisionRoad" parent="." unique_id=1180905024 instance=ExtResource("2_dkbj8")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 stream = SubResource("AudioStreamRandomizer_u2k05")
-volume_db = -6.5
+volume_db = -5.0
 bus = &"Reverb"
+area_mask = 16
 attenuation_filter_db = 0.0
 
 [node name="CollisionWall" parent="." unique_id=441621484 instance=ExtResource("2_dkbj8")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 stream = SubResource("AudioStreamRandomizer_jwmki")
-volume_db = 5.0
+volume_db = 10.0
 bus = &"Reverb"
+area_mask = 16
 attenuation_filter_db = 0.0
 
 [node name="Idle" parent="." unique_id=2022874409 instance=ExtResource("7_rxtnj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+area_mask = 16
 
 [node name="Grinding" parent="." unique_id=1476506371 instance=ExtResource("7_rxtnj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -48,3 +53,4 @@ stream = ExtResource("8_rjcf7")
 volume_db = 2.5
 autoplay = false
 bus = &"Reverb"
+area_mask = 16

@@ -11,6 +11,9 @@ func _process(_delta: float) -> void:
 	global_rotation.y = wheel.global_rotation.y
 
 func _physics_process(_delta: float) -> void:
+	if !car.is_on_ground():
+		emitting = false
+		return
 	emitting = (
 		wheel.get_skidinfo() < 0.2
 		or (car.acceleration < 0.0 and car.speed_kmh != 0.0)
