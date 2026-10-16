@@ -76,8 +76,6 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	update_sound()
 	update_wind_trails()
-	if GameManager.race.status != RaceManager.RaceStatus.Started:
-		return
 	update_brake_lights_and_sfx()
 	if player_input:
 		update_player_input(delta)
@@ -90,8 +88,6 @@ func _physics_process(delta: float) -> void:
 	update_engine_status()
 
 func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
-	if GameManager.race.status != RaceManager.RaceStatus.Started:
-		return
 	var ai_node = get_node_or_null("PlayerBotAI")
 	if ai_node and ai_node.has_method("car_custom_integrate_forces"):
 		ai_node.car_custom_integrate_forces(state)
@@ -174,7 +170,7 @@ func update_brake(is_braking: bool) -> void:
 	brake = brake_force
 
 func update_brake_lights_and_sfx() -> void:
-	var is_braking: bool = brake > 0.0
+	var is_braking: bool = brake > 0.0 and engine_force > 0.0
 	for brake_light in brake_lights:
 		brake_light.visible = is_braking
 	if is_braking and is_on_ground() and !brake_sfx.playing:
