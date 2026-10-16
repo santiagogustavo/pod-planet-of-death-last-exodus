@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://xrunau4oxds"]
+
+[ext_resource type="PackedScene" uid="uid://bce0cmhcx24i0" path="res://Prefabs/UI/PlayerIndicator.tscn" id="1_k1hhu"]
+[ext_resource type="Texture2D" uid="uid://bqeop1yxpyik3" path="res://Textures/Gizmos/map-indicator.png" id="2_ymt07"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_16du7"]
+transparency = 4
+no_depth_test = true
+shading_mode = 0
+albedo_color = Color(0, 1, 0.66666675, 1)
+albedo_texture = ExtResource("2_ymt07")
+
+[sub_resource type="QuadMesh" id="QuadMesh_upthg"]
+material = SubResource("StandardMaterial3D_16du7")
+size = Vector2(12, 12)
+orientation = 1
+
+[node name="EnemyIndicator" unique_id=443761290 instance=ExtResource("1_k1hhu")]
+mesh = SubResource("QuadMesh_upthg")

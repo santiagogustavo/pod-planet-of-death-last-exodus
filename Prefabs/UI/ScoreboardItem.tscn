@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://clf43d4ag8hm0"]
+
+[ext_resource type="Script" uid="uid://ch6fxf5pvq807" path="res://Scripts/UI/ScoreboardItem.gd" id="1_3ctao"]
+[ext_resource type="Texture2D" uid="uid://d0e1m4ihuouun" path="res://Textures/UI/Avatars/avatar_9.png" id="2_nhsad"]
+[ext_resource type="Script" uid="uid://kklog68nroj3" path="res://Resources/PlayerDetails.gd" id="3_5yu08"]
+[ext_resource type="FontVariation" uid="uid://b8opprjomfioi" path="res://Fonts/Oxanium-SemiBold-Italic.tres" id="4_ii0wq"]
+[ext_resource type="PackedScene" uid="uid://culkmod7tioe6" path="res://Prefabs/UI/PlayerAvatar.tscn" id="5_gjcmc"]
+[ext_resource type="FontFile" uid="uid://brbja0q7gswro" path="res://Fonts/MoonGlossDisplayThick.otf" id="6_6wsbg"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h0y6g"]
+resource_local_to_scene = true
+bg_color = Color(0, 0, 0, 0.19607843)
+
+[sub_resource type="Resource" id="Resource_h0y6g"]
+script = ExtResource("3_5yu08")
+player_name = "Player 1"
+player_avatar = ExtResource("2_nhsad")
+metadata/_custom_type_script = "uid://kklog68nroj3"
+
+[sub_resource type="LabelSettings" id="LabelSettings_w65ld"]
+font = ExtResource("4_ii0wq")
+font_size = 42
+font_color = Color(0.85882354, 0.7647059, 0.6745098, 1)
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 4
+shadow_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_tp8h6"]
+font = ExtResource("6_6wsbg")
+font_size = 24
+font_color = Color(0.85882354, 0.7647059, 0.6745098, 1)
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 4
+shadow_color = Color(0, 0, 0, 1)
+
+[node name="ScoreboardItem" type="PanelContainer" unique_id=117532597]
+theme_override_styles/panel = SubResource("StyleBoxFlat_h0y6g")
+script = ExtResource("1_3ctao")
+player_details = SubResource("Resource_h0y6g")
+is_current_player = true
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2061130732]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_right = 16
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=1022350062]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Position" type="Label" parent="MarginContainer/HBoxContainer" unique_id=533337369]
+layout_mode = 2
+text = "1"
+label_settings = SubResource("LabelSettings_w65ld")
+
+[node name="PlayerAvatar" parent="MarginContainer/HBoxContainer" unique_id=458921752 instance=ExtResource("5_gjcmc")]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+character_image = ExtResource("2_nhsad")
+
+[node name="NameOrTime" type="Label" parent="MarginContainer/HBoxContainer" unique_id=73793995]
+layout_mode = 2
+text = "Player 1"
+label_settings = SubResource("LabelSettings_tp8h6")

@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://dt6h44fpelpp8"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ei2sh"]
+transparency = 4
+
+[sub_resource type="BoxMesh" id="BoxMesh_0i88t"]
+material = SubResource("StandardMaterial3D_ei2sh")
+size = Vector3(0.05, 0.05, 10)
+
+[node name="RaycastVisualizer" type="Node3D" unique_id=1163833152]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=685264441]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -5)
+mesh = SubResource("BoxMesh_0i88t")

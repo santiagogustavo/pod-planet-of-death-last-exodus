@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://bce0cmhcx24i0"]
+
+[ext_resource type="Texture2D" uid="uid://bqeop1yxpyik3" path="res://Textures/Gizmos/map-indicator.png" id="1_wllca"]
+[ext_resource type="Script" uid="uid://bmukouwldsr2n" path="res://Scripts/UI/PlayerIndicator.gd" id="2_167yo"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ckb4l"]
+render_priority = 1
+transparency = 4
+no_depth_test = true
+shading_mode = 0
+albedo_color = Color(1, 0.68333334, 0, 1)
+albedo_texture = ExtResource("1_wllca")
+
+[sub_resource type="QuadMesh" id="QuadMesh_0i88t"]
+material = SubResource("StandardMaterial3D_ckb4l")
+size = Vector2(12, 12)
+orientation = 1
+
+[node name="PlayerIndicator" type="MeshInstance3D" unique_id=611919899]
+layers = 8
+mesh = SubResource("QuadMesh_0i88t")
+script = ExtResource("2_167yo")
+metadata/_custom_type_script = "uid://bmukouwldsr2n"

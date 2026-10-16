@@ -3,13 +3,41 @@
 [ext_resource type="Texture2D" uid="uid://ct6x12qmmd50q" path="res://Textures/Tracks/concrete-plates-floor.png" id="1_7x1xs"]
 [ext_resource type="Script" uid="uid://ck8p1x0h0qtk" path="res://Scripts/Tracks/Track.gd" id="1_064l1"]
 [ext_resource type="Texture2D" uid="uid://bwofyd6rf0wrm" path="res://Textures/Skyboxes/Panorama do Deserto Pós-Apocalíptico.png" id="1_iv1r6"]
-[ext_resource type="PackedScene" uid="uid://bp7l8dgivvw2y" path="res://Prefabs/Player/Player.tscn" id="2_0j0tx"]
-[ext_resource type="Resource" uid="uid://cc2msqa3wh62g" path="res://Resources/Cars/Shivan.tres" id="3_uemjy"]
+[ext_resource type="Script" uid="uid://f3pn6opmjm42" path="res://Scripts/RaceManager.gd" id="2_aem2t"]
+[ext_resource type="Resource" uid="uid://cc2msqa3wh62g" path="res://Resources/Cars/Shivan.tres" id="4_ei2sh"]
 [ext_resource type="Script" uid="uid://kklog68nroj3" path="res://Resources/PlayerDetails.gd" id="4_iv1r6"]
 [ext_resource type="Texture2D" uid="uid://d0e1m4ihuouun" path="res://Textures/UI/Avatars/avatar_9.png" id="4_uemjy"]
-[ext_resource type="PackedScene" uid="uid://cijncu4lvb8kx" path="res://Prefabs/Cars/Gamma.tscn" id="6_iv1r6"]
+[ext_resource type="Texture2D" uid="uid://cgu3cyfmer4ik" path="res://Textures/UI/Avatars/avatar_13.png" id="5_wjxlm"]
+[ext_resource type="Resource" uid="uid://ujw7vnhlgryx" path="res://Resources/Cars/Jaero.tres" id="7_wjxlm"]
 [ext_resource type="PackedScene" uid="uid://cauynapb07dmw" path="res://Prefabs/Tracks/CircuitGate.tscn" id="8_aem2t"]
+[ext_resource type="Resource" uid="uid://db76wikpidtqx" path="res://Resources/Cars/Arc.tres" id="8_u5uis"]
+[ext_resource type="Texture2D" uid="uid://bs1dsqnsfaehm" path="res://Textures/UI/Avatars/avatar_24.png" id="8_wjxlm"]
 [ext_resource type="PackedScene" uid="uid://46gclodm1vd1" path="res://Prefabs/Tracks/DirectionArrows.tscn" id="10_wjxlm"]
+[ext_resource type="AudioStream" uid="uid://dt2m8x28byfke" path="res://Music/Ominous Low Drones.mp3" id="14_g1fnq"]
+[ext_resource type="PackedScene" uid="uid://c8mt1nrc3wp1t" path="res://Prefabs/Tracks/StartGate.tscn" id="15_p2v43"]
+
+[sub_resource type="Resource" id="Resource_aem2t"]
+script = ExtResource("4_iv1r6")
+player_name = "Player 1"
+player_avatar = ExtResource("4_uemjy")
+car_data = ExtResource("4_ei2sh")
+metadata/_custom_type_script = "uid://kklog68nroj3"
+
+[sub_resource type="Resource" id="Resource_064l1"]
+script = ExtResource("4_iv1r6")
+player_type = 1
+player_name = "Bot"
+player_avatar = ExtResource("5_wjxlm")
+car_data = ExtResource("8_u5uis")
+metadata/_custom_type_script = "uid://kklog68nroj3"
+
+[sub_resource type="Resource" id="Resource_wjxlm"]
+script = ExtResource("4_iv1r6")
+player_type = 1
+player_name = "Pufferson"
+player_avatar = ExtResource("8_wjxlm")
+car_data = ExtResource("7_wjxlm")
+metadata/_custom_type_script = "uid://kklog68nroj3"
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_3si4x"]
 panorama = ExtResource("1_iv1r6")
@@ -25,10 +53,12 @@ glow_enabled = true
 glow_bloom = 0.3
 glow_blend_mode = 0
 
-[sub_resource type="Resource" id="Resource_0j0tx"]
-script = ExtResource("4_iv1r6")
-player_avatar = ExtResource("4_uemjy")
-metadata/_custom_type_script = "uid://kklog68nroj3"
+[sub_resource type="NavigationMesh" id="NavigationMesh_ei2sh"]
+vertices = PackedVector3Array(-147, 0.29960513, -23.25, -32.5, 0.29960513, -23.25, -32.5, 0.29960513, -25.25, -31.75, 0.29960513, -26.75, -29, 0.29960513, -28, -29, 0.29960513, -147, -147, 0.29960513, -147, -25.25, 0.29960513, -25.25, -25.25, 0.29960513, -24, -8, 0.29960513, -24.25, -26, 0.29960513, -26.75, -8, 0.29960513, -32.75, -28, 0.29960513, -28, -6.75, 0.29960513, -34.75, -5.25, 0.29960513, -35.5, -3.25, 0.29960513, -147, -3.25, 0.29960513, -35.5, 3.5, 0.29960513, -35.5, 3.5, 0.29960513, -147, 5.5, 0.29960513, -35.5, 7, 0.29960513, -34.75, 8.25, 0.29960513, -32.75, 147, 0.29960513, -31.5, 147, 0.29960513, -147, 8.25, 0.29960513, -31.25, 19, 4.5496054, -78, 19, 4.5496054, -34, 23, 4.5496054, -34, 23, 4.5496054, -78, 8.25, 0.29960513, -24.5, 147, 0.29960513, -24.25, 2, 0.54960513, -23, 2, 2.2996051, -29, -2, 2.2996051, -29, -2, 0.54960513, -23, 7.5, 0.29960513, -21.5, -25.25, 0.29960513, 25.25, -26.75, 0.29960513, 27.5, -29, 0.29960513, 147, 147, 0.29960513, 147, 2.75, 0.29960513, -21.5, -3, 0.29960513, -21.25, 4.75, 0.29960513, -20.25, -5.5, 0.29960513, -20.5, -29, 0.29960513, 28.25, -8, 0.29960513, -23, -7, 0.29960513, -21.25, 8.25, 0.29960513, -23, -147, 0.29960513, 23.5, -32.5, 0.29960513, 23.5, -32.5, 0.29960513, 25.5, -31.75, 0.29960513, 27, -147, 0.29960513, 147)
+polygons = [PackedInt32Array(2, 1, 0), PackedInt32Array(0, 3, 2), PackedInt32Array(3, 0, 4), PackedInt32Array(4, 0, 5), PackedInt32Array(5, 0, 6), PackedInt32Array(9, 8, 7), PackedInt32Array(10, 9, 7), PackedInt32Array(10, 12, 9), PackedInt32Array(9, 12, 11), PackedInt32Array(13, 4, 14), PackedInt32Array(14, 4, 5), PackedInt32Array(14, 5, 15), PackedInt32Array(12, 4, 11), PackedInt32Array(11, 4, 13), PackedInt32Array(15, 16, 14), PackedInt32Array(15, 18, 16), PackedInt32Array(16, 18, 17), PackedInt32Array(19, 17, 18), PackedInt32Array(18, 20, 19), PackedInt32Array(20, 18, 21), PackedInt32Array(21, 18, 22), PackedInt32Array(22, 18, 23), PackedInt32Array(22, 24, 21), PackedInt32Array(28, 27, 25), PackedInt32Array(25, 27, 26), PackedInt32Array(24, 22, 29), PackedInt32Array(29, 22, 30), PackedInt32Array(34, 33, 31), PackedInt32Array(31, 33, 32), PackedInt32Array(36, 35, 37), PackedInt32Array(37, 35, 38), PackedInt32Array(38, 35, 30), PackedInt32Array(38, 30, 39), PackedInt32Array(31, 40, 34), PackedInt32Array(34, 40, 41), PackedInt32Array(36, 42, 35), PackedInt32Array(40, 42, 41), PackedInt32Array(41, 42, 43), PackedInt32Array(43, 42, 36), PackedInt32Array(38, 44, 37), PackedInt32Array(8, 9, 45), PackedInt32Array(8, 45, 46), PackedInt32Array(46, 43, 8), PackedInt32Array(8, 43, 36), PackedInt32Array(35, 47, 30), PackedInt32Array(47, 29, 30), PackedInt32Array(0, 1, 48), PackedInt32Array(48, 1, 49), PackedInt32Array(48, 49, 50), PackedInt32Array(48, 50, 51), PackedInt32Array(51, 44, 48), PackedInt32Array(48, 44, 38), PackedInt32Array(48, 38, 52)]
+geometry_parsed_geometry_type = 1
+geometry_collision_mask = 4278190086
+agent_radius = 3.0
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ks1um"]
 points = PackedVector3Array(-150, 0, -150, -150, 0, 150, 150, 0, -150, 150, 0, 150)
@@ -60,11 +90,34 @@ size = Vector3(10, 0.5, 50)
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_iv1r6"]
 points = PackedVector3Array(5, 0.25, 25, 5, -0.25, 25, 5, 0.25, -25, -5, 0.25, 25, -5, -0.25, 25, 5, -0.25, -25, -5, 0.25, -25, -5, -0.25, -25)
 
-[node name="Playground1" type="Node3D" unique_id=126344257 node_paths=PackedStringArray("circuit_gates")]
+[sub_resource type="BoxShape3D" id="BoxShape3D_0i88t"]
+size = Vector3(10, 4, 50)
+
+[sub_resource type="Curve3D" id="Curve3D_g1fnq"]
+closed = true
+_data = {
+"points": PackedVector3Array(-2, 0, 43, 2, 0, -43, -4.921667, 0, -6.3737874, 25, 0, -1, -25, 0, 1, -28.359459, 0, -92.34917, 0, 0, 0, 0, 0, 0, -50.686806, 0, -65.596565, -10, 0, 0, 10, 0, 0, -44.669464, 0, 34.33834),
+"tilts": PackedFloat32Array(0, 0, 0, 0)
+}
+point_count = 4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g1fnq"]
+shading_mode = 0
+albedo_color = Color(0.35, 0.23916666, 0, 1)
+
+[node name="Playground1" type="Node3D" unique_id=126344257 node_paths=PackedStringArray("start_gates", "circuit_gates", "navigation_region")]
 script = ExtResource("1_064l1")
 track_name = "Playground 1"
+start_gates = [NodePath("StartGate"), NodePath("StartGate2"), NodePath("StartGate3")]
 circuit_gates = [NodePath("CircuitGate"), NodePath("CircuitGate2"), NodePath("CircuitGate3")]
+navigation_region = NodePath("NavigationRegion3D")
 metadata/_custom_type_script = "uid://ck8p1x0h0qtk"
+
+[node name="RaceManager" type="Node" parent="." unique_id=534910278 node_paths=PackedStringArray("track")]
+script = ExtResource("2_aem2t")
+track = NodePath("..")
+predefined_players = Array[ExtResource("4_iv1r6")]([SubResource("Resource_aem2t"), SubResource("Resource_064l1"), SubResource("Resource_wjxlm")])
+metadata/_custom_type_script = "uid://f3pn6opmjm42"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1124827985]
 environment = SubResource("Environment_0i88t")
@@ -74,65 +127,117 @@ transform = Transform3D(0.9659258, -1.131334e-08, 0.25881904, -0.25881904, -4.22
 light_energy = 0.1
 shadow_enabled = true
 
-[node name="Player" parent="." unique_id=326649129 instance=ExtResource("2_0j0tx")]
-car_data = ExtResource("3_uemjy")
-player_details = SubResource("Resource_0j0tx")
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=1685857376]
+navigation_mesh = SubResource("NavigationMesh_ei2sh")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1352415093]
+[node name="StaticBody3D" type="StaticBody3D" parent="NavigationRegion3D" unique_id=1352415093]
 collision_layer = 2
 collision_mask = 0
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=330511515]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/StaticBody3D" unique_id=330511515]
 shape = SubResource("ConvexPolygonShape3D_ks1um")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D/CollisionShape3D" unique_id=614637651]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/StaticBody3D/CollisionShape3D" unique_id=614637651]
 mesh = SubResource("QuadMesh_mnpnk")
 
-[node name="StaticBody3D2" type="StaticBody3D" parent="." unique_id=446141770]
+[node name="StaticBody3D2" type="StaticBody3D" parent="NavigationRegion3D" unique_id=446141770]
 transform = Transform3D(1, 0, 0, 0, 0.9659258, -0.25881904, 0, 0.25881904, 0.9659258, 0, 1, -27)
 collision_layer = 2
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2" unique_id=258109228]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/StaticBody3D2" unique_id=258109228]
 transform = Transform3D(1, 0, 0, 0, 1.0000012, 0, 0, 0, 1.0000012, 0, -1.2500005, 0)
 mesh = SubResource("BoxMesh_0i88t")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2" unique_id=1224537272]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/StaticBody3D2" unique_id=1224537272]
 transform = Transform3D(1, 0, 0, 0, 1.0000012, 0, 0, 0, 1.0000012, 0, -1.2500005, 0)
 shape = SubResource("ConvexPolygonShape3D_0j0tx")
 
-[node name="StaticBody3D3" type="StaticBody3D" parent="." unique_id=1498483815]
+[node name="StaticBody3D3" type="StaticBody3D" parent="NavigationRegion3D" unique_id=1498483815]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29, 5, 0)
 collision_layer = 4
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D3" unique_id=1386908436]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/StaticBody3D3" unique_id=1386908436]
 mesh = SubResource("BoxMesh_ckb4l")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D3" unique_id=1214353785]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/StaticBody3D3" unique_id=1214353785]
 shape = SubResource("ConvexPolygonShape3D_l1obr")
 
-[node name="StaticBody3D4" type="StaticBody3D" parent="." unique_id=86212472]
+[node name="StaticBody3D4" type="StaticBody3D" parent="NavigationRegion3D" unique_id=86212472]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 4, -56)
 collision_layer = 2
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D4" unique_id=1912355848]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/StaticBody3D4" unique_id=1912355848]
 mesh = SubResource("BoxMesh_3si4x")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D4" unique_id=1929950161]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/StaticBody3D4" unique_id=1929950161]
 shape = SubResource("ConvexPolygonShape3D_iv1r6")
 
-[node name="Gamma" parent="." unique_id=1584282954 instance=ExtResource("6_iv1r6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29, 0, -15)
+[node name="NavigationLink3D" type="NavigationLink3D" parent="NavigationRegion3D" unique_id=917018149]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -29)
+bidirectional = false
+end_position = Vector3(0, 0, -33)
+travel_cost = 0.0
+
+[node name="NavigationLink3D2" type="NavigationLink3D" parent="NavigationRegion3D" unique_id=2041584295]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, -31)
+bidirectional = false
+end_position = Vector3(0, 0, -50)
+travel_cost = 0.0
 
 [node name="CircuitGate" parent="." unique_id=517762930 instance=ExtResource("8_aem2t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
 
 [node name="CircuitGate2" parent="." unique_id=1192715697 instance=ExtResource("8_aem2t")]
-transform = Transform3D(0, 0, 0.99999994, 0, 1, 0, -0.99999994, 0, 0, -28.999998, 0, -55)
+transform = Transform3D(0, 0, 0.99999994, 0, 1, 0, -0.99999994, 0, 0, -31.999996, 0, -104)
 
 [node name="CircuitGate3" parent="." unique_id=717695175 instance=ExtResource("8_aem2t")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -58.999996, 0, 0)
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -59.999992, 0, 24)
 
 [node name="DirectionArrows" parent="." unique_id=1821511901 instance=ExtResource("10_wjxlm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -81)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -41, 0, -85)
+
+[node name="ReverbZone" type="Area3D" parent="." unique_id=1075905819]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 2, -56)
+collision_layer = 16
+reverb_bus_enabled = true
+reverb_bus_name = &"ReverbZone"
+reverb_bus_amount = 1.0
+reverb_bus_uniformity = 1.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ReverbZone" unique_id=1391460453]
+shape = SubResource("BoxShape3D_0i88t")
+
+[node name="Music" type="AudioStreamPlayer2D" parent="." unique_id=2067202546]
+stream = ExtResource("14_g1fnq")
+autoplay = true
+bus = &"Music"
+
+[node name="Path3D" type="Path3D" parent="." unique_id=720626260]
+curve = SubResource("Curve3D_g1fnq")
+
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="." unique_id=1134652650]
+layers = 8
+polygon = PackedVector2Array(0, 0, 0, 0.1, 20, 0.1, 20, 0)
+mode = 2
+path_node = NodePath("../Path3D")
+path_interval_type = 0
+path_interval = 1.0
+path_simplify_angle = 0.0
+path_rotation = 2
+path_rotation_accurate = false
+path_local = false
+path_continuous_u = true
+path_u_distance = 1.0
+path_joined = false
+material = SubResource("StandardMaterial3D_g1fnq")
+
+[node name="StartGate" parent="." unique_id=1242529026 instance=ExtResource("15_p2v43")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 6)
+
+[node name="StartGate2" parent="." unique_id=1424657671 instance=ExtResource("15_p2v43")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 0, 13)
+
+[node name="StartGate3" parent="." unique_id=1528589681 instance=ExtResource("15_p2v43")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 21)
 
 [editable path="DirectionArrows"]

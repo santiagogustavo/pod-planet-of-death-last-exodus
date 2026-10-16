@@ -4,7 +4,7 @@ var is_paused: bool = false
 var time_elapsed: float = 0.0
 var time_string: String = "00'00\"00"
 
-var race: RaceManager = RaceManager.new()
+var race: RaceManager
 
 func _ready() -> void:
 	#TranslationServer.set_locale("en")

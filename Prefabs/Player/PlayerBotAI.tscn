@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://tpiv56iw50qh"]
+
+[ext_resource type="Script" uid="uid://cbsfkmt4w6gsi" path="res://Scripts/PlayerBotAI.gd" id="1_fmyp6"]
+
+[node name="PlayerBotAI" type="Node3D" unique_id=1515987844]
+script = ExtResource("1_fmyp6")
+metadata/_custom_type_script = "uid://cbsfkmt4w6gsi"
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=2147168987]
+avoidance_enabled = true
+radius = 1.5
+neighbor_distance = 20.0
+max_speed = 30.0

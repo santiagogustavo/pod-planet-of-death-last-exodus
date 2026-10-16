@@ -4,6 +4,7 @@
 [ext_resource type="Shader" uid="uid://dop1o7bvebylc" path="res://Materials/Shaders/SquishY.gdshader" id="1_uhd0b"]
 [ext_resource type="Texture2D" uid="uid://fco2c5hl5wpj" path="res://Textures/UI/speedometer.png" id="1_vlq7a"]
 [ext_resource type="PackedScene" uid="uid://culkmod7tioe6" path="res://Prefabs/UI/PlayerAvatar.tscn" id="3_nfgng"]
+[ext_resource type="Texture2D" uid="uid://bank56rrq7xc4" path="res://Textures/Gizmos/chevron-up.png" id="4_fe8wy"]
 [ext_resource type="Texture2D" uid="uid://belik3im0vfqn" path="res://Textures/UI/speed_gauge_full.png" id="5_gkp7e"]
 [ext_resource type="Shader" uid="uid://ce0vqngkrgmf4" path="res://Materials/Shaders/ProgressBarVertical.gdshader" id="5_tl6lm"]
 [ext_resource type="FontFile" uid="uid://brbja0q7gswro" path="res://Fonts/MoonGlossDisplayThick.otf" id="6_15iyh"]
@@ -11,12 +12,45 @@
 [ext_resource type="Texture2D" uid="uid://drp6j41jiqgh4" path="res://Textures/UI/lap_time_decoration.png" id="9_nfgng"]
 [ext_resource type="Texture2D" uid="uid://uule52kkqqal" path="res://Textures/UI/race_stats_decoration.png" id="10_qesgt"]
 [ext_resource type="FontVariation" uid="uid://b60fegx7eq7ja" path="res://Fonts/MoonGlossDisplayExtraThick.tres" id="11_f0vpv"]
+[ext_resource type="Script" uid="uid://cflhks7suarqv" path="res://Scripts/UI/LabelRandomizerEffect.gd" id="13_bf77d"]
+[ext_resource type="PackedScene" uid="uid://clf43d4ag8hm0" path="res://Prefabs/UI/ScoreboardItem.tscn" id="14_1t8f0"]
+[ext_resource type="Script" uid="uid://kklog68nroj3" path="res://Resources/PlayerDetails.gd" id="16_1t8f0"]
+[ext_resource type="Texture2D" uid="uid://ci6cddk8rwc63" path="res://Textures/UI/Avatars/avatar_12.png" id="17_no003"]
+[ext_resource type="Texture2D" uid="uid://cekwm06v8spov" path="res://Textures/UI/map_decoration.png" id="17_tp8h6"]
+[ext_resource type="Script" uid="uid://5h1gvjbt5r7p" path="res://Scripts/UI/HUDMap.gd" id="18_7n8ah"]
+[ext_resource type="Shader" uid="uid://o7w4l7bh0eme" path="res://Materials/Shaders/CRT.gdshader" id="18_tp8h6"]
+[ext_resource type="PackedScene" uid="uid://bce0cmhcx24i0" path="res://Prefabs/UI/PlayerIndicator.tscn" id="20_7n8ah"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_s7acx"]
 shader = ExtResource("1_uhd0b")
 shader_parameter/uv_mode = false
 shader_parameter/y_factor = 1.0
 shader_parameter/bulge = 4.7499999933364734e-08
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7n8ah"]
+resource_local_to_scene = true
+bg_color = Color(0, 0, 0, 0.19607843)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g720x"]
+resource_local_to_scene = true
+bg_color = Color(0, 0, 0, 0.19607843)
+
+[sub_resource type="Resource" id="Resource_14gyj"]
+script = ExtResource("16_1t8f0")
+player_name = "Ken'Ichi"
+player_avatar = ExtResource("17_no003")
+metadata/_custom_type_script = "uid://kklog68nroj3"
+
+[sub_resource type="Gradient" id="Gradient_fe8wy"]
+offsets = PackedFloat32Array(0, 0.9941003)
+colors = PackedColorArray(0, 0, 0, 0.19607843, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ckb4l"]
+gradient = SubResource("Gradient_fe8wy")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0)
+metadata/_snap_enabled = true
 
 [sub_resource type="LabelSettings" id="LabelSettings_0i88t"]
 font = ExtResource("7_uhlr2")
@@ -88,6 +122,117 @@ font = ExtResource("6_15iyh")
 font_size = 14
 font_color = Color(0.85882354, 0.7647059, 0.6745098, 1)
 
+[sub_resource type="LabelSettings" id="LabelSettings_no003"]
+font = ExtResource("6_15iyh")
+font_size = 42
+font_color = Color(1, 0.116666675, 0, 1)
+
+[sub_resource type="Animation" id="Animation_bf77d"]
+resource_name = "IdleLoop"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"play_effect"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_15wkl"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_15wkl"]
+_data = {
+&"IdleLoop": SubResource("Animation_bf77d"),
+&"RESET": SubResource("Animation_15wkl")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_bf77d"]
+animation = &"IdleLoop"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_15wkl"]
+animation = &"RESET"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_h0y6g"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1t8f0"]
+advance_mode = 2
+advance_condition = &"is_wrong_way"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_no003"]
+advance_mode = 2
+advance_condition = &"is_not_wrong_way"
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_ckb4l"]
+states/IdleLoop/node = SubResource("AnimationNodeAnimation_bf77d")
+states/IdleLoop/position = Vector2(541, -25)
+states/RESET/node = SubResource("AnimationNodeAnimation_15wkl")
+states/RESET/position = Vector2(541, 100)
+transitions = ["Start", "RESET", SubResource("AnimationNodeStateMachineTransition_h0y6g"), "RESET", "IdleLoop", SubResource("AnimationNodeStateMachineTransition_1t8f0"), "IdleLoop", "RESET", SubResource("AnimationNodeStateMachineTransition_no003")]
+graph_offset = Vector2(-17, -80)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_14gyj"]
+shader = ExtResource("18_tp8h6")
+shader_parameter/overlay = true
+shader_parameter/resolution = Vector2(500, 500)
+shader_parameter/brightness = 1.4
+shader_parameter/scanlines_opacity = 0.4
+shader_parameter/scanlines_width = 0.25
+shader_parameter/grille_opacity = 0.3
+shader_parameter/roll = true
+shader_parameter/roll_speed = 8.0
+shader_parameter/roll_size = 15.0
+shader_parameter/roll_variation = 1.8
+shader_parameter/distort_intensity = 0.05
+shader_parameter/aberration = 4.7499999933364734e-08
+shader_parameter/noise_opacity = 0.4
+shader_parameter/noise_speed = 5.0
+shader_parameter/static_noise_intensity = 0.06
+shader_parameter/pixelate = false
+shader_parameter/discolor = true
+shader_parameter/warp_amount = 0.0
+shader_parameter/clip_warp = false
+shader_parameter/vignette_intensity = 0.4
+shader_parameter/vignette_opacity = 0.5
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_g1fnq"]
+viewport_path = NodePath("SwayContainer/SubViewport/MarginContainer/Control/Map/CRT/MapViewport")
+
+[sub_resource type="Environment" id="Environment_7n8ah"]
+background_mode = 1
+
 [node name="PlayerHUD" type="CanvasLayer" unique_id=138282145]
 layer = 2
 script = ExtResource("1_s7acx")
@@ -104,6 +249,7 @@ stretch = true
 [node name="SubViewport" type="SubViewport" parent="SwayContainer" unique_id=2033651088]
 transparent_bg = true
 handle_input_locally = false
+audio_listener_enable_2d = true
 size = Vector2i(1152, 648)
 render_target_update_mode = 4
 
@@ -121,6 +267,23 @@ theme_override_constants/margin_bottom = 48
 [node name="Control" type="Control" parent="SwayContainer/SubViewport/MarginContainer" unique_id=567100667]
 layout_mode = 2
 
+[node name="Scoreboard" type="VBoxContainer" parent="SwayContainer/SubViewport/MarginContainer/Control" unique_id=1143982037]
+layout_mode = 0
+offset_right = 225.0
+offset_bottom = 90.0
+scale = Vector2(0.75, 0.75)
+
+[node name="ScoreboardItemDebug" parent="SwayContainer/SubViewport/MarginContainer/Control/Scoreboard" unique_id=117532597 instance=ExtResource("14_1t8f0")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_7n8ah")
+
+[node name="ScoreboardItemDebug2" parent="SwayContainer/SubViewport/MarginContainer/Control/Scoreboard" unique_id=647372254 instance=ExtResource("14_1t8f0")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_g720x")
+player_position = 2
+player_details = SubResource("Resource_14gyj")
+is_current_player = false
+
 [node name="PlayerAvatar" parent="SwayContainer/SubViewport/MarginContainer/Control" unique_id=458921752 instance=ExtResource("3_nfgng")]
 layout_mode = 1
 anchors_preset = 2
@@ -133,6 +296,34 @@ offset_bottom = -106.0
 grow_horizontal = 1
 grow_vertical = 0
 pivot_offset_ratio = Vector2(0, 1)
+
+[node name="NextGateIndicator" type="TextureRect" parent="SwayContainer/SubViewport/MarginContainer/Control" unique_id=719879131]
+modulate = Color(0.9372549, 0.627451, 0.007843138, 1)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -16.0
+offset_top = -48.0
+offset_right = 16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture = ExtResource("4_fe8wy")
+expand_mode = 1
+stretch_mode = 4
+flip_h = true
+
+[node name="TextureRect" type="TextureRect" parent="SwayContainer/SubViewport/MarginContainer/Control/NextGateIndicator" unique_id=154004280]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_ckb4l")
+expand_mode = 1
 
 [node name="Speedometer" type="TextureRect" parent="SwayContainer/SubViewport/MarginContainer/Control" unique_id=746122037]
 layout_mode = 1
@@ -349,3 +540,101 @@ label_settings = SubResource("LabelSettings_f0vpv")
 layout_mode = 2
 text = "00'00\"000"
 label_settings = SubResource("LabelSettings_fe8wy")
+
+[node name="WrongWayLabel" type="Label" parent="SwayContainer/SubViewport/MarginContainer/Control" unique_id=1240797367]
+modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(245, 43)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -122.5
+offset_top = -112.0
+offset_right = 122.5
+offset_bottom = -69.0
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset_ratio = Vector2(0.5, 0.5)
+text = "WRONG WAY"
+label_settings = SubResource("LabelSettings_no003")
+horizontal_alignment = 1
+script = ExtResource("13_bf77d")
+play_on_start = false
+start_with_random = true
+metadata/_custom_type_script = "uid://cflhks7suarqv"
+
+[node name="TextureRect" type="ColorRect" parent="SwayContainer/SubViewport/MarginContainer/Control/WrongWayLabel" unique_id=131876620]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.25, 1.25)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+color = Color(1, 0, 0, 0.29411766)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="SwayContainer/SubViewport/MarginContainer/Control/WrongWayLabel" unique_id=114300864]
+libraries/ = SubResource("AnimationLibrary_15wkl")
+
+[node name="AnimationTree" type="AnimationTree" parent="SwayContainer/SubViewport/MarginContainer/Control/WrongWayLabel" unique_id=1360900945]
+tree_root = SubResource("AnimationNodeStateMachine_ckb4l")
+anim_player = NodePath("../AnimationPlayer")
+parameters/conditions/is_not_wrong_way = false
+parameters/conditions/is_wrong_way = false
+
+[node name="Map" type="TextureRect" parent="SwayContainer/SubViewport/MarginContainer/Control" unique_id=644385072]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -141.0
+offset_top = -151.47678
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset_ratio = Vector2(1, 1)
+texture = ExtResource("17_tp8h6")
+expand_mode = 1
+stretch_mode = 4
+script = ExtResource("18_7n8ah")
+
+[node name="CRT" type="ColorRect" parent="SwayContainer/SubViewport/MarginContainer/Control/Map" unique_id=454030296]
+show_behind_parent = true
+material = SubResource("ShaderMaterial_14gyj")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.825, 0.825)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+
+[node name="MapTexture" type="TextureRect" parent="SwayContainer/SubViewport/MarginContainer/Control/Map/CRT" unique_id=1084997319]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture = SubResource("ViewportTexture_g1fnq")
+expand_mode = 1
+
+[node name="MapViewport" type="SubViewport" parent="SwayContainer/SubViewport/MarginContainer/Control/Map/CRT" unique_id=1510109906]
+size = Vector2i(256, 256)
+
+[node name="CameraPivot" type="Node3D" parent="SwayContainer/SubViewport/MarginContainer/Control/Map/CRT/MapViewport" unique_id=398365236]
+
+[node name="Camera3D" type="Camera3D" parent="SwayContainer/SubViewport/MarginContainer/Control/Map/CRT/MapViewport/CameraPivot" unique_id=1705648695]
+transform = Transform3D(1, 0, 0, 0, 0.5, 0.86602545, 0, -0.86602545, 0.5, 0, 38, 20)
+cull_mask = 8
+environment = SubResource("Environment_7n8ah")
+
+[node name="PlayerIndicator" parent="SwayContainer/SubViewport/MarginContainer/Control/Map/CRT/MapViewport" unique_id=443761290 instance=ExtResource("20_7n8ah")]
