@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://c0cxol37j4hno"]
+
+[ext_resource type="Texture2D" uid="uid://c7kbfn07ctqlf" path="res://Textures/Tracks/Beltane/Beltane_N_BELTAN4.png" id="1_7efsc"]
+[ext_resource type="Texture2D" uid="uid://yho0jd1176yo" path="res://Textures/Tracks/Beltane/Beltane_N_BELTAN4_occ.png" id="2_nwpna"]
+
+[resource]
+albedo_texture = ExtResource("1_7efsc")
+ao_enabled = true
+ao_light_affect = 1.0
+ao_texture = ExtResource("2_nwpna")

@@ -1,7 +1,7 @@
 extends Node3D
 class_name DirectionArrows
 
-@export var scroll_speed: float = 0.1
+@export var scroll_speed: float = 0.5
 
 @onready var csgpolygon: CSGPolygon3D = $CSGPolygon3D
 

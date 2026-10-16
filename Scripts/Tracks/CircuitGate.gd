@@ -2,6 +2,7 @@ extends Area3D
 class_name CircuitGate
 
 var gate_index: int = 0
+var segment_distance: float = 0
 
 func _ready() -> void:
 	body_entered.connect(handle_car_entered)

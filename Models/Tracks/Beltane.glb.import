@@ -39,7 +39,150 @@ import_script/path=""
 materials/extract=0
 materials/extract_format=0
 materials/extract_path=""
-_subresources={}
+_subresources={
+"materials": {
+"080800_G": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Materials/Tracks/Beltane/Beltane_080800.tres",
+"use_external/path": "uid://84f4cp0uvk6"
+},
+"080800_R_G": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Materials/Tracks/Beltane/Beltane_080800.tres",
+"use_external/path": "uid://84f4cp0uvk6"
+},
+"080800_W_G": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Materials/Tracks/Beltane/Beltane_080800.tres",
+"use_external/path": "uid://84f4cp0uvk6"
+},
+"CDC5BC": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Materials/Tracks/Beltane/Beltane_CDC5BC.tres",
+"use_external/path": "uid://bpck4ci1lrxnp"
+},
+"CDC5BC_R": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Materials/Tracks/Beltane/Beltane_CDC5BC.tres",
+"use_external/path": "uid://bpck4ci1lrxnp"
+},
+"N_BELTAN0_GL3": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Materials/Tracks/Beltane/Beltane_N_BELTAN0.tres",
+"use_external/path": "uid://ob58dvaa43iq"
+},
+"N_BELTAN0_R_G": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Materials/Tracks/Beltane/Beltane_N_BELTAN0.tres",
+"use_external/path": "uid://ob58dvaa43iq"
+},
+"N_BELTAN0_W_GL1": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Materials/Tracks/Beltane/Beltane_N_BELTAN0.tres",
+"use_external/path": "uid://ob58dvaa43iq"
+},
+"N_BELTAN1_GL2": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Materials/Tracks/Beltane/Beltane_N_BELTAN1.tres",
+"use_external/path": "uid://31th1eyqtyqk"
+},
+"N_BELTAN1_GL3": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Materials/Tracks/Beltane/Beltane_N_BELTAN1.tres",
+"use_external/path": "uid://31th1eyqtyqk"
+},
+"N_BELTAN1_R_G": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Materials/Tracks/Beltane/Beltane_N_BELTAN1.tres",
+"use_external/path": "uid://31th1eyqtyqk"
+},
+"N_BELTAN1_W_GL1": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Materials/Tracks/Beltane/Beltane_N_BELTAN1.tres",
+"use_external/path": "uid://31th1eyqtyqk"
+},
+"N_BELTAN2_GL2": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Materials/Tracks/Beltane/Beltane_N_BELTAN2.tres",
+"use_external/path": "uid://dj0wq026jv3rp"
+},
+"N_BELTAN2_GL3": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Materials/Tracks/Beltane/Beltane_N_BELTAN2.tres",
+"use_external/path": "uid://dj0wq026jv3rp"
+},
+"N_BELTAN2_R_G": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Materials/Tracks/Beltane/Beltane_N_BELTAN2.tres",
+"use_external/path": "uid://dj0wq026jv3rp"
+},
+"N_BELTAN2_W_BGL1": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Materials/Tracks/Beltane/Beltane_N_BELTAN2.tres",
+"use_external/path": "uid://dj0wq026jv3rp"
+},
+"N_BELTAN2_W_GL1": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Materials/Tracks/Beltane/Beltane_N_BELTAN2.tres",
+"use_external/path": "uid://dj0wq026jv3rp"
+},
+"N_BELTAN3_GL2": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Materials/Tracks/Beltane/Beltane_N_BELTAN3.tres",
+"use_external/path": "uid://ccc00k48o31ep"
+},
+"N_BELTAN3_GL3": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Materials/Tracks/Beltane/Beltane_N_BELTAN3.tres",
+"use_external/path": "uid://ccc00k48o31ep"
+},
+"N_BELTAN3_R_BG": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Materials/Tracks/Beltane/Beltane_N_BELTAN3.tres",
+"use_external/path": "uid://ccc00k48o31ep"
+},
+"N_BELTAN3_R_G": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Materials/Tracks/Beltane/Beltane_N_BELTAN3.tres",
+"use_external/path": "uid://ccc00k48o31ep"
+},
+"N_BELTAN3_R_GL1": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Materials/Tracks/Beltane/Beltane_N_BELTAN3.tres",
+"use_external/path": "uid://ccc00k48o31ep"
+},
+"N_BELTAN3_W_GL1": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Materials/Tracks/Beltane/Beltane_N_BELTAN3.tres",
+"use_external/path": "uid://ccc00k48o31ep"
+},
+"N_BELTAN4_GL2": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Materials/Tracks/Beltane/Beltane_N_BELTAN4.tres",
+"use_external/path": "uid://c0cxol37j4hno"
+},
+"N_BELTAN4_GL3": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Materials/Tracks/Beltane/Beltane_N_BELTAN4.tres",
+"use_external/path": "uid://c0cxol37j4hno"
+},
+"N_BELTAN4_R_G": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Materials/Tracks/Beltane/Beltane_N_BELTAN4.tres",
+"use_external/path": "uid://c0cxol37j4hno"
+},
+"N_BELTAN4_R_GL1": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Materials/Tracks/Beltane/Beltane_N_BELTAN3.tres",
+"use_external/path": "uid://ccc00k48o31ep"
+},
+"N_BELTAN4_W_GL1": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Materials/Tracks/Beltane/Beltane_N_BELTAN4.tres",
+"use_external/path": "uid://c0cxol37j4hno"
+}
+}
+}
 gltf/naming_version=2
 gltf/embedded_image_handling=1
 gltf/texture_map_mode=1

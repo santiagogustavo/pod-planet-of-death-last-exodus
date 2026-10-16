@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://c8mt1nrc3wp1t"]
+
+[ext_resource type="Texture2D" uid="uid://b8rx53yuscw8v" path="res://Textures/Gizmos/checkered-flag.png" id="1_7qqle"]
+[ext_resource type="Script" uid="uid://cgn6bxpj0d5at" path="res://Scripts/Tracks/StartGate.gd" id="1_am0mj"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_am0mj"]
+transparency = 4
+shading_mode = 0
+albedo_color = Color(1, 0.98333335, 0, 1)
+albedo_texture = ExtResource("1_7qqle")
+billboard_mode = 2
+
+[sub_resource type="QuadMesh" id="QuadMesh_77uo8"]
+material = SubResource("StandardMaterial3D_am0mj")
+size = Vector2(2, 2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_77uo8"]
+transparency = 1
+albedo_color = Color(1, 0.9843137, 0, 0.1254902)
+disable_receive_shadows = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_7bb0g"]
+material = SubResource("StandardMaterial3D_77uo8")
+size = Vector3(5, 2, 8)
+
+[node name="StartGate" type="Node3D" unique_id=1242529026]
+script = ExtResource("1_am0mj")
+
+[node name="Gizmo" type="MeshInstance3D" parent="." unique_id=1487992357]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+layers = 2
+mesh = SubResource("QuadMesh_77uo8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Gizmo" unique_id=364304106]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
+layers = 2
+cast_shadow = 0
+mesh = SubResource("BoxMesh_7bb0g")

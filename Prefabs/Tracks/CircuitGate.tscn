@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cauynapb07dmw"]
 
 [ext_resource type="Script" uid="uid://7im3vnc0vcdo" path="res://Scripts/Tracks/CircuitGate.gd" id="1_hcyup"]
+[ext_resource type="Texture2D" uid="uid://c8ow60ujvncer" path="res://Textures/Gizmos/portal.png" id="2_dygse"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_0i88t"]
 size = Vector3(20, 10, 0.1)
@@ -13,6 +14,17 @@ albedo_color = Color(1, 0, 0, 0.2)
 material = SubResource("StandardMaterial3D_ckb4l")
 size = Vector3(20, 10, 0.1)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_youhg"]
+transparency = 4
+shading_mode = 0
+albedo_color = Color(1, 0, 0, 1)
+albedo_texture = ExtResource("2_dygse")
+billboard_mode = 1
+
+[sub_resource type="QuadMesh" id="QuadMesh_0i88t"]
+material = SubResource("StandardMaterial3D_youhg")
+size = Vector2(5, 5)
+
 [node name="CircuitGate" type="Area3D" unique_id=517762930]
 collision_layer = 8
 script = ExtResource("1_hcyup")
@@ -23,3 +35,8 @@ shape = SubResource("BoxShape3D_0i88t")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D" unique_id=1041130471]
 mesh = SubResource("BoxMesh_0i88t")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=407690268]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11, 0)
+cast_shadow = 0
+mesh = SubResource("QuadMesh_0i88t")

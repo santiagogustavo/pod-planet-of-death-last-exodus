@@ -1,0 +1,14 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bpck4ci1lrxnp"]
+
+[sub_resource type="Gradient" id="Gradient_dgixf"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.8039216, 0.77254903, 0.7372549, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_k745c"]
+gradient = SubResource("Gradient_dgixf")
+
+[resource]
+albedo_color = Color(0.8039216, 0.77254903, 0.7372549, 1)
+ao_enabled = true
+ao_light_affect = 1.0
+ao_texture = SubResource("GradientTexture1D_k745c")
