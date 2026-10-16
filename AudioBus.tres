@@ -5,18 +5,62 @@ resource_name = "Reverb"
 damping = 0.25
 wet = 0.1
 
+[sub_resource type="AudioEffectReverb" id="AudioEffectReverb_wyjmj"]
+resource_name = "Reverb"
+wet = 0.3
+
+[sub_resource type="AudioEffectEQ" id="AudioEffectEQ_0dgsk"]
+resource_name = "EQ"
+band_db/3200_hz = 5.0
+band_db/10000_hz = 15.0
+
+[sub_resource type="AudioEffectStereoEnhance" id="AudioEffectStereoEnhance_0dgsk"]
+resource_name = "StereoEnhance"
+pan_pullout = 0.0
+
 [resource]
-bus/1/name = &"Engine"
+bus/0/volume_db = -0.32825565
+bus/1/name = &"Music"
 bus/1/solo = false
 bus/1/mute = false
 bus/1/bypass_fx = false
-bus/1/volume_db = 0.0
+bus/1/volume_db = 0.26724052
 bus/1/send = &"Master"
-bus/2/name = &"Reverb"
+bus/2/name = &"SoundEffects"
 bus/2/solo = false
 bus/2/mute = false
 bus/2/bypass_fx = false
 bus/2/volume_db = 0.0
 bus/2/send = &"Master"
-bus/2/effect/0/effect = SubResource("AudioEffectReverb_0dgsk")
-bus/2/effect/0/enabled = true
+bus/3/name = &"Engine"
+bus/3/solo = false
+bus/3/mute = false
+bus/3/bypass_fx = false
+bus/3/volume_db = -11.957565
+bus/3/send = &"SoundEffects"
+bus/4/name = &"Reverb"
+bus/4/solo = false
+bus/4/mute = false
+bus/4/bypass_fx = false
+bus/4/volume_db = -11.951987
+bus/4/send = &"SoundEffects"
+bus/4/effect/0/effect = SubResource("AudioEffectReverb_0dgsk")
+bus/4/effect/0/enabled = true
+bus/5/name = &"ReverbZone"
+bus/5/solo = false
+bus/5/mute = false
+bus/5/bypass_fx = false
+bus/5/volume_db = -11.951987
+bus/5/send = &"SoundEffects"
+bus/5/effect/0/effect = SubResource("AudioEffectReverb_wyjmj")
+bus/5/effect/0/enabled = true
+bus/6/name = &"Announcer"
+bus/6/solo = false
+bus/6/mute = false
+bus/6/bypass_fx = false
+bus/6/volume_db = -4.7681155
+bus/6/send = &"SoundEffects"
+bus/6/effect/0/effect = SubResource("AudioEffectEQ_0dgsk")
+bus/6/effect/0/enabled = true
+bus/6/effect/1/effect = SubResource("AudioEffectStereoEnhance_0dgsk")
+bus/6/effect/1/enabled = true
