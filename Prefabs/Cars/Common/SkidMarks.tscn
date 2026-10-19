@@ -58,6 +58,7 @@ alpha_curve = SubResource("CurveTexture_dn074")
 render_priority = 1
 transparency = 4
 vertex_color_use_as_albedo = true
+albedo_color = Color(1, 1, 1, 0.39215687)
 albedo_texture = ExtResource("3_dn074")
 billboard_mode = 3
 billboard_keep_scale = true
@@ -71,6 +72,7 @@ material = SubResource("StandardMaterial3D_dn074")
 size = Vector2(3, 3)
 
 [node name="SkidMarks" type="GPUParticles3D" unique_id=556581797]
+cast_shadow = 0
 emitting = false
 amount = 150
 sub_emitter = NodePath("Smoke")
@@ -81,6 +83,7 @@ draw_pass_1 = SubResource("QuadMesh_0i88t")
 script = ExtResource("2_2fsxq")
 
 [node name="Smoke" type="GPUParticles3D" parent="." unique_id=362383074]
+cast_shadow = 0
 emitting = false
 one_shot = true
 randomness = 1.0

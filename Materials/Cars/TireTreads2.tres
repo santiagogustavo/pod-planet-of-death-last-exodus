@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://blsmfgdq8ogd2"]
+
+[ext_resource type="Texture2D" uid="uid://2mom1flyyraa" path="res://Textures/Cars/tire_treads_2.png" id="1_tdjc2"]
+[ext_resource type="Texture2D" uid="uid://bnmdv88j8jg2w" path="res://Textures/Cars/tire_treads_2_occ.png" id="2_axdla"]
+
+[resource]
+albedo_texture = ExtResource("1_tdjc2")
+ao_enabled = true
+ao_light_affect = 1.0
+ao_texture = ExtResource("2_axdla")
+uv1_scale = Vector3(1, 0.1, 1)
