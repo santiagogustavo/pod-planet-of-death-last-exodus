@@ -39,7 +39,7 @@ mesh = SubResource("CylinderMesh_0i88t")
 [node name="SFX" type="AudioStreamPlayer3D" parent="." unique_id=1041044415]
 top_level = true
 stream = ExtResource("2_hnan7")
-volume_db = -2.5
+volume_db = 5.0
 bus = &"Reverb"
 
 [node name="RayCast3D" type="RayCast3D" parent="." unique_id=687900128]

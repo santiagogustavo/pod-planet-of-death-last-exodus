@@ -39,3 +39,7 @@ cast_shadow = 0
 mesh = SubResource("BoxMesh_0i88t")
 
 [node name="NearMissDetector" parent="." unique_id=1762425396 instance=ExtResource("4_hnr8y")]
+
+[node name="FloorDetector" type="RayCast3D" parent="." unique_id=1019365032]
+target_position = Vector3(0, -2, 0)
+collision_mask = 2

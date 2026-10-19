@@ -9,7 +9,8 @@ class_name ChaseCamera
 @export var camera_tilt_x_smooth: float = 5.0
 @export var camera_tilt_y_smooth: float = 5.0
 @export_range(1.0, 10.0, 0.1) var smooth_speed: float = 2.5
-var direction: Vector3 = Vector3.FORWARD
+
+@onready var direction: Vector3 = -global_basis.z
 
 @onready var camera: Camera3D = $Camera3D
 @onready var camera_debug_texture = $Camera3D/CameraEffects/Control/DebugTexture
@@ -25,10 +26,17 @@ var direction: Vector3 = Vector3.FORWARD
 var speed_lines_sampling: float = 0.9
 const COLLISION_SPEED_THRESHOLD: float = 150.0
 
+var debug_view: bool = false
+
 func _ready() -> void:
 	camera_debug_texture.queue_free()
 	car.collided.connect(handle_car_collision)
 	set_speed_lines()
+
+func _process(_delta: float) -> void:
+	if Input.is_action_just_pressed("ui_toggle_debug"):
+		debug_view = !debug_view
+		update_camera_cull_mask()
 
 func _physics_process(delta: float) -> void:
 	update_direction_and_basis(delta)
@@ -72,6 +80,9 @@ func update_camera(delta: float) -> void:
 		)
 	if Input.is_action_pressed("look_back"):
 		rotation_degrees.y = 180
+
+func update_camera_cull_mask() -> void:
+	camera.set_cull_mask_value(VisibilityLayers.DEBUG, debug_view)
 
 func update_camera_collision(delta: float) -> void:
 	camera.global_transform.origin = lerp(

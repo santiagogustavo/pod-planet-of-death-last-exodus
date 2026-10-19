@@ -23,7 +23,7 @@
 
 [sub_resource type="Animation" id="Animation_7n8ah"]
 resource_name = "FadeIn"
-length = 0.19999999999999998
+length = 0.2
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -279,7 +279,7 @@ shader_parameter/clip_warp = false
 shader_parameter/vignette_intensity = 0.4
 shader_parameter/vignette_opacity = 0.5
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_g1fnq"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_k745c"]
 viewport_path = NodePath("SwayContainer/SubViewport/MarginContainer/Control/Map/CRT/MapViewport")
 
 [sub_resource type="Environment" id="Environment_7n8ah"]
@@ -692,7 +692,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset_ratio = Vector2(0.5, 0.5)
-texture = SubResource("ViewportTexture_g1fnq")
+texture = SubResource("ViewportTexture_k745c")
 expand_mode = 1
 
 [node name="MapViewport" type="SubViewport" parent="SwayContainer/SubViewport/MarginContainer/Control/Map/CRT" unique_id=1510109906]

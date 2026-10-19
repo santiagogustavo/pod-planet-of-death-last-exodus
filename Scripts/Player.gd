@@ -8,6 +8,7 @@ class_name Player
 @onready var chase_camera_prefab: PackedScene = load("res://Prefabs/Player/ChaseCamera.tscn")
 @onready var hud_prefab: PackedScene = load("res://Prefabs/Player/PlayerHUD.tscn")
 @onready var near_miss_detector: NearMissDetector = $NearMissDetector
+@onready var floor_detector: RayCast3D = $FloorDetector
 
 var player_bot_ai: PlayerBotAI
 
@@ -33,8 +34,8 @@ func _ready() -> void:
 	car_instance.gate_passed.connect(handle_gate_passed)
 	add_child(car_instance)
 	var start_gate: StartGate = GameManager.race.track.start_gates[start_gate_index]
-	car_instance.global_position = start_gate.global_position
-	car_instance.global_rotation = start_gate.global_rotation
+	global_position = start_gate.global_position
+	global_rotation = start_gate.global_rotation
 	if player_details.player_type == PlayerDetails.PlayerType.Bot:
 		player_bot_ai = load("res://Prefabs/Player/PlayerBotAI.tscn").instantiate()
 		car_instance.add_child(player_bot_ai)

@@ -49,6 +49,8 @@ const TIME_TO_TRIGGER_RESET: float = 2.0
 
 func _ready() -> void:
 	can_sleep = false
+	engine_force = 0.0
+	brake = max_brake
 	if custom_running_sfx:
 		running_sfx.stream = custom_running_sfx
 		running_sfx.play()
@@ -170,10 +172,14 @@ func update_brake(is_braking: bool) -> void:
 	brake = brake_force
 
 func update_brake_lights_and_sfx() -> void:
-	var is_braking: bool = brake > 0.0 and engine_force > 0.0
+	var is_braking: bool = brake > 0.0 and is_on_ground()
 	for brake_light in brake_lights:
 		brake_light.visible = is_braking
-	if is_braking and is_on_ground() and !brake_sfx.playing:
+	if (
+		is_braking
+		and !brake_sfx.playing
+		and GameManager.race.status == RaceManager.RaceStatus.Started
+	):
 		brake_sfx.play()
 
 func update_engine_status() -> void:
