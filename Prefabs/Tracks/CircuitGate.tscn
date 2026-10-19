@@ -8,6 +8,7 @@ size = Vector3(20, 10, 0.1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ckb4l"]
 transparency = 1
+shading_mode = 0
 albedo_color = Color(1, 0, 0, 0.2)
 
 [sub_resource type="BoxMesh" id="BoxMesh_0i88t"]
@@ -34,9 +35,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
 shape = SubResource("BoxShape3D_0i88t")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D" unique_id=1041130471]
+layers = 2
 mesh = SubResource("BoxMesh_0i88t")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=407690268]
+[node name="Gizmo" type="MeshInstance3D" parent="." unique_id=407690268]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11, 0)
+layers = 2
 cast_shadow = 0
 mesh = SubResource("QuadMesh_0i88t")

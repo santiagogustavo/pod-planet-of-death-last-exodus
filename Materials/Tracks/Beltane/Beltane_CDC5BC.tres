@@ -8,6 +8,7 @@ colors = PackedColorArray(0.8039216, 0.77254903, 0.7372549, 1)
 gradient = SubResource("Gradient_dgixf")
 
 [resource]
+cull_mode = 2
 albedo_color = Color(0.8039216, 0.77254903, 0.7372549, 1)
 ao_enabled = true
 ao_light_affect = 1.0

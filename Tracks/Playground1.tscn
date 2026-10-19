@@ -13,6 +13,7 @@
 [ext_resource type="Resource" uid="uid://db76wikpidtqx" path="res://Resources/Cars/Arc.tres" id="8_u5uis"]
 [ext_resource type="Texture2D" uid="uid://bs1dsqnsfaehm" path="res://Textures/UI/Avatars/avatar_24.png" id="8_wjxlm"]
 [ext_resource type="PackedScene" uid="uid://46gclodm1vd1" path="res://Prefabs/Tracks/DirectionArrows.tscn" id="10_wjxlm"]
+[ext_resource type="Script" uid="uid://c4dlira2rncbm" path="res://Scripts/Tracks/RacingLine.gd" id="14_p2v43"]
 [ext_resource type="PackedScene" uid="uid://c8mt1nrc3wp1t" path="res://Prefabs/Tracks/StartGate.tscn" id="15_p2v43"]
 
 [sub_resource type="Resource" id="Resource_aem2t"]
@@ -52,13 +53,6 @@ glow_enabled = true
 glow_bloom = 0.3
 glow_blend_mode = 0
 
-[sub_resource type="NavigationMesh" id="NavigationMesh_ei2sh"]
-vertices = PackedVector3Array(-147, 0.29960513, -23.25, -32.5, 0.29960513, -23.25, -32.5, 0.29960513, -25.25, -31.75, 0.29960513, -26.75, -29, 0.29960513, -28, -29, 0.29960513, -147, -147, 0.29960513, -147, -25.25, 0.29960513, -25.25, -25.25, 0.29960513, -24, -8, 0.29960513, -24.25, -26, 0.29960513, -26.75, -8, 0.29960513, -32.75, -28, 0.29960513, -28, -6.75, 0.29960513, -34.75, -5.25, 0.29960513, -35.5, -3.25, 0.29960513, -147, -3.25, 0.29960513, -35.5, 3.5, 0.29960513, -35.5, 3.5, 0.29960513, -147, 5.5, 0.29960513, -35.5, 7, 0.29960513, -34.75, 8.25, 0.29960513, -32.75, 147, 0.29960513, -31.5, 147, 0.29960513, -147, 8.25, 0.29960513, -31.25, 19, 4.5496054, -78, 19, 4.5496054, -34, 23, 4.5496054, -34, 23, 4.5496054, -78, 8.25, 0.29960513, -24.5, 147, 0.29960513, -24.25, 2, 0.54960513, -23, 2, 2.2996051, -29, -2, 2.2996051, -29, -2, 0.54960513, -23, 7.5, 0.29960513, -21.5, -25.25, 0.29960513, 25.25, -26.75, 0.29960513, 27.5, -29, 0.29960513, 147, 147, 0.29960513, 147, 2.75, 0.29960513, -21.5, -3, 0.29960513, -21.25, 4.75, 0.29960513, -20.25, -5.5, 0.29960513, -20.5, -29, 0.29960513, 28.25, -8, 0.29960513, -23, -7, 0.29960513, -21.25, 8.25, 0.29960513, -23, -147, 0.29960513, 23.5, -32.5, 0.29960513, 23.5, -32.5, 0.29960513, 25.5, -31.75, 0.29960513, 27, -147, 0.29960513, 147)
-polygons = [PackedInt32Array(2, 1, 0), PackedInt32Array(0, 3, 2), PackedInt32Array(3, 0, 4), PackedInt32Array(4, 0, 5), PackedInt32Array(5, 0, 6), PackedInt32Array(9, 8, 7), PackedInt32Array(10, 9, 7), PackedInt32Array(10, 12, 9), PackedInt32Array(9, 12, 11), PackedInt32Array(13, 4, 14), PackedInt32Array(14, 4, 5), PackedInt32Array(14, 5, 15), PackedInt32Array(12, 4, 11), PackedInt32Array(11, 4, 13), PackedInt32Array(15, 16, 14), PackedInt32Array(15, 18, 16), PackedInt32Array(16, 18, 17), PackedInt32Array(19, 17, 18), PackedInt32Array(18, 20, 19), PackedInt32Array(20, 18, 21), PackedInt32Array(21, 18, 22), PackedInt32Array(22, 18, 23), PackedInt32Array(22, 24, 21), PackedInt32Array(28, 27, 25), PackedInt32Array(25, 27, 26), PackedInt32Array(24, 22, 29), PackedInt32Array(29, 22, 30), PackedInt32Array(34, 33, 31), PackedInt32Array(31, 33, 32), PackedInt32Array(36, 35, 37), PackedInt32Array(37, 35, 38), PackedInt32Array(38, 35, 30), PackedInt32Array(38, 30, 39), PackedInt32Array(31, 40, 34), PackedInt32Array(34, 40, 41), PackedInt32Array(36, 42, 35), PackedInt32Array(40, 42, 41), PackedInt32Array(41, 42, 43), PackedInt32Array(43, 42, 36), PackedInt32Array(38, 44, 37), PackedInt32Array(8, 9, 45), PackedInt32Array(8, 45, 46), PackedInt32Array(46, 43, 8), PackedInt32Array(8, 43, 36), PackedInt32Array(35, 47, 30), PackedInt32Array(47, 29, 30), PackedInt32Array(0, 1, 48), PackedInt32Array(48, 1, 49), PackedInt32Array(48, 49, 50), PackedInt32Array(48, 50, 51), PackedInt32Array(51, 44, 48), PackedInt32Array(48, 44, 38), PackedInt32Array(48, 38, 52)]
-geometry_parsed_geometry_type = 1
-geometry_collision_mask = 4278190086
-agent_radius = 3.0
-
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ks1um"]
 points = PackedVector3Array(-150, 0, -150, -150, 0, 150, 150, 0, -150, 150, 0, 150)
 
@@ -89,6 +83,18 @@ size = Vector3(10, 0.5, 50)
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_iv1r6"]
 points = PackedVector3Array(5, 0.25, 25, 5, -0.25, 25, 5, 0.25, -25, -5, 0.25, 25, -5, -0.25, 25, 5, -0.25, -25, -5, 0.25, -25, -5, -0.25, -25)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_p2v43"]
+size = Vector3(47, 10, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ckb4l"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(1, 0, 0, 0.2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_xtlau"]
+material = SubResource("StandardMaterial3D_ckb4l")
+size = Vector3(46, 10, 0.1)
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_0i88t"]
 size = Vector3(10, 4, 50)
 
@@ -104,12 +110,29 @@ point_count = 4
 shading_mode = 0
 albedo_color = Color(0.35, 0.23916666, 0, 1)
 
-[node name="Playground1" type="Node3D" unique_id=126344257 node_paths=PackedStringArray("start_gates", "circuit_gates", "navigation_region")]
+[sub_resource type="Curve3D" id="Curve3D_p2v43"]
+closed = true
+_data = {
+"points": PackedVector3Array(-3, 0, 75, 3, 0, -75, 0.268, 0, -25.896, 15, 0, -1, -15, 0, 1, -31.127, 0, -103.95, 2.2, 0, -22, -2.2, 0, 22, -66.445, 0, -49.576, -23.6, 0, -2.2, 23.6, 0, 2.2, -42.186, 0, 47.141),
+"tilts": PackedFloat32Array(0, 0, 0, 0)
+}
+point_count = 4
+
+[sub_resource type="Curve3D" id="Curve3D_xtlau"]
+closed = true
+_data = {
+"points": PackedVector3Array(0, 0, 64, 0, 0, -64, 19.691, 0, -42.275, 19, 0, -19, -19, 0, 19, -39.688, 0, -92.845, 3, 0, -28, -3, 0, 28, -64.527, 0, -27.2, -25, 0, 2, 25, 0, -2, -31.29, 0, 40.796),
+"tilts": PackedFloat32Array(0, 0, 0, 0)
+}
+point_count = 4
+
+[node name="Playground1" type="Node3D" unique_id=126344257 node_paths=PackedStringArray("start_gates", "circuit_gates", "default_racing_line", "racing_lines")]
 script = ExtResource("1_064l1")
 track_name = "Playground 1"
 start_gates = [NodePath("StartGate"), NodePath("StartGate2"), NodePath("StartGate3")]
 circuit_gates = [NodePath("CircuitGate"), NodePath("CircuitGate2"), NodePath("CircuitGate3")]
-navigation_region = NodePath("NavigationRegion3D")
+default_racing_line = NodePath("RacingLine")
+racing_lines = [NodePath("RacingLine"), NodePath("RacingLine2")]
 metadata/_custom_type_script = "uid://ck8p1x0h0qtk"
 
 [node name="RaceManager" type="Node" parent="." unique_id=534910278 node_paths=PackedStringArray("track")]
@@ -126,65 +149,56 @@ transform = Transform3D(0.9659258, -1.131334e-08, 0.25881904, -0.25881904, -4.22
 light_energy = 0.1
 shadow_enabled = true
 
-[node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=1685857376]
-navigation_mesh = SubResource("NavigationMesh_ei2sh")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="NavigationRegion3D" unique_id=1352415093]
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1352415093]
 collision_layer = 2
 collision_mask = 0
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/StaticBody3D" unique_id=330511515]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=330511515]
 shape = SubResource("ConvexPolygonShape3D_ks1um")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/StaticBody3D/CollisionShape3D" unique_id=614637651]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D/CollisionShape3D" unique_id=614637651]
 mesh = SubResource("QuadMesh_mnpnk")
 
-[node name="StaticBody3D2" type="StaticBody3D" parent="NavigationRegion3D" unique_id=446141770]
+[node name="StaticBody3D2" type="StaticBody3D" parent="." unique_id=446141770]
 transform = Transform3D(1, 0, 0, 0, 0.9659258, -0.25881904, 0, 0.25881904, 0.9659258, 0, 1, -27)
 collision_layer = 2
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/StaticBody3D2" unique_id=258109228]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2" unique_id=258109228]
 transform = Transform3D(1, 0, 0, 0, 1.0000012, 0, 0, 0, 1.0000012, 0, -1.2500005, 0)
 mesh = SubResource("BoxMesh_0i88t")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/StaticBody3D2" unique_id=1224537272]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2" unique_id=1224537272]
 transform = Transform3D(1, 0, 0, 0, 1.0000012, 0, 0, 0, 1.0000012, 0, -1.2500005, 0)
 shape = SubResource("ConvexPolygonShape3D_0j0tx")
 
-[node name="StaticBody3D3" type="StaticBody3D" parent="NavigationRegion3D" unique_id=1498483815]
+[node name="StaticBody3D3" type="StaticBody3D" parent="." unique_id=1498483815]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29, 5, 0)
 collision_layer = 4
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/StaticBody3D3" unique_id=1386908436]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D3" unique_id=1386908436]
 mesh = SubResource("BoxMesh_ckb4l")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/StaticBody3D3" unique_id=1214353785]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D3" unique_id=1214353785]
 shape = SubResource("ConvexPolygonShape3D_l1obr")
 
-[node name="StaticBody3D4" type="StaticBody3D" parent="NavigationRegion3D" unique_id=86212472]
+[node name="StaticBody3D4" type="StaticBody3D" parent="." unique_id=86212472]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 4, -56)
 collision_layer = 2
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/StaticBody3D4" unique_id=1912355848]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D4" unique_id=1912355848]
 mesh = SubResource("BoxMesh_3si4x")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/StaticBody3D4" unique_id=1929950161]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D4" unique_id=1929950161]
 shape = SubResource("ConvexPolygonShape3D_iv1r6")
 
-[node name="NavigationLink3D" type="NavigationLink3D" parent="NavigationRegion3D" unique_id=917018149]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -29)
-bidirectional = false
-end_position = Vector3(0, 0, -33)
-travel_cost = 0.0
-
-[node name="NavigationLink3D2" type="NavigationLink3D" parent="NavigationRegion3D" unique_id=2041584295]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, -31)
-bidirectional = false
-end_position = Vector3(0, 0, -50)
-travel_cost = 0.0
-
 [node name="CircuitGate" parent="." unique_id=517762930 instance=ExtResource("8_aem2t")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, -10)
+
+[node name="CollisionShape3D" parent="CircuitGate" index="0" unique_id=1241356675]
+shape = SubResource("BoxShape3D_p2v43")
+
+[node name="MeshInstance3D" parent="CircuitGate/CollisionShape3D" index="0" unique_id=1041130471]
+mesh = SubResource("BoxMesh_xtlau")
 
 [node name="CircuitGate2" parent="." unique_id=1192715697 instance=ExtResource("8_aem2t")]
 transform = Transform3D(0, 0, 0.99999994, 0, 1, 0, -0.99999994, 0, 0, -31.999996, 0, -104)
@@ -206,7 +220,7 @@ reverb_bus_uniformity = 1.0
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ReverbZone" unique_id=1391460453]
 shape = SubResource("BoxShape3D_0i88t")
 
-[node name="Path3D" type="Path3D" parent="." unique_id=720626260]
+[node name="Path3D" type="Path3D" parent="." unique_id=2001559328]
 curve = SubResource("Curve3D_g1fnq")
 
 [node name="CSGPolygon3D" type="CSGPolygon3D" parent="." unique_id=1134652650]
@@ -234,4 +248,17 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 0, 13)
 [node name="StartGate3" parent="." unique_id=1528589681 instance=ExtResource("15_p2v43")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 21)
 
+[node name="RacingLine" type="Path3D" parent="." unique_id=582743455]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+curve = SubResource("Curve3D_p2v43")
+script = ExtResource("14_p2v43")
+metadata/_custom_type_script = "uid://c4dlira2rncbm"
+
+[node name="RacingLine2" type="Path3D" parent="." unique_id=1389636404]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+curve = SubResource("Curve3D_xtlau")
+script = ExtResource("14_p2v43")
+metadata/_custom_type_script = "uid://c4dlira2rncbm"
+
+[editable path="CircuitGate"]
 [editable path="DirectionArrows"]

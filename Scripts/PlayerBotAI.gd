@@ -1,188 +1,421 @@
 extends Node3D
 class_name PlayerBotAI
 
-enum Difficulty { EASY, MEDIUM, HARD }
+enum Difficulty {
+	EASY,
+	MEDIUM,
+	HARD
+}
 
-@export_category("Dificuldade")
-@export var difficulty: Difficulty = Difficulty.HARD
-
-@export_category("Configurações Base")
+@export_category("References")
+@export var car: Car
 @export var player_input: PlayerInput
+
+@export_category("AI")
+@export var difficulty: Difficulty = Difficulty.MEDIUM
 @export var max_steer_angle: float = 0.6
 @export var target_reach_radius: float = 5.0
 @export var steering_speed: float = 5.0
 @export var speed_steering_reduction: float = 0.005
 
-@onready var navigation_agent: NavigationAgent3D = $NavigationAgent3D
-@onready var car: Car = get_parent()
+@export_category("Racing Line")
+@export var racing_line_look_ahead: float = 8.0
 
-var current_gate: int = 0
-var dynamic_safe_velocity: Vector3 = Vector3.ZERO
+@export_category("Reverse / Stuck")
+@export var stuck_speed_threshold: float = 0.8
+@export var time_to_trigger_reverse: float = 1.5
+@export var reverse_duration: float = 1.4
 
-# --- MODIFICADORES DE DIFICULDADE (Calculados no _ready) ---
-var speed_modifier: float = 1.0
-var reaction_delay: float = 0.0
-var error_offset: float = 0.0
-var reaction_timer: float = 0.0
-var current_target_offset: Vector3 = Vector3.ZERO
+@export_category("Airborne")
+@export var airborne_steering_factor: float = 0.5
 
-# --- SISTEMA DE RÉ (ANTI-FLICKER ATUALIZADO) ---
+@export_category("Steering Smoothing")
+@export var steering_smoothing: float = 7.0
+@export var steering_deadzone: float = 0.02
+@export var max_steering_change: float = 0.12
+
+var current_gate: int = 1
+
+var current_racing_line: RacingLine
+var racing_offset: float = 0.0
+
 var stuck_timer: float = 0.0
-var is_reversing: bool = false
 var reverse_timer: float = 0.0
-const STUCK_SPEED_THRESHOLD: float = 0.8
-const TIME_TO_TRIGGER_REVERSE: float = 1.5
-const REVERSE_DURATION: float = 1.4 
+var is_reversing: bool = false
+
+var difficulty_speed_multiplier: float = 1.0
+var difficulty_steering_assist: float = 0.0
+var difficulty_reverse_delay: float = 1.0
 
 func _ready() -> void:
-	navigation_agent.target_desired_distance = 6.0
-	navigation_agent.path_desired_distance = 4.0 
-	navigation_agent.path_max_distance = 5.0   
-	navigation_agent.velocity_computed.connect(on_navigation_agent_3d_velocity_computed)
-	_setup_difficulty_parameters()
-	callable_num_frames_delay.call_deferred()
+	_setup_difficulty()
+	if car == null:
+		car = get_parent() as Car
+	call_deferred("_initialize_ai")
 
-func _setup_difficulty_parameters() -> void:
-	match difficulty:
-		Difficulty.EASY:
-			speed_modifier = 0.65       # 35% mais lenta que o potencial máximo do motor
-			reaction_delay = 0.25       # Demora 250ms para recalcular desvios/trajetória
-			error_offset = 2.5          # Erra o centro do gate por até 2.5 metros (faz curvas abertas)
-		Difficulty.MEDIUM:
-			speed_modifier = 0.85       # 15% mais lenta
-			reaction_delay = 0.1        # Demora 100ms
-			error_offset = 1.0          # Erra o centro por até 1 metro
-		Difficulty.HARD:
-			speed_modifier = 1.0        # Usa 100% da força do motor
-			reaction_delay = 0.0        # Resposta instantânea frame a frame
-			error_offset = 0.0          # Trajetória perfeita pelo centro do gate
+func _initialize_ai() -> void:
+	if (
+		car == null
+		or GameManager.race == null
+		or GameManager.race.track == null
+	):
+		return
 
-func callable_num_frames_delay() -> void:
-	await get_tree().physics_frame
-	set_next_gate_target()
+	# Gate 0 registra a volta.
+	# O primeiro destino da corrida é sempre Gate 1.
+	current_gate = 1
 
-func car_custom_integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
-	if car.need_physics_reset:
-		var reset_position = car.global_position + Vector3(0, 0.5, 0)
-		var new_transform = Transform3D(Basis.IDENTITY, reset_position)
-		
-		if current_gate != -1 and not GameManager.race.track.circuit_gates.is_empty():
-			var target_node = GameManager.race.track.circuit_gates[current_gate] as Node3D
-			var look_target = target_node.global_position
-			look_target.y = reset_position.y
-			if reset_position.distance_to(look_target) > 1.0:
-				new_transform = new_transform.looking_at(look_target, Vector3.UP)
-				new_transform.basis = new_transform.basis.rotated(Vector3.UP, PI)
+	select_racing_line()
 
-		stuck_timer = 0.0
-		is_reversing = false
+	if current_racing_line != null:
+		racing_offset = current_racing_line.find_initial_offset_for_gate(
+			car.global_position,
+			current_gate
+		)
 
 func _physics_process(delta: float) -> void:
 	if (
-		GameManager.race.status != RaceManager.RaceStatus.Started
-		or GameManager.race.track.circuit_gates.is_empty()
-		or current_gate == -1
+		car == null
+		or GameManager.race == null
+		or GameManager.race.track == null
+		or GameManager.race.status != RaceManager.RaceStatus.Started
 	):
 		return
-	
-	# 1. VERIFICAÇÃO DE PONTA-CABEÇA (Anti-Sleep)
-	if car.need_physics_reset:
+
+	if GameManager.race.track == null:
 		return
 
-	var current_speed = car.linear_velocity.length()
-	var dynamic_steer_speed = steering_speed * (3.0 if current_speed < 1.5 else 1.0)
+	# Não consideramos o carro travado enquanto estiver no ar.
+	if not car.is_on_ground():
+		_handle_airborne(delta)
+		return
 
-	# --- ATUALIZAÇÃO DO REACTION DELAY E OFFSET DE ERRO ---
-	reaction_timer += delta
-	if reaction_timer >= reaction_delay:
-		reaction_timer = 0.0
-		if error_offset > 0.0:
-			# Gera um desvio aleatório horizontal para simular imperfeição na curva
-			var random_dir = car.global_transform.basis.x * randf_range(-error_offset, error_offset)
-			current_target_offset = random_dir
-		else:
-			current_target_offset = Vector3.ZERO
-
-	# 2. CÁLCULO DE AGENTE DE NAVEGAÇÃO
-	var next_path_position: Vector3 = navigation_agent.get_next_path_position() + current_target_offset
-	# Dificuldade afeta diretamente a velocidade final desejada
-	var target_speed = max(12.0, (car.engine_power * speed_modifier) / 12.0)
-	
-	var desired_direction = (next_path_position - car.global_position).normalized()
-	var desired_velocity = desired_direction * target_speed
-	
-	navigation_agent.set_velocity(desired_velocity)
-
-	var effective_velocity = dynamic_safe_velocity if dynamic_safe_velocity.length() > 0.5 else desired_velocity
-	var local_safe_pos = car.to_local(car.global_position + effective_velocity)
-	var forward_vector = -car.global_transform.basis.z
-	var alignment_factor = forward_vector.dot(effective_velocity.normalized())
-
-	# 3. COMPORTAMENTO DA MARCHA RÉ BLINDADO
 	if is_reversing:
-		reverse_timer -= delta
-		if reverse_timer <= 0:
-			is_reversing = false
-			stuck_timer = 0.0
-		else:
-			car.engine_force = -car.engine_power * 0.8 * speed_modifier
-			car.brake = 0.0
-			var steer_dir = 1.0 if local_safe_pos.x > 0 else -1.0
-			car.steering = move_toward(car.steering, max_steer_angle * 0.8 * steer_dir, dynamic_steer_speed * delta)
-			return 
+		_handle_reverse(delta)
+		return
 
-	# 4. MONITORAMENTO DE TRAVAMENTO
-	var point_is_behind = alignment_factor < -0.4
-	var trying_to_move = abs(car.engine_force) > 50.0 or car.brake > 10.0
-	
-	if current_speed < 0.4 and (trying_to_move or point_is_behind):
-		stuck_timer += delta
-		if stuck_timer >= TIME_TO_TRIGGER_REVERSE:
-			is_reversing = true
-			reverse_timer = REVERSE_DURATION
-			car.brake = 0.0
-			return
-	else:
-		stuck_timer = max(0.0, stuck_timer - delta * 2)
+	_handle_racing(delta)
 
-	# 5. CÁLCULO DE DIREÇÃO CONVENCIONAL
-	var angle_to_target = atan2(-local_safe_pos.x, -local_safe_pos.z)
-	var current_max_steer = max_steer_angle / (1.0 + current_speed * speed_steering_reduction)
-	var desired_steering = clamp(angle_to_target, -current_max_steer, current_max_steer)
-	car.steering = move_toward(car.steering, desired_steering, dynamic_steer_speed * delta)
-	
-	# 6. ACELERAÇÃO FLUIDA E AJUSTE ANTICOMPETIÇÃO
-	var curve_smooth_factor = clamp(alignment_factor, 0.3, 1.0)
-	
-	# REGRA DE CORREÇÃO AGRESSIVA (Lento)
-	if current_speed < 3.5:
-		car.engine_force = car.engine_power * 0.8 * speed_modifier
-		car.brake = 0.0
-	
-	# MOVIMENTAÇÃO NORMAL EM ALTA VELOCIDADE
-	elif alignment_factor > -0.2:
-		var target_engine_force = car.engine_power * curve_smooth_factor * speed_modifier
-		car.engine_force = move_toward(car.engine_force, target_engine_force, car.engine_power * delta)
-		
-		if current_speed > 12.0 and alignment_factor < 0.6:
-			var brake_intensity = (1.0 - alignment_factor) * car.brake_force
-			car.brake = move_toward(car.brake, brake_intensity, 50.0 * delta)
-		else:
-			car.brake = move_toward(car.brake, 0.0, 100.0 * delta)
-	
-	# CURVA EXTREMA EM ALTA VELOCIDADE
+# ============================================================
+# RACING
+# ============================================================
+
+func _handle_racing(delta: float) -> void:
+	if current_racing_line == null:
+		select_racing_line()
+
+	if current_racing_line == null:
+		_apply_basic_fallback_controls()
+		return
+
+	# --------------------------------------------------------
+	# Encontra o ponto mais próximo SOMENTE à frente dentro
+	# do segmento atual.
+	# --------------------------------------------------------
+
+	var segment_end_offset = current_racing_line.get_segment_end_offset(
+		current_gate
+	)
+
+	var closest_offset = current_racing_line.find_closest_offset_forward(
+		car.global_position,
+		racing_offset,
+		segment_end_offset
+	)
+
+	if closest_offset >= 0.0:
+		racing_offset = closest_offset
+
+	# --------------------------------------------------------
+	# IMPORTANTE:
+	# A assinatura é:
+	#
+	# get_target_for_gate_segment(
+	#     current_offset,
+	#     current_gate,
+	#     look_ahead
+	# )
+	# --------------------------------------------------------
+
+	var target_result = current_racing_line.get_target_for_gate_segment(
+		racing_offset,
+		current_gate,
+		racing_line_look_ahead
+	)
+
+	if target_result.is_empty():
+		_apply_basic_fallback_controls()
+		return
+
+	var target_position: Vector3 = target_result.position
+
+	_steer_towards(
+		target_position,
+		delta
+	)
+	_handle_acceleration()
+	_check_if_stuck(delta)
+
+# ============================================================
+# RACING LINE SELECTION
+# ============================================================
+
+func select_racing_line() -> void:
+	if GameManager.race == null:
+		return
+
+	var track: Track = GameManager.race.track
+
+	if track == null:
+		return
+
+	var available_lines: Array[RacingLine] = (
+		track.get_racing_lines_for_gate(current_gate)
+	)
+
+	# --------------------------------------------------------
+	# Se não houver múltiplas linhas, usa a principal.
+	# --------------------------------------------------------
+
+	if available_lines.is_empty():
+		current_racing_line = track.default_racing_line
+		return
+
+	var best_line: RacingLine = null
+	var best_distance: float = INF
+
+	for line in available_lines:
+
+		if line == null:
+			continue
+
+		var result = line.get_closest_point_to_car(
+			car.global_position,
+			current_gate
+		)
+
+		if result.is_empty():
+			continue
+
+		var distance: float = result.distance
+
+		if distance < best_distance:
+			best_distance = distance
+			best_line = line
+
+	if best_line != null:
+		current_racing_line = best_line
+
+# ============================================================
+# GATE
+# ============================================================
+
+func update_gate_target(gate_index: int) -> void:
+	if (
+		GameManager.race == null
+		or GameManager.race.track == null
+	):
+		return
+
+	current_gate = gate_index
+
+	# Nova seleção somente ao entrar em um novo segmento.
+	select_racing_line()
+
+	if current_racing_line != null:
+		racing_offset = current_racing_line.find_initial_offset_for_gate(
+			car.global_position,
+			current_gate
+		)
+
+
+func set_next_gate_target(gate_index: int) -> void:
+	update_gate_target(gate_index)
+
+# ============================================================
+# STEERING
+# ============================================================
+
+func _steer_towards(target_position: Vector3, delta: float) -> void:
+	var local_target := car.to_local(target_position)
+	local_target.y = 0.0
+
+	if local_target.length_squared() <= 0.001:
+		return
+
+	var angle_to_target = atan2(
+		-local_target.x,
+		-local_target.z
+	)
+
+	var desired_steering = clamp(
+		angle_to_target / deg_to_rad(45.0),
+		-1.0,
+		1.0
+	)
+
+	if abs(desired_steering) < steering_deadzone:
+		desired_steering = 0.0
+
+	var smoothing_speed := steering_smoothing
+
+	car.steering = move_toward(
+		car.steering,
+		desired_steering,
+		smoothing_speed * delta
+	)
+
+# ============================================================
+# ACCELERATION
+# ============================================================
+
+func _handle_acceleration() -> void:
+	if is_reversing:
+		return
+
+	var speed = car.linear_velocity.length()
+
+	var target_speed = (
+		car.max_speed *
+		difficulty_speed_multiplier
+	)
+
+	if speed < target_speed:
+		car.engine_force = car.engine_power
 	else:
 		car.engine_force = 0.0
-		car.brake = move_toward(car.brake, 40.0, 120.0 * delta)
 
-func update_gate_target(gate: int) -> void:
-	current_gate = gate
-	set_next_gate_target()
+	car.brake = 0.0
 
-func set_next_gate_target() -> void:
-	if GameManager.race.track.circuit_gates.is_empty(): return
-	var target_node = GameManager.race.track.circuit_gates[current_gate]
-	navigation_agent.target_position = target_node.global_position
+# ============================================================
+# STUCK / REVERSE
+# ============================================================
 
-func on_navigation_agent_3d_velocity_computed(safe_velocity: Vector3) -> void:
-	dynamic_safe_velocity = safe_velocity
+func _check_if_stuck(delta: float) -> void:
+	var speed = car.linear_velocity.length()
+
+	if speed < stuck_speed_threshold:
+		stuck_timer += delta
+	else:
+		stuck_timer = 0.0
+
+	if stuck_timer >= (
+		time_to_trigger_reverse *
+		difficulty_reverse_delay
+	):
+		_start_reverse()
+
+func _start_reverse() -> void:
+	if is_reversing:
+		return
+
+	is_reversing = true
+	reverse_timer = reverse_duration
+	stuck_timer = 0.0
+
+	car.engine_force = 0.0
+	car.brake = 1.0
+
+func _handle_reverse(delta: float) -> void:
+	reverse_timer -= delta
+
+	car.steering = move_toward(
+		car.steering,
+		0.0,
+		steering_speed * delta
+	)
+
+	car.brake = 0.0
+
+	car.engine_force = -abs(
+		car.engine_power
+	)
+
+	if reverse_timer <= 0.0:
+
+		is_reversing = false
+		stuck_timer = 0.0
+
+# ============================================================
+# AIRBORNE
+# ============================================================
+
+func _handle_airborne(delta: float) -> void:
+	stuck_timer = 0.0
+
+	if current_racing_line == null:
+		return
+
+	var target_result = (
+		current_racing_line.get_target_for_gate_segment(
+			racing_offset,
+			current_gate,
+			racing_line_look_ahead
+		)
+	)
+
+	if target_result.is_empty():
+		return
+
+	var target_position: Vector3 = (
+		target_result.position
+	)
+
+	var local_target = car.to_local(
+		target_position
+	)
+
+	local_target.y = 0.0
+
+	var angle_to_target = atan2(
+		-local_target.x,
+		-local_target.z
+	)
+
+	var steer_amount = clamp(
+		angle_to_target / max_steer_angle,
+		-1.0,
+		1.0
+	)
+
+	steer_amount *= airborne_steering_factor
+
+	car.steering = move_toward(
+		car.steering,
+		steer_amount,
+		steering_speed * delta
+	)
+
+	car.brake = 0.0
+
+# ============================================================
+# FALLBACK
+# ============================================================
+
+func _apply_basic_fallback_controls() -> void:
+	car.steering = move_toward(
+		car.steering,
+		0.0,
+		0.1
+	)
+
+	car.brake = 0.0
+
+# ============================================================
+# DIFFICULTY
+# ============================================================
+
+func _setup_difficulty() -> void:
+	match difficulty:
+		Difficulty.EASY:
+			difficulty_speed_multiplier = 0.65
+			difficulty_steering_assist = 0.25
+			difficulty_reverse_delay = 2.5
+		Difficulty.MEDIUM:
+			difficulty_speed_multiplier = 0.85
+			difficulty_steering_assist = 0.1
+			difficulty_reverse_delay = 1.0
+		Difficulty.HARD:
+			difficulty_speed_multiplier = 1.0
+			difficulty_steering_assist = 0.0
+			difficulty_reverse_delay = 0.0
