@@ -4,11 +4,14 @@ class_name Car
 signal gate_passed
 signal collided
 
+@export_category("Properties")
 @export var player_input: PlayerInput
 @export var max_speed: float = 300.0
 @export var engine_power = 500
 @export var brake_force = 10
 @export var max_brake: float = 50.0
+@export var steering_smoothness: float = 3.5
+
 @export var wheels: Array[VehicleWheel3D] = []
 @export var brake_lights: Array[OmniLight3D] = []
 @export var skid_marks: Array[SkidMarks] = []
@@ -91,36 +94,109 @@ func _physics_process(delta: float) -> void:
 
 func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
 	var ai_node = get_node_or_null("PlayerBotAI")
+
 	if ai_node and ai_node.has_method("car_custom_integrate_forces"):
 		ai_node.car_custom_integrate_forces(state)
 
 	if need_physics_reset:
-		var reset_position = global_position + Vector3(0, 0.5, 0)
-		var new_transform = Transform3D(Basis.IDENTITY, reset_position)
-		
-		var chase_camera_node = get_node_or_null("ChaseCamera")
-		if chase_camera_node:
-			var look_target = (chase_camera_node as ChaseCamera).camera.global_position
-			look_target.y = reset_position.y
-			if reset_position.distance_to(look_target) > 1.0:
-				new_transform = new_transform.looking_at(look_target, Vector3.UP)
-				new_transform.basis = new_transform.basis.rotated(Vector3.UP, PI)
-		state.transform = new_transform
-		state.linear_velocity = Vector3.ZERO
+		var parent_player: Player = get_parent()
+
+		var default_line: RacingLine = (
+			GameManager.race.track.default_racing_line
+		)
+
+		if default_line != null and default_line.is_initialized:
+			var closest_data = default_line.get_closest_point_to_car(
+				global_position,
+				parent_player.current_gate
+			)
+
+			if not closest_data.is_empty():
+				var reset_position: Vector3 = (
+					closest_data.position +
+					Vector3.UP * 0.5
+				)
+
+				var reset_offset: float = closest_data.offset
+
+				# Direção real da pista neste ponto da RacingLine.
+				var track_direction = (
+					default_line.get_direction_at_offset(
+						reset_offset
+					)
+				)
+
+				track_direction.y = 0.0
+
+				if track_direction.length_squared() > 0.001:
+					track_direction = track_direction.normalized()
+
+					var new_basis = Basis.looking_at(
+						track_direction,
+						Vector3.UP
+					)
+
+					state.transform = Transform3D(
+						new_basis,
+						reset_position
+					)
+
+					var chase_camera_node = get_node_or_null("ChaseCamera")
+
+					if chase_camera_node:
+						var chase_camera = chase_camera_node as ChaseCamera
+
+						if chase_camera:
+							chase_camera.reset_direction(
+								track_direction
+							)
+				else:
+					state.transform = Transform3D(
+						Basis.IDENTITY,
+						reset_position
+					)
+			else:
+				# Fallback caso não seja possível encontrar
+				# um ponto válido na RacingLine.
+				state.transform = Transform3D(
+					Basis.IDENTITY,
+					global_position + Vector3.UP * 0.5
+				)
+
+		else:
+			# Fallback caso a RacingLine ainda não esteja pronta.
+			state.transform = Transform3D(
+				Basis.IDENTITY,
+				global_position + Vector3.UP * 0.5
+			)
+
+		state.linear_velocity = Vector3(0.0, -1.0, 0.0)
 		state.angular_velocity = Vector3.ZERO
+
 		engine_force = 0.0
 		steering = 0.0
 		brake = 0.0
+
 		flipped_timer = 0.0
 		need_physics_reset = false
 
 	var contact_count = state.get_contact_count()
+
 	for i in range(contact_count):
 		var collision_point = state.get_contact_local_position(i)
 		var collision_normal = state.get_contact_local_normal(i)
 		var collision_body = state.get_contact_collider_object(i)
-		handle_car_collision(collision_point, collision_normal, collision_body)
-		handle_car_grinding_collision(collision_point, collision_normal)
+
+		handle_car_collision(
+			collision_point,
+			collision_normal,
+			collision_body
+		)
+
+		handle_car_grinding_collision(
+			collision_point,
+			collision_normal
+		)
 
 func check_flipped_car(delta: float) -> void:
 	var car_up_vector = global_transform.basis.y
@@ -138,7 +214,7 @@ func update_player_input(delta: float) -> void:
 	steering = move_toward(
 		steering,
 		player_input.steering if player_input else 0.0,
-		delta * 5.0
+		delta * steering_smoothness
 	)
 	handbrake = player_input.handbrake if player_input else false
 	acceleration = player_input.acceleration if player_input and !handbrake else 0.0

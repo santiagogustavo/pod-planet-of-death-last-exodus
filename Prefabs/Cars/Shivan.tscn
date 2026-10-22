@@ -522,7 +522,7 @@ mass = 100.0
 physics_material_override = ExtResource("1_ctr0k")
 gravity_scale = 4.0
 center_of_mass_mode = 1
-center_of_mass = Vector3(0, -0.2, -0.5)
+center_of_mass = Vector3(0, -0.1, -0.5)
 contact_monitor = true
 max_contacts_reported = 1
 script = ExtResource("1_mnj72")
@@ -584,10 +584,10 @@ use_as_steering = true
 wheel_roll_influence = 0.01
 wheel_radius = 0.6
 wheel_rest_length = 0.07
-wheel_friction_slip = 3.5
+wheel_friction_slip = 2.5
 suspension_stiffness = 120.0
-damping_compression = 2.0
-damping_relaxation = 2.0
+damping_compression = 5.0
+damping_relaxation = 5.0
 
 [node name="WheelFR" type="MeshInstance3D" parent="FR" unique_id=1616649523]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0)
@@ -602,10 +602,10 @@ use_as_steering = true
 wheel_roll_influence = 0.01
 wheel_radius = 0.6
 wheel_rest_length = 0.07
-wheel_friction_slip = 3.5
+wheel_friction_slip = 2.5
 suspension_stiffness = 120.0
-damping_compression = 2.0
-damping_relaxation = 2.0
+damping_compression = 5.0
+damping_relaxation = 5.0
 
 [node name="WheelFL" type="MeshInstance3D" parent="FL" unique_id=1447051584]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0)
@@ -620,8 +620,8 @@ wheel_roll_influence = 0.01
 wheel_radius = 0.6
 wheel_rest_length = 0.07
 suspension_stiffness = 120.0
-damping_compression = 2.0
-damping_relaxation = 2.0
+damping_compression = 5.0
+damping_relaxation = 5.0
 
 [node name="WheelRR" type="MeshInstance3D" parent="RR" unique_id=1291092492]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0)
@@ -636,8 +636,8 @@ wheel_roll_influence = 0.01
 wheel_radius = 0.6
 wheel_rest_length = 0.07
 suspension_stiffness = 120.0
-damping_compression = 2.0
-damping_relaxation = 2.0
+damping_compression = 5.0
+damping_relaxation = 5.0
 
 [node name="WheelRL" type="MeshInstance3D" parent="RL" unique_id=1842341250]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0)

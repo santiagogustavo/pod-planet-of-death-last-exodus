@@ -19,7 +19,7 @@
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_rkf8k"]
 points = PackedVector3Array(-1.2875938, -0.9109955, -1.8269348, -1.2875938, -0.08062321, -1.8269348, 2.034378, -0.9109955, -1.8269348, -1.2875938, -0.9109955, 1.8269501, -3.1143565, -0.53736365, -1.6609792, 1.6191316, 0.0854156, -1.329068, 2.034378, -0.4128791, -1.8269348, -3.1143565, -0.12217748, -1.6609792, -2.782803, 0.4174931, -1.329068, -1.7028403, 0.4174931, -1.329068, 3.2801175, -0.5789179, -1.329068, 4.110611, -0.5789179, -0.00034999847, 2.034378, -0.9109955, 1.8269501, -3.1143565, -0.53736365, 1.6606369, -1.2875938, -0.08062321, 1.8269501, -3.7790728, -0.20528603, -1.329068, -1.619952, 0.91079426, -0.00034999847, 1.6191316, 0.4174931, -0.00034999847, -1.9659908, 0.7447554, -0.66453016, -2.7819984, 0.5837103, -0.66453016, -2.1180868, 0.9109726, -0.00034999847, -2.1180868, 0.7447554, -0.66453016, -4.110626, 0.25145435, -0.66453016, -4.110626, 0.4174931, -0.00034999847, 3.2801175, -0.5789179, 1.328368, 1.6191316, 0.0854156, 1.328368, 2.034378, -0.4128791, 1.8269501, -3.1143565, -0.12217748, 1.6606369, -3.7790728, -0.20528603, 1.328368, -1.7028403, 0.41767156, 1.328368, -2.7819984, 0.41767156, 1.328368, 0.3733921, -0.24666196, 1.8269501, -4.110626, 0.0023069978, -0.66453016, -1.9659908, 0.7447554, 0.66418767, -2.7819984, 0.5837103, 0.66418767, -2.782803, 0.4174931, 1.328368, -2.1180868, 0.7447554, 0.66418767, -4.110626, 0.25145435, 0.66418767, 0.7886386, 0.16852415, 1.328368, -4.110626, 0.0023069978, 0.66418767)
 
-[sub_resource type="Shader" id="Shader_afx4m"]
+[sub_resource type="Shader" id="Shader_jx3gu"]
 resource_local_to_scene = true
 code = "shader_type particles;
 
@@ -66,9 +66,9 @@ void process() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_6rqw5"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_afx4m"]
 resource_local_to_scene = true
-shader = SubResource("Shader_afx4m")
+shader = SubResource("Shader_jx3gu")
 
 [sub_resource type="Gradient" id="Gradient_fef0o"]
 colors = PackedColorArray(1, 1, 1, 0.09803922, 1, 1, 1, 0)
@@ -84,7 +84,7 @@ metadata/_snap_enabled = true
 [sub_resource type="CurveTexture" id="CurveTexture_hskk6"]
 curve = SubResource("Curve_8r7kd")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_seeao"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6rqw5"]
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("3_t72yg")
@@ -96,11 +96,11 @@ shader_parameter/curve = SubResource("CurveTexture_hskk6")
 shader_parameter/emmission_transform = Projection(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
 shader_parameter/flags = 46
 
-[sub_resource type="QuadMesh" id="QuadMesh_0078f"]
+[sub_resource type="QuadMesh" id="QuadMesh_seeao"]
 resource_local_to_scene = true
-material = SubResource("ShaderMaterial_seeao")
+material = SubResource("ShaderMaterial_6rqw5")
 
-[sub_resource type="Shader" id="Shader_dkpwy"]
+[sub_resource type="Shader" id="Shader_0078f"]
 resource_local_to_scene = true
 code = "shader_type particles;
 
@@ -147,11 +147,11 @@ void process() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_2ucml"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dkpwy"]
 resource_local_to_scene = true
-shader = SubResource("Shader_dkpwy")
+shader = SubResource("Shader_0078f")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_oxaos"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2ucml"]
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("3_t72yg")
@@ -163,9 +163,9 @@ shader_parameter/curve = SubResource("CurveTexture_hskk6")
 shader_parameter/emmission_transform = Projection(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
 shader_parameter/flags = 46
 
-[sub_resource type="QuadMesh" id="QuadMesh_3up3x"]
+[sub_resource type="QuadMesh" id="QuadMesh_oxaos"]
 resource_local_to_scene = true
-material = SubResource("ShaderMaterial_oxaos")
+material = SubResource("ShaderMaterial_2ucml")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wrsw0"]
 resource_name = "SABER1_G"
@@ -494,7 +494,7 @@ mass = 100.0
 physics_material_override = ExtResource("1_l13f7")
 gravity_scale = 4.0
 center_of_mass_mode = 1
-center_of_mass = Vector3(0, -0.2, -0.5)
+center_of_mass = Vector3(0, -0.1, -0.5)
 contact_monitor = true
 max_contacts_reported = 1
 script = ExtResource("1_rams4")
@@ -511,15 +511,15 @@ shape = SubResource("ConvexPolygonShape3D_rkf8k")
 
 [node name="WindTrail" parent="CollisionShape3D" unique_id=986200328 instance=ExtResource("2_1scul")]
 transform = Transform3D(-2.1855695e-09, 0, -0.05, 0, 0.05, 0, 0.05, 0, -2.1855695e-09, -2.8237326, 0.4202435, -1.2980363)
-process_material = SubResource("ShaderMaterial_6rqw5")
-draw_pass_1 = SubResource("QuadMesh_0078f")
+process_material = SubResource("ShaderMaterial_afx4m")
+draw_pass_1 = SubResource("QuadMesh_seeao")
 color_ramp = SubResource("GradientTexture1D_l13f7")
 curve = SubResource("CurveTexture_hskk6")
 
 [node name="WindTrail2" parent="CollisionShape3D" unique_id=1032536420 instance=ExtResource("2_1scul")]
 transform = Transform3D(-2.1855695e-09, 0, -0.05, 0, 0.05, 0, 0.05, 0, -2.1855695e-09, -2.824, 0.42, 1.298)
-process_material = SubResource("ShaderMaterial_2ucml")
-draw_pass_1 = SubResource("QuadMesh_3up3x")
+process_material = SubResource("ShaderMaterial_dkpwy")
+draw_pass_1 = SubResource("QuadMesh_oxaos")
 color_ramp = SubResource("GradientTexture1D_l13f7")
 curve = SubResource("CurveTexture_hskk6")
 
@@ -554,10 +554,10 @@ use_as_steering = true
 wheel_roll_influence = 0.01
 wheel_radius = 0.7
 wheel_rest_length = 0.07
-wheel_friction_slip = 3.5
+wheel_friction_slip = 2.5
 suspension_stiffness = 120.0
-damping_compression = 2.0
-damping_relaxation = 2.0
+damping_compression = 5.0
+damping_relaxation = 5.0
 
 [node name="WheelFL" type="MeshInstance3D" parent="FL" unique_id=582548662]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0)
@@ -572,10 +572,10 @@ use_as_steering = true
 wheel_roll_influence = 0.01
 wheel_radius = 0.7
 wheel_rest_length = 0.07
-wheel_friction_slip = 3.5
+wheel_friction_slip = 2.5
 suspension_stiffness = 120.0
-damping_compression = 2.0
-damping_relaxation = 2.0
+damping_compression = 5.0
+damping_relaxation = 5.0
 
 [node name="WheelFR" type="MeshInstance3D" parent="FR" unique_id=249862637]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0)
@@ -590,8 +590,8 @@ wheel_roll_influence = 0.01
 wheel_radius = 0.9
 wheel_rest_length = 0.07
 suspension_stiffness = 120.0
-damping_compression = 2.0
-damping_relaxation = 2.0
+damping_compression = 5.0
+damping_relaxation = 5.0
 
 [node name="WheelRL" type="MeshInstance3D" parent="RL" unique_id=629239233]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0)
@@ -606,8 +606,8 @@ wheel_roll_influence = 0.01
 wheel_radius = 0.9
 wheel_rest_length = 0.07
 suspension_stiffness = 120.0
-damping_compression = 2.0
-damping_relaxation = 2.0
+damping_compression = 5.0
+damping_relaxation = 5.0
 
 [node name="WheelRR" type="MeshInstance3D" parent="RR" unique_id=271579265]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0)

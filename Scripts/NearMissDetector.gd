@@ -21,8 +21,8 @@ func handle_body_entered(_body: Node3D) -> void:
 	)
 
 func handle_body_exited(body: Node3D) -> void:
-	if !is_passing_by or !sfx:
+	if !is_passing_by or !sfx or !raycast:
 		return
-	raycast.look_at(body.global_position)
+	raycast.look_at(body.global_position + Vector3(0.0, 0.01, 0.0))
 	sfx.global_position = raycast.to_global(raycast.target_position)
 	sfx.play()

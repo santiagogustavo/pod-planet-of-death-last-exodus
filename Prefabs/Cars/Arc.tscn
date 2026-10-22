@@ -78,7 +78,7 @@ stencil_flags = 2
 [sub_resource type="QuadMesh" id="QuadMesh_lvfoa"]
 material = SubResource("StandardMaterial3D_6jcqx")
 
-[sub_resource type="Shader" id="Shader_o07ak"]
+[sub_resource type="Shader" id="Shader_lvfoa"]
 resource_local_to_scene = true
 code = "shader_type particles;
 
@@ -125,9 +125,9 @@ void process() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_prw5s"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o07ak"]
 resource_local_to_scene = true
-shader = SubResource("Shader_o07ak")
+shader = SubResource("Shader_lvfoa")
 
 [sub_resource type="Gradient" id="Gradient_5ifry"]
 colors = PackedColorArray(1, 1, 1, 0.09803922, 1, 1, 1, 0)
@@ -143,7 +143,7 @@ metadata/_snap_enabled = true
 [sub_resource type="CurveTexture" id="CurveTexture_6jcqx"]
 curve = SubResource("Curve_6jcqx")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_i6yg6"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_prw5s"]
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("5_sidje")
@@ -155,11 +155,11 @@ shader_parameter/curve = SubResource("CurveTexture_6jcqx")
 shader_parameter/emmission_transform = Projection(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
 shader_parameter/flags = 46
 
-[sub_resource type="QuadMesh" id="QuadMesh_xqsll"]
+[sub_resource type="QuadMesh" id="QuadMesh_i6yg6"]
 resource_local_to_scene = true
-material = SubResource("ShaderMaterial_i6yg6")
+material = SubResource("ShaderMaterial_prw5s")
 
-[sub_resource type="Shader" id="Shader_me8tl"]
+[sub_resource type="Shader" id="Shader_xqsll"]
 resource_local_to_scene = true
 code = "shader_type particles;
 
@@ -206,11 +206,11 @@ void process() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_u7w88"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_me8tl"]
 resource_local_to_scene = true
-shader = SubResource("Shader_me8tl")
+shader = SubResource("Shader_xqsll")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_11g5g"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u7w88"]
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("5_sidje")
@@ -222,9 +222,9 @@ shader_parameter/curve = SubResource("CurveTexture_6jcqx")
 shader_parameter/emmission_transform = Projection(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
 shader_parameter/flags = 46
 
-[sub_resource type="QuadMesh" id="QuadMesh_4ayiu"]
+[sub_resource type="QuadMesh" id="QuadMesh_11g5g"]
 resource_local_to_scene = true
-material = SubResource("ShaderMaterial_11g5g")
+material = SubResource("ShaderMaterial_u7w88")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i56s3"]
 resource_name = "000000_G"
@@ -461,7 +461,7 @@ mass = 100.0
 physics_material_override = ExtResource("1_x858c")
 gravity_scale = 4.0
 center_of_mass_mode = 1
-center_of_mass = Vector3(0, -0.2, -0.5)
+center_of_mass = Vector3(0, -0.1, -0.5)
 contact_monitor = true
 max_contacts_reported = 1
 script = ExtResource("1_pbg7b")
@@ -499,15 +499,15 @@ transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 3.16
 
 [node name="WindTrail" parent="CollisionShape3D" unique_id=986200328 instance=ExtResource("4_hbvy1")]
 transform = Transform3D(-2.1855695e-09, 0, -0.05, 0, 0.05, 0, 0.05, 0, -2.1855695e-09, -2.0949826, -0.26334727, -2.0920727)
-process_material = SubResource("ShaderMaterial_prw5s")
-draw_pass_1 = SubResource("QuadMesh_xqsll")
+process_material = SubResource("ShaderMaterial_o07ak")
+draw_pass_1 = SubResource("QuadMesh_i6yg6")
 color_ramp = SubResource("GradientTexture1D_5ifry")
 curve = SubResource("CurveTexture_6jcqx")
 
 [node name="WindTrail2" parent="CollisionShape3D" unique_id=1794864081 instance=ExtResource("4_hbvy1")]
 transform = Transform3D(-2.1855695e-09, 0, -0.05, 0, 0.05, 0, 0.05, 0, -2.1855695e-09, -2.095, -0.263, 2.092)
-process_material = SubResource("ShaderMaterial_u7w88")
-draw_pass_1 = SubResource("QuadMesh_4ayiu")
+process_material = SubResource("ShaderMaterial_me8tl")
+draw_pass_1 = SubResource("QuadMesh_11g5g")
 color_ramp = SubResource("GradientTexture1D_5ifry")
 curve = SubResource("CurveTexture_6jcqx")
 
@@ -518,10 +518,10 @@ use_as_steering = true
 wheel_roll_influence = 0.01
 wheel_radius = 0.6
 wheel_rest_length = 0.07
-wheel_friction_slip = 3.5
+wheel_friction_slip = 2.5
 suspension_stiffness = 120.0
-damping_compression = 2.0
-damping_relaxation = 2.0
+damping_compression = 5.0
+damping_relaxation = 5.0
 
 [node name="WheelFL" type="MeshInstance3D" parent="FL" unique_id=71112607]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0)
@@ -536,10 +536,10 @@ use_as_steering = true
 wheel_roll_influence = 0.01
 wheel_radius = 0.6
 wheel_rest_length = 0.07
-wheel_friction_slip = 3.5
+wheel_friction_slip = 2.5
 suspension_stiffness = 120.0
-damping_compression = 2.0
-damping_relaxation = 2.0
+damping_compression = 5.0
+damping_relaxation = 5.0
 
 [node name="WheelFR" type="MeshInstance3D" parent="FR" unique_id=187344980]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0)
@@ -554,8 +554,8 @@ wheel_roll_influence = 0.01
 wheel_radius = 0.6
 wheel_rest_length = 0.07
 suspension_stiffness = 120.0
-damping_compression = 2.0
-damping_relaxation = 2.0
+damping_compression = 5.0
+damping_relaxation = 5.0
 
 [node name="WheelRL" type="MeshInstance3D" parent="RL" unique_id=984743036]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0)
@@ -570,8 +570,8 @@ wheel_roll_influence = 0.01
 wheel_radius = 0.6
 wheel_rest_length = 0.07
 suspension_stiffness = 120.0
-damping_compression = 2.0
-damping_relaxation = 2.0
+damping_compression = 5.0
+damping_relaxation = 5.0
 
 [node name="WheelRR" type="MeshInstance3D" parent="RR" unique_id=175081169]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0)
