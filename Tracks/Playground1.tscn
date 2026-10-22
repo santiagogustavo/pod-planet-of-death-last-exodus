@@ -4,8 +4,8 @@
 [ext_resource type="Script" uid="uid://ck8p1x0h0qtk" path="res://Scripts/Tracks/Track.gd" id="1_064l1"]
 [ext_resource type="Texture2D" uid="uid://bwofyd6rf0wrm" path="res://Textures/Skyboxes/Panorama do Deserto Pós-Apocalíptico.png" id="1_iv1r6"]
 [ext_resource type="Script" uid="uid://f3pn6opmjm42" path="res://Scripts/RaceManager.gd" id="2_aem2t"]
-[ext_resource type="Resource" uid="uid://cc2msqa3wh62g" path="res://Resources/Cars/Shivan.tres" id="4_ei2sh"]
 [ext_resource type="Script" uid="uid://kklog68nroj3" path="res://Resources/PlayerDetails.gd" id="4_iv1r6"]
+[ext_resource type="Resource" uid="uid://cc2msqa3wh62g" path="res://Resources/Cars/Shivan.tres" id="4_p2v43"]
 [ext_resource type="Texture2D" uid="uid://d0e1m4ihuouun" path="res://Textures/UI/Avatars/avatar_9.png" id="4_uemjy"]
 [ext_resource type="Texture2D" uid="uid://cgu3cyfmer4ik" path="res://Textures/UI/Avatars/avatar_13.png" id="5_wjxlm"]
 [ext_resource type="Resource" uid="uid://ujw7vnhlgryx" path="res://Resources/Cars/Jaero.tres" id="7_wjxlm"]
@@ -13,14 +13,16 @@
 [ext_resource type="Resource" uid="uid://db76wikpidtqx" path="res://Resources/Cars/Arc.tres" id="8_u5uis"]
 [ext_resource type="Texture2D" uid="uid://bs1dsqnsfaehm" path="res://Textures/UI/Avatars/avatar_24.png" id="8_wjxlm"]
 [ext_resource type="PackedScene" uid="uid://46gclodm1vd1" path="res://Prefabs/Tracks/DirectionArrows.tscn" id="10_wjxlm"]
+[ext_resource type="PackedScene" uid="uid://qb2i6ryebs1t" path="res://Prefabs/Tracks/ReverbZone.tscn" id="14_5lv4d"]
 [ext_resource type="Script" uid="uid://c4dlira2rncbm" path="res://Scripts/Tracks/RacingLine.gd" id="14_p2v43"]
 [ext_resource type="PackedScene" uid="uid://c8mt1nrc3wp1t" path="res://Prefabs/Tracks/StartGate.tscn" id="15_p2v43"]
+[ext_resource type="PackedScene" uid="uid://sdkgnpih7y1q" path="res://Prefabs/Tracks/OutOfBoundsZone.tscn" id="16_xtlau"]
 
 [sub_resource type="Resource" id="Resource_aem2t"]
 script = ExtResource("4_iv1r6")
 player_name = "Player 1"
 player_avatar = ExtResource("4_uemjy")
-car_data = ExtResource("4_ei2sh")
+car_data = ExtResource("4_p2v43")
 metadata/_custom_type_script = "uid://kklog68nroj3"
 
 [sub_resource type="Resource" id="Resource_064l1"]
@@ -95,9 +97,6 @@ albedo_color = Color(1, 0, 0, 0.2)
 material = SubResource("StandardMaterial3D_ckb4l")
 size = Vector3(46, 10, 0.1)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_0i88t"]
-size = Vector3(10, 4, 50)
-
 [sub_resource type="Curve3D" id="Curve3D_g1fnq"]
 closed = true
 _data = {
@@ -125,6 +124,12 @@ _data = {
 "tilts": PackedFloat32Array(0, 0, 0, 0)
 }
 point_count = 4
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5lv4d"]
+size = Vector3(700, 1, 700)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ixirv"]
+size = Vector3(700, 1, 700)
 
 [node name="Playground1" type="Node3D" unique_id=126344257 node_paths=PackedStringArray("start_gates", "circuit_gates", "default_racing_line", "racing_lines")]
 script = ExtResource("1_064l1")
@@ -209,16 +214,8 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -59.
 [node name="DirectionArrows" parent="." unique_id=1821511901 instance=ExtResource("10_wjxlm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -41, 0, -85)
 
-[node name="ReverbZone" type="Area3D" parent="." unique_id=1075905819]
+[node name="ReverbZone" parent="." unique_id=225106618 instance=ExtResource("14_5lv4d")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 2, -56)
-collision_layer = 16
-reverb_bus_enabled = true
-reverb_bus_name = &"ReverbZone"
-reverb_bus_amount = 1.0
-reverb_bus_uniformity = 1.0
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="ReverbZone" unique_id=1391460453]
-shape = SubResource("BoxShape3D_0i88t")
 
 [node name="Path3D" type="Path3D" parent="." unique_id=2001559328]
 curve = SubResource("Curve3D_g1fnq")
@@ -260,5 +257,15 @@ curve = SubResource("Curve3D_xtlau")
 script = ExtResource("14_p2v43")
 metadata/_custom_type_script = "uid://c4dlira2rncbm"
 
+[node name="OutOfBoundsZone" parent="." unique_id=1773437826 instance=ExtResource("16_xtlau")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -15, 0)
+
+[node name="CollisionShape3D" parent="OutOfBoundsZone" index="0" unique_id=1820548933]
+shape = SubResource("BoxShape3D_5lv4d")
+
+[node name="MeshInstance3D" parent="OutOfBoundsZone" index="1" unique_id=2021399452]
+mesh = SubResource("BoxMesh_ixirv")
+
 [editable path="CircuitGate"]
 [editable path="DirectionArrows"]
+[editable path="OutOfBoundsZone"]

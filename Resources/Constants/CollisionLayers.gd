@@ -4,3 +4,4 @@ class_name CollisionLayers
 const CAR: int = 1
 const ROAD: int = 2
 const WALL: int = 4
+const OUT_OF_BOUNDS: int = 32

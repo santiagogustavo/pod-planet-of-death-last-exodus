@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://sdkgnpih7y1q"]
+
+[ext_resource type="Script" uid="uid://cib6yvlwtr5vh" path="res://Scripts/Tracks/OutOfBoundsZone.gd" id="1_meqfc"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ckb4l"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_3w5fx"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_etsbr"]
+transparency = 4
+shading_mode = 0
+albedo_color = Color(0, 0.4666667, 1, 0.29411766)
+
+[node name="OutOfBoundsZone" type="Area3D" unique_id=1773437826]
+collision_layer = 32
+script = ExtResource("1_meqfc")
+metadata/_custom_type_script = "uid://cib6yvlwtr5vh"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1820548933]
+shape = SubResource("BoxShape3D_ckb4l")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=2021399452]
+layers = 2
+mesh = SubResource("BoxMesh_3w5fx")
+surface_material_override/0 = SubResource("StandardMaterial3D_etsbr")

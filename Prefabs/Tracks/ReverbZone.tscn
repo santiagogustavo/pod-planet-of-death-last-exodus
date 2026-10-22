@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://qb2i6ryebs1t"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0i88t"]
+size = Vector3(10, 4, 50)
+
+[node name="ReverbZone" type="Area3D" unique_id=225106618]
+collision_layer = 16
+reverb_bus_enabled = true
+reverb_bus_name = &"ReverbZone"
+reverb_bus_amount = 1.0
+reverb_bus_uniformity = 1.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=349881632]
+shape = SubResource("BoxShape3D_0i88t")

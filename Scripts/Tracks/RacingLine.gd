@@ -14,675 +14,147 @@ class_name RacingLine
 @export var max_look_ahead: float = 28.0
 @export var curve_look_ahead_factor: float = 0.65
 
-@export_category("Debug")
-@export var debug_enabled: bool = true
-@export var debug_draw_distance: float = 100.0
-@export var debug_sample_spacing: float = 2.0
+var debug_mesh_instance: MeshInstance3D
+var debug_mesh: ImmediateMesh
+var debug_material: StandardMaterial3D
 
 var spline_length: float = 0.0
 
 var gate_offsets: Array[float] = []
 var gate_positions: Array[Vector3] = []
+var segment_lengths: Array[float] = []
 
 var is_initialized: bool = false
 
 
-var debug_mesh_instance: MeshInstance3D
-var debug_mesh: ImmediateMesh
-var debug_material: StandardMaterial3D
+# --------------------------------------------------------------------
+# CACHE DA CURVA
+# --------------------------------------------------------------------
 
-# ============================================================
+var cached_offsets: PackedFloat32Array = PackedFloat32Array()
+var cached_positions: Array[Vector3] = []
+var cached_directions: Array[Vector3] = []
+
+
+# --------------------------------------------------------------------
 # INITIALIZATION
-# ============================================================
+# --------------------------------------------------------------------
 
 func _ready() -> void:
 	call_deferred("initialize_racing_line")
 
-func _process(_delta: float) -> void:
-	if not debug_enabled:
-		return
-	if not is_initialized:
-		return
-	_update_debug_mesh()
 
 func initialize_racing_line() -> void:
-	is_initialized = false
+	if is_initialized:
+		return
 
 	if curve == null:
-		push_warning("RacingLine: nenhuma Curve3D foi encontrada.")
+		push_warning("RacingLine '%s' não possui Curve3D." % name)
 		return
 
 	spline_length = curve.get_baked_length()
-	if spline_length <= 0.0:
-		push_warning("RacingLine: Curve3D possui comprimento inválido.")
+
+	if spline_length <= 0.001:
+		push_warning("RacingLine '%s' possui uma curva vazia." % name)
 		return
 
 	_cache_gate_data()
+	_build_curve_cache()
+	_build_debug_mesh()
+
 	is_initialized = true
-	_setup_debug()
 
-func rebuild() -> void:
-	initialize_racing_line()
 
-# ============================================================
-# GATES
-# ============================================================
+# --------------------------------------------------------------------
+# CACHE DOS GATES
+# --------------------------------------------------------------------
 
 func _cache_gate_data() -> void:
 	gate_offsets.clear()
 	gate_positions.clear()
+	segment_lengths.clear()
 
-	if (GameManager.race == null or GameManager.race.track == null):
+	var track: Track = GameManager.race.track
+
+	if track == null:
 		return
 
-	var gates = GameManager.race.track.circuit_gates
-	if gates.is_empty():
-		return
-
-	for gate in gates:
-		var gate_node = gate as Node3D
-		if gate_node == null:
+	for gate in track.circuit_gates:
+		if gate == null:
 			gate_offsets.append(0.0)
 			gate_positions.append(Vector3.ZERO)
 			continue
 
-		var gate_position = gate_node.global_position
-		gate_positions.append(gate_position)
+		var local_gate_position = to_local(gate.global_position)
 
-		var local_gate_position = to_local(gate_position)
 		var offset = curve.get_closest_offset(local_gate_position)
+		offset = clamp(offset, 0.0, spline_length)
+
 		gate_offsets.append(offset)
+		gate_positions.append(gate.global_position)
 
-
-# ============================================================
-# PUBLIC TARGET API
-# ============================================================
-
-func get_bot_target(
-	car_position: Vector3,
-	current_gate: int,
-	current_offset: float,
-	current_speed: float
-) -> Dictionary:
-	if not is_initialized:
-		initialize_racing_line()
-
-	if not is_initialized:
-		return {
-			"position": car_position,
-			"offset": current_offset
-		}
-
-	if gate_offsets.is_empty():
-		return {
-			"position": car_position,
-			"offset": current_offset
-		}
-
-	if current_gate < 0 or current_gate >= gate_offsets.size():
-		return {
-			"position": car_position,
-			"offset": current_offset
-		}
-
-	var segment_start = gate_offsets[current_gate]
-	var segment_end = get_segment_end_offset(current_gate)
-
-	var segment_length = _get_wrapped_distance(
-		segment_start,
-		segment_end
-	)
-
-	# Se acabamos de entrar no segmento,
-	# garante que começamos no gate.
-	if not _offset_inside_segment(
-		current_offset,
-		segment_start,
-		segment_end
-	):
-		current_offset = segment_start
-
-	# Procura somente à frente.
-	var closest_offset = find_closest_offset_forward(
-		car_position,
-		current_offset,
-		segment_end
-	)
-
-	var progress = _get_forward_distance(
-		current_offset,
-		closest_offset
-	)
-
-	# Nunca permite voltar.
-	if progress <= segment_length:
-		current_offset = closest_offset
-
-	# --------------------------------------------------------
-	# LOOK AHEAD
-	# --------------------------------------------------------
-
-	var speed_factor = clamp(
-		current_speed / 25.0,
-		0.0,
-		1.0
-	)
-
-	var look_ahead = lerp(
-		default_look_ahead,
-		max_look_ahead,
-		speed_factor
-	)
-
-	var curve_amount = get_curve_amount(
-		current_offset
-	)
-
-	look_ahead *= lerp(
-		1.0,
-		curve_look_ahead_factor,
-		curve_amount
-	)
-
-	# Nunca deixa o alvo ficar em cima do carro.
-	look_ahead = max(
-		look_ahead,
-		5.0
-	)
-
-	var target_offset = _advance_offset(
-		current_offset,
-		look_ahead
-	)
-
-	var local_target = curve.sample_baked(
-		target_offset,
-		true
-	)
-
-	var global_target = to_global(
-		local_target
-	)
-
-	return {
-		"position": global_target,
-		"offset": current_offset
-	}
-
-func get_target_for_gate_segment(
-	current_offset: float,
-	current_gate: int,
-	look_ahead: float
-) -> Dictionary:
-	if not is_initialized:
-		return {
-			"position": global_position,
-			"offset": current_offset
-		}
-
-	if gate_offsets.is_empty():
-		return {
-			"position": global_position,
-			"offset": current_offset
-		}
-
-	if current_gate < 0 or current_gate >= gate_offsets.size():
-		return {
-			"position": global_position,
-			"offset": current_offset
-		}
-
-	# ========================================================
-	# current_gate É O GATE QUE AINDA PRECISAMOS PASSAR.
+	# Cada segmento é:
 	#
-	# Portanto:
+	# gate anterior -> gate atual
 	#
-	# current_gate = 1
-	# segmento = Gate 0 -> Gate 1
-	#
-	# current_gate = 2
-	# segmento = Gate 1 -> Gate 2
-	# ========================================================
+	# Portanto segment_lengths[current_gate]
+	# representa exatamente o segmento utilizado pelo BotAI.
+	for gate_index in range(gate_offsets.size()):
+		var start_offset = _get_segment_start_offset(gate_index)
+		var end_offset = gate_offsets[gate_index]
 
-	var previous_gate = current_gate - 1
-
-	if previous_gate < 0:
-		previous_gate = gate_offsets.size() - 1
-
-	var segment_start = gate_offsets[previous_gate]
-	var segment_end = gate_offsets[current_gate]
-
-	var segment_length = _get_wrapped_distance(
-		segment_start,
-		segment_end
-	)
-
-	# --------------------------------------------------------
-	# Progresso dentro do segmento.
-	# --------------------------------------------------------
-
-	var progress = _get_forward_distance(
-		segment_start,
-		current_offset
-	)
-
-	# --------------------------------------------------------
-	# Se estamos fora do segmento atual, encontramos um ponto
-	# inicial adequado.
-	# --------------------------------------------------------
-
-	if progress > segment_length:
-		current_offset = segment_start
-		progress = 0.0
-
-	# --------------------------------------------------------
-	# Avança pela RacingLine.
-	# --------------------------------------------------------
-
-	var target_progress = progress + look_ahead
-
-	# Nunca deixa o alvo ultrapassar o Gate que precisa
-	# ser validado.
-	target_progress = min(
-		target_progress,
-		segment_length
-	)
-
-	# Mantemos uma pequena margem antes do Gate.
-	var gate_margin = min(
-		2.0,
-		segment_length * 0.1
-	)
-
-	if segment_length > gate_margin:
-		target_progress = min(
-			target_progress,
-			segment_length - gate_margin
+		segment_lengths.append(
+			_get_wrapped_distance(start_offset, end_offset)
 		)
 
-	var target_offset = _advance_offset(
-		segment_start,
-		target_progress
+
+# --------------------------------------------------------------------
+# CACHE PRINCIPAL DA CURVA
+# --------------------------------------------------------------------
+
+func _build_curve_cache() -> void:
+	cached_offsets.clear()
+	cached_positions.clear()
+	cached_directions.clear()
+
+	var spacing = max(sample_step, 0.25)
+
+	var sample_count = max(
+		int(ceil(spline_length / spacing)),
+		2
 	)
 
-	var local_target = curve.sample_baked(
-		target_offset,
-		true
-	)
+	cached_offsets.resize(sample_count + 1)
+	cached_positions.resize(sample_count + 1)
+	cached_directions.resize(sample_count + 1)
 
-	return {
-		"position": to_global(local_target),
-		"offset": current_offset,
-		"target_offset": target_offset
-	}
-
-# ============================================================
-# FIND FORWARD POSITION
-# ============================================================
-
-func find_initial_offset_for_gate(
-	car_position: Vector3,
-	gate_index: int
-) -> float:
-	if not is_initialized:
-		return 0.0
-
-	if gate_offsets.is_empty():
-		return 0.0
-
-	var previous_gate = gate_index - 1
-
-	if previous_gate < 0:
-		previous_gate = gate_offsets.size() - 1
-
-	var start_offset = gate_offsets[previous_gate]
-	var end_offset = gate_offsets[gate_index]
-
-	return find_closest_offset_in_range(
-		car_position,
-		start_offset,
-		end_offset
-	)
-
-func find_closest_offset_in_range(
-	car_position: Vector3,
-	start_offset: float,
-	end_offset: float
-) -> float:
-	var segment_length = _get_wrapped_distance(
-		start_offset,
-		end_offset
-	)
-
-	if segment_length <= 0.01:
-		return start_offset
-
-	var samples = max(
-		int(segment_length / sample_step),
-		8
-	)
-
-	var best_offset = start_offset
-	var best_distance = INF
-
-	for i in range(samples + 1):
-
-		var t = float(i) / float(samples)
-
-		var distance = segment_length * t
-
-		var test_offset = _advance_offset(
-			start_offset,
-			distance
+	for i in range(sample_count + 1):
+		var offset = min(
+			float(i) * spacing,
+			spline_length
 		)
 
-		var local_point = curve.sample_baked(
-			test_offset,
-			true
-		)
+		if i == sample_count:
+			offset = spline_length
 
-		var global_point = to_global(
-			local_point
-		)
+		cached_offsets[i] = offset
 
-		var distance_to_car = (
-			global_point - car_position
-		).length_squared()
+		var local_position = curve.sample_baked(offset, true)
+		var cached_global_position = to_global(local_position)
 
-		if distance_to_car < best_distance:
+		cached_positions[i] = cached_global_position
 
-			best_distance = distance_to_car
-			best_offset = test_offset
+		var direction = _calculate_curve_direction(offset)
+		cached_directions[i] = direction
 
-	return best_offset
 
-func find_closest_offset_forward(
-	car_position: Vector3,
-	start_offset: float,
-	end_offset: float
-) -> float:
-	var segment_length = _get_wrapped_distance(
-		start_offset,
-		end_offset
-	)
+func _calculate_curve_direction(offset: float) -> Vector3:
+	var ahead_offset = _advance_offset(offset, 1.0)
 
-	if segment_length <= 0.01:
-		return start_offset
-
-	var search_distance = min(
-		segment_length,
-		max_forward_search
-	)
-
-	var samples = max(
-		int(search_distance / sample_step),
-		4
-	)
-
-	var best_offset = start_offset
-	var best_distance = INF
-
-	for i in range(samples + 1):
-
-		var t = float(i) / float(samples)
-
-		var distance = search_distance * t
-
-		var test_offset = _advance_offset(
-			start_offset,
-			distance
-		)
-
-		var local_point = curve.sample_baked(
-			test_offset,
-			true
-		)
-
-		var global_point = to_global(
-			local_point
-		)
-
-		var distance_to_car = (
-			global_point - car_position
-		).length_squared()
-
-		if distance_to_car < best_distance:
-
-			best_distance = distance_to_car
-			best_offset = test_offset
-
-	return best_offset
-
-# ============================================================
-# SEGMENT
-# ============================================================
-
-func get_segment_end_offset(current_gate: int) -> float:
-	if gate_offsets.is_empty():
-		return 0.0
-
-	if current_gate < 0 or current_gate >= gate_offsets.size():
-		return 0.0
-
-	return gate_offsets[current_gate]
-
-func _offset_inside_segment(
-	offset: float,
-	start_offset: float,
-	end_offset: float
-) -> bool:
-	var segment_length = _get_wrapped_distance(
-		start_offset,
-		end_offset
-	)
-
-	var distance = _get_forward_distance(
-		start_offset,
-		offset
-	)
-
-	return distance >= -0.01 and distance <= segment_length + 0.01
-
-# ============================================================
-# OFFSET MATH
-# ============================================================
-
-func _get_wrapped_distance(
-	start_offset: float,
-	end_offset: float
-) -> float:
-	if end_offset >= start_offset:
-		return end_offset - start_offset
-
-	return (
-		spline_length
-		- start_offset
-		+ end_offset
-	)
-
-func _get_forward_distance(
-	start_offset: float,
-	end_offset: float
-) -> float:
-	var distance = end_offset - start_offset
-
-	if distance < 0.0:
-		distance += spline_length
-
-	return distance
-
-func get_distance_to_segment(
-	car_position: Vector3,
-	start_gate: int,
-	end_gate: int
-) -> Dictionary:
-	var start_offset = gate_offsets[start_gate]
-	var end_offset = gate_offsets[end_gate]
-
-	var closest_offset = find_closest_offset_in_range(
-		car_position,
-		start_offset,
-		end_offset
-	)
-
-	var closest_point = to_global(
-		curve.sample_baked(
-			closest_offset,
-			true
-		)
-	)
-
-	return {
-		"offset": closest_offset,
-		"distance": car_position.distance_to(closest_point),
-		"position": closest_point
-	}
-
-func get_closest_point_to_car(
-	car_position: Vector3,
-	current_gate: int
-) -> Dictionary:
-	if gate_offsets.is_empty():
-		return {}
-
-	if current_gate < 0 or current_gate >= gate_offsets.size():
-		return {}
-
-	var previous_gate := current_gate - 1
-
-	if previous_gate < 0:
-		previous_gate = gate_offsets.size() - 1
-
-	var start_offset := gate_offsets[previous_gate]
-	var end_offset := gate_offsets[current_gate]
-
-	var closest_offset := find_closest_offset_in_range(
-		car_position,
-		start_offset,
-		end_offset
-	)
-
-	var local_point := curve.sample_baked(
-		closest_offset,
-		true
-	)
-
-	var global_point := to_global(
-		local_point
-	)
-
-	return {
-		"offset": closest_offset,
-		"position": global_point,
-		"distance": car_position.distance_to(global_point)
-	}
-
-func _advance_offset(
-	offset: float,
-	distance: float
-) -> float:
-	var result = offset + distance
-
-	if spline_length <= 0.0:
-		return result
-
-	while result >= spline_length:
-		result -= spline_length
-
-	while result < 0.0:
-		result += spline_length
-
-	return result
-
-# ============================================================
-# CURVATURE
-# ============================================================
-
-func get_curve_amount(offset: float) -> float:
-	if spline_length <= 0.0:
-		return 0.0
-
-	var sample_distance = 8.0
-
-	var p0_offset = offset
-
-	var p1_offset = _advance_offset(
-		offset,
-		sample_distance
-	)
-
-	var p2_offset = _advance_offset(
-		offset,
-		sample_distance * 2.0
-	)
-
-	var p0 = curve.sample_baked(
-		p0_offset,
-		true
-	)
-
-	var p1 = curve.sample_baked(
-		p1_offset,
-		true
-	)
-
-	var p2 = curve.sample_baked(
-		p2_offset,
-		true
-	)
-
-	var direction_a = p1 - p0
-	var direction_b = p2 - p1
-
-	direction_a.y = 0.0
-	direction_b.y = 0.0
-
-	if direction_a.length_squared() <= 0.001:
-		return 0.0
-
-	if direction_b.length_squared() <= 0.001:
-		return 0.0
-
-	direction_a = direction_a.normalized()
-	direction_b = direction_b.normalized()
-
-	var dot = clamp(
-		direction_a.dot(direction_b),
-		-1.0,
-		1.0
-	)
-
-	return clamp(
-		1.0 - dot,
-		0.0,
-		1.0
-	)
-
-
-# ============================================================
-# DIRECTION
-# ============================================================
-
-func get_direction_at_offset(
-	offset: float
-) -> Vector3:
-	var ahead_offset = _advance_offset(
-		offset,
-		1.0
-	)
-
-	var current_point = curve.sample_baked(
-		offset,
-		true
-	)
-
-	var ahead_point = curve.sample_baked(
-		ahead_offset,
-		true
-	)
+	var current_point = curve.sample_baked(offset, true)
+	var ahead_point = curve.sample_baked(ahead_offset, true)
 
 	var direction = ahead_point - current_point
-
 	direction.y = 0.0
 
 	if direction.length_squared() <= 0.001:
@@ -691,9 +163,408 @@ func get_direction_at_offset(
 	return direction.normalized()
 
 
-func get_direction_for_gate(
+# --------------------------------------------------------------------
+# CACHE LOOKUP
+# --------------------------------------------------------------------
+
+func _get_cached_index(offset: float) -> int:
+	if cached_offsets.is_empty():
+		return 0
+
+	var clamped_offset = clamp(
+		offset,
+		0.0,
+		spline_length
+	)
+
+	var spacing = max(sample_step, 0.25)
+
+	var index = int(round(clamped_offset / spacing))
+
+	return clamp(
+		index,
+		0,
+		cached_offsets.size() - 1
+	)
+
+
+func _get_cached_position(offset: float) -> Vector3:
+	if cached_positions.is_empty():
+		return global_position
+
+	if offset <= 0.0:
+		return cached_positions[0]
+
+	if offset >= spline_length:
+		return cached_positions[cached_positions.size() - 1]
+
+	var spacing = max(sample_step, 0.25)
+
+	var float_index = offset / spacing
+	var index_a = int(floor(float_index))
+	var index_b = min(
+		index_a + 1,
+		cached_positions.size() - 1
+	)
+
+	var t = float_index - float(index_a)
+
+	return cached_positions[index_a].lerp(
+		cached_positions[index_b],
+		t
+	)
+
+
+func _get_cached_direction(offset: float) -> Vector3:
+	if cached_directions.is_empty():
+		return Vector3.FORWARD
+
+	if offset <= 0.0:
+		return cached_directions[0]
+
+	if offset >= spline_length:
+		return cached_directions[cached_directions.size() - 1]
+
+	var spacing = max(sample_step, 0.25)
+
+	var float_index = offset / spacing
+	var index_a = int(floor(float_index))
+	var index_b = min(
+		index_a + 1,
+		cached_directions.size() - 1
+	)
+
+	var t = float_index - float(index_a)
+
+	var direction = cached_directions[index_a].lerp(
+		cached_directions[index_b],
+		t
+	)
+
+	if direction.length_squared() <= 0.001:
+		return Vector3.FORWARD
+
+	return direction.normalized()
+
+
+# --------------------------------------------------------------------
+# TARGET
+# --------------------------------------------------------------------
+
+func get_bot_target(
+	current_offset: float,
+	current_gate: int,
+	look_ahead: float = default_look_ahead
+) -> Dictionary:
+
+	if not is_initialized:
+		return {}
+
+	return get_target_for_gate_segment(
+		current_offset,
+		current_gate,
+		look_ahead
+	)
+
+
+func get_target_for_gate_segment(
+	current_offset: float,
+	current_gate: int,
+	look_ahead: float = default_look_ahead
+) -> Dictionary:
+
+	if not is_initialized:
+		return {}
+
+	if current_gate < 0 or current_gate >= gate_offsets.size():
+		return {}
+
+	var segment_start = _get_segment_start_offset(current_gate)
+	var segment_length = get_segment_length(current_gate)
+
+	if segment_length <= 0.001:
+		return {}
+
+	var progress = _get_forward_distance(
+		segment_start,
+		current_offset
+	)
+
+	progress = clamp(
+		progress,
+		0.0,
+		segment_length
+	)
+
+	var remaining_distance = segment_length - progress
+
+	var target_distance = min(
+		look_ahead,
+		remaining_distance
+	)
+
+	target_distance = clamp(
+		target_distance,
+		0.0,
+		max_look_ahead
+	)
+
+	var target_offset = _advance_offset(
+		current_offset,
+		target_distance
+	)
+
+	var target_position = get_point_at_offset(target_offset)
+
+	return {
+		"position": target_position,
+		"offset": target_offset,
+		"progress": progress / segment_length,
+		"remaining_distance": remaining_distance
+	}
+
+
+# --------------------------------------------------------------------
+# CLOSEST POINT
+# --------------------------------------------------------------------
+
+func find_initial_offset_for_gate(
+	car_position: Vector3,
 	gate_index: int
+) -> float:
+
+	if gate_offsets.is_empty():
+		return 0.0
+
+	var start_offset = _get_segment_start_offset(gate_index)
+	var end_offset = gate_offsets[gate_index]
+
+	return find_closest_offset_in_range(
+		car_position,
+		start_offset,
+		end_offset
+	)
+
+
+func find_closest_offset_in_range(
+	car_position: Vector3,
+	start_offset: float,
+	end_offset: float
+) -> float:
+
+	var segment_length = _get_wrapped_distance(
+		start_offset,
+		end_offset
+	)
+
+	if segment_length <= 0.001:
+		return start_offset
+
+	var sample_count = max(
+		int(ceil(segment_length / max(sample_step, 0.5))),
+		8
+	)
+
+	var best_offset = start_offset
+	var best_distance_squared = INF
+
+	for i in range(sample_count + 1):
+		var progress = float(i) / float(sample_count)
+
+		var offset = _advance_offset(
+			start_offset,
+			progress * segment_length
+		)
+
+		var point = get_point_at_offset(offset)
+
+		var distance_squared = point.distance_squared_to(
+			car_position
+		)
+
+		if distance_squared < best_distance_squared:
+			best_distance_squared = distance_squared
+			best_offset = offset
+
+	return best_offset
+
+
+func find_closest_offset_forward(
+	car_position: Vector3,
+	start_offset: float,
+	end_offset: float
+) -> float:
+
+	var available_distance = _get_forward_distance(
+		start_offset,
+		end_offset
+	)
+
+	var search_distance = min(
+		available_distance,
+		max_forward_search
+	)
+
+	if search_distance <= 0.001:
+		return start_offset
+
+	var sample_count = max(
+		int(ceil(search_distance / max(sample_step, 0.5))),
+		4
+	)
+
+	var best_offset = start_offset
+	var best_distance_squared = INF
+
+	for i in range(sample_count + 1):
+		var distance = (
+			float(i) / float(sample_count)
+		) * search_distance
+
+		var offset = _advance_offset(
+			start_offset,
+			distance
+		)
+
+		var point = get_point_at_offset(offset)
+
+		var distance_squared = point.distance_squared_to(
+			car_position
+		)
+
+		if distance_squared < best_distance_squared:
+			best_distance_squared = distance_squared
+			best_offset = offset
+
+	return best_offset
+
+
+func get_closest_point_to_car(
+	car_position: Vector3,
+	current_gate: int
+) -> Dictionary:
+
+	if gate_offsets.is_empty():
+		return {}
+
+	if current_gate < 0 or current_gate >= gate_offsets.size():
+		return {}
+
+	var start_offset = _get_segment_start_offset(current_gate)
+	var end_offset = gate_offsets[current_gate]
+
+	var closest_offset = find_closest_offset_in_range(
+		car_position,
+		start_offset,
+		end_offset
+	)
+
+	var closest_point = get_point_at_offset(
+		closest_offset
+	)
+
+	return {
+		"offset": closest_offset,
+		"position": closest_point,
+		"distance": closest_point.distance_to(car_position)
+	}
+
+
+# --------------------------------------------------------------------
+# SEGMENT PROGRESS
+# --------------------------------------------------------------------
+
+func get_offset_at_segment_progress(
+	current_gate: int,
+	progress: float
+) -> float:
+
+	if gate_offsets.is_empty():
+		return 0.0
+
+	if current_gate < 0 or current_gate >= gate_offsets.size():
+		return 0.0
+
+	var start_offset = _get_segment_start_offset(current_gate)
+	var segment_length = get_segment_length(current_gate)
+
+	if segment_length <= 0.001:
+		return start_offset
+
+	return _advance_offset(
+		start_offset,
+		clamp(progress, 0.0, 1.0) * segment_length
+	)
+
+
+func get_point_at_segment_progress(
+	current_gate: int,
+	progress: float
 ) -> Vector3:
+
+	return get_point_at_offset(
+		get_offset_at_segment_progress(
+			current_gate,
+			progress
+		)
+	)
+
+
+func get_direction_at_segment_progress(
+	current_gate: int,
+	progress: float
+) -> Vector3:
+
+	return get_direction_at_offset(
+		get_offset_at_segment_progress(
+			current_gate,
+			progress
+		)
+	)
+
+
+func get_segment_progress_from_offset(
+	current_gate: int,
+	offset: float
+) -> float:
+
+	if gate_offsets.is_empty():
+		return 0.0
+
+	if current_gate < 0 or current_gate >= gate_offsets.size():
+		return 0.0
+
+	var start_offset = _get_segment_start_offset(current_gate)
+	var segment_length = get_segment_length(current_gate)
+
+	if segment_length <= 0.001:
+		return 0.0
+
+	var distance = _get_forward_distance(
+		start_offset,
+		offset
+	)
+
+	return clamp(
+		distance / segment_length,
+		0.0,
+		1.0
+	)
+
+
+# --------------------------------------------------------------------
+# POINT / DIRECTION
+# --------------------------------------------------------------------
+
+func get_point_at_offset(offset: float) -> Vector3:
+	return _get_cached_position(offset)
+
+
+func get_direction_at_offset(offset: float) -> Vector3:
+	return _get_cached_direction(offset)
+
+
+func get_direction_for_gate(gate_index: int) -> Vector3:
 	if gate_offsets.is_empty():
 		return Vector3.FORWARD
 
@@ -705,18 +576,51 @@ func get_direction_for_gate(
 	)
 
 
-# ============================================================
-# PROGRESS
-# ============================================================
+# --------------------------------------------------------------------
+# CURVE / PROGRESS
+# --------------------------------------------------------------------
+
+func get_curve_amount(offset: float) -> float:
+	var distance = 3.0
+
+	var previous_offset = _advance_offset(
+		offset,
+		-distance
+	)
+
+	var next_offset = _advance_offset(
+		offset,
+		distance
+	)
+
+	var direction_a = get_direction_at_offset(
+		previous_offset
+	)
+
+	var direction_b = get_direction_at_offset(
+		next_offset
+	)
+
+	return 1.0 - clamp(
+		direction_a.dot(direction_b),
+		-1.0,
+		1.0
+	)
+
 
 func get_spline_length() -> float:
 	return spline_length
 
+
 func get_gate_offset(gate_index: int) -> float:
+	if gate_offsets.is_empty():
+		return 0.0
+
 	if gate_index < 0 or gate_index >= gate_offsets.size():
 		return 0.0
 
 	return gate_offsets[gate_index]
+
 
 func get_next_gate_offset(gate_index: int) -> float:
 	if gate_offsets.is_empty():
@@ -729,160 +633,159 @@ func get_next_gate_offset(gate_index: int) -> float:
 
 	return gate_offsets[next_gate]
 
+
+func get_segment_end_offset(current_gate: int) -> float:
+	if gate_offsets.is_empty():
+		return 0.0
+
+	if current_gate < 0 or current_gate >= gate_offsets.size():
+		return 0.0
+
+	return gate_offsets[current_gate]
+
+
+func get_segment_length(current_gate: int) -> float:
+	if current_gate < 0 or current_gate >= segment_lengths.size():
+		return 0.0
+
+	return segment_lengths[current_gate]
+
+
 func get_gate_count() -> int:
 	return gate_offsets.size()
+
 
 func get_progress_from_gate(
 	gate_index: int,
 	offset: float
 ) -> float:
-	if gate_index < 0 or gate_index >= gate_offsets.size():
-		return 0.0
 
-	var start = gate_offsets[gate_index]
-
-	var segment_length = _get_wrapped_distance(
-		start,
-		get_segment_end_offset(gate_index)
-	)
-
-	if segment_length <= 0.001:
-		return 0.0
-
-	var progress = _get_forward_distance(
-		start,
+	return get_segment_progress_from_offset(
+		gate_index,
 		offset
 	)
 
-	return clamp(
-		progress / segment_length,
-		0.0,
-		1.0
-	)
 
 func get_target_ahead(
-	offset: float,
+	current_offset: float,
 	distance: float
 ) -> Vector3:
-	if not is_initialized:
-		return global_position
 
-	var target_offset = _advance_offset(
-		offset,
-		distance
-	)
-
-	var local_target = curve.sample_baked(
-		target_offset,
-		true
-	)
-
-	return to_global(local_target)
-
-func get_point_at_offset(
-	offset: float
-) -> Vector3:
-	var wrapped_offset = offset
-
-	while wrapped_offset >= spline_length:
-		wrapped_offset -= spline_length
-
-	while wrapped_offset < 0.0:
-		wrapped_offset += spline_length
-
-	return to_global(
-		curve.sample_baked(
-			wrapped_offset,
-			true
+	return get_point_at_offset(
+		_advance_offset(
+			current_offset,
+			distance
 		)
 	)
 
-# ============================================================
-# DEBUG
-# ============================================================
 
-func get_debug_target(
-	car_position: Vector3,
-	current_gate: int
-) -> Vector3:
-	var result = get_bot_target(
-		car_position,
-		current_gate,
-		gate_offsets[current_gate] if not gate_offsets.is_empty() else 0.0,
-		0.0
+func get_distance_to_segment(
+	start_gate: int,
+	end_gate: int
+) -> float:
+
+	if gate_offsets.is_empty():
+		return 0.0
+
+	var start_offset = get_gate_offset(start_gate)
+	var end_offset = get_gate_offset(end_gate)
+
+	return _get_forward_distance(
+		start_offset,
+		end_offset
 	)
 
-	return result.position
 
-func _update_debug_mesh() -> void:
-	if debug_mesh == null:
+# --------------------------------------------------------------------
+# INTERNAL OFFSET HELPERS
+# --------------------------------------------------------------------
+
+func _get_segment_start_offset(current_gate: int) -> float:
+	if gate_offsets.is_empty():
+		return 0.0
+
+	var previous_gate = current_gate - 1
+
+	if previous_gate < 0:
+		previous_gate = gate_offsets.size() - 1
+
+	return gate_offsets[previous_gate]
+
+
+func _advance_offset(
+	start_offset: float,
+	distance: float
+) -> float:
+
+	if spline_length <= 0.001:
+		return 0.0
+
+	var result = start_offset + distance
+
+	while result < 0.0:
+		result += spline_length
+
+	while result > spline_length:
+		result -= spline_length
+
+	return result
+
+
+func _get_forward_distance(
+	start_offset: float,
+	end_offset: float
+) -> float:
+
+	if spline_length <= 0.001:
+		return 0.0
+
+	var distance = end_offset - start_offset
+
+	if distance < 0.0:
+		distance += spline_length
+
+	return distance
+
+
+func _get_wrapped_distance(
+	start_offset: float,
+	end_offset: float
+) -> float:
+
+	return _get_forward_distance(
+		start_offset,
+		end_offset
+	)
+
+func _build_debug_mesh() -> void:
+	if cached_positions.size() < 2:
 		return
-
-	debug_mesh.clear_surfaces()
-
-	debug_mesh.surface_begin(
-		Mesh.PRIMITIVE_LINES,
-		debug_material
-	)
-
-	var distance = 0.0
-
-	while distance < spline_length:
-
-		var next_distance = min(
-			distance + debug_sample_spacing,
-			spline_length
-		)
-
-		var a = curve.sample_baked(
-			distance,
-			true
-		)
-
-		var b = curve.sample_baked(
-			next_distance,
-			true
-		)
-
-		debug_mesh.surface_set_color(
-			Color(0.1, 0.8, 1.0, 1.0)
-		)
-
-		debug_mesh.surface_add_vertex(a)
-
-		debug_mesh.surface_add_vertex(b)
-
-		distance = next_distance
-
-	debug_mesh.surface_end()
-
-func _setup_debug() -> void:
-	if not debug_enabled:
-		return
-
-	if debug_mesh_instance != null:
-		debug_mesh_instance.queue_free()
 
 	debug_mesh = ImmediateMesh.new()
-
 	debug_material = StandardMaterial3D.new()
+
 	debug_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	debug_material.vertex_color_use_as_albedo = true
 
 	debug_mesh_instance = MeshInstance3D.new()
 	debug_mesh_instance.mesh = debug_mesh
 	debug_mesh_instance.material_override = debug_material
-	debug_mesh_instance.layers = VisibilityLayers.DEBUG
+	debug_mesh_instance.set_layer_mask_value(VisibilityLayers.GENERAL, false)
+	debug_mesh_instance.set_layer_mask_value(VisibilityLayers.DEBUG, true)
 
 	add_child(debug_mesh_instance)
 
-func get_debug_direction(
-	offset: float
-) -> Vector3:
-	var point = get_point_at_offset(offset)
-
-	var direction = get_direction_at_offset(
-		offset
+	debug_mesh.surface_begin(
+		Mesh.PRIMITIVE_LINE_STRIP,
+		debug_material
+	)
+	debug_mesh.surface_set_color(
+		Color(0.1, 0.8, 1.0, 1.0)
 	)
 
-	return point + direction * 5.0
+	for cached_position in cached_positions:
+		debug_mesh.surface_add_vertex(
+			to_local(cached_position)
+		)
+
+	debug_mesh.surface_end()
