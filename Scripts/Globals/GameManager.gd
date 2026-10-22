@@ -6,13 +6,16 @@ var time_string: String = "00'00\"00"
 
 var race: RaceManager
 
+var is_debug_mode: bool = false
+
 func _ready() -> void:
 	#TranslationServer.set_locale("en")
 	update_mouse_mode()
 
 func _process(delta: float) -> void:
-	time_elapsed += delta
-	time_string = format_lap_time(time_elapsed)
+	update_race_time(delta)
+	if Input.is_action_just_pressed("ui_toggle_debug"):
+		is_debug_mode = !is_debug_mode
 
 func toggle_pause() -> void:
 	is_paused = !is_paused
@@ -20,6 +23,12 @@ func toggle_pause() -> void:
 
 func update_mouse_mode() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if is_paused else Input.MOUSE_MODE_CAPTURED
+
+func update_race_time(delta: float) -> void:
+	if !race or !race.status == RaceManager.RaceStatus.Started:
+		return
+	time_elapsed += delta
+	time_string = format_lap_time(time_elapsed)
 
 func format_lap_time(seconds: float) -> String:
 	var mins := int(seconds / 60.0)

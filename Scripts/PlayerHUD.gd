@@ -44,6 +44,7 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	scoreboard_item_debug_1.queue_free()
 	scoreboard_item_debug_2.queue_free()
+	update_visor()
 	GameManager.race.player_added.connect(instantiate_scoreboard_item)
 	if GameManager.race.status == RaceManager.RaceStatus.Countdown:
 		instantiate_race_countdown()
@@ -51,14 +52,16 @@ func _ready() -> void:
 		GameManager.race.countdown.connect(instantiate_race_countdown)
 
 func _process(delta: float) -> void:
-	if Input.is_action_just_pressed("pause"):
-		GameManager.toggle_pause()
 	if GameManager.race.status != RaceManager.RaceStatus.Started:
 		hud_container.visible = false
+		return
 	else:
 		hud_container.visible = true
+	if Input.is_action_just_pressed("pause"):
+		GameManager.toggle_pause()
 	get_tree().paused = GameManager.is_paused
-	update_visor()
+	if GameManager.is_paused:
+		return
 	update_sway(delta)
 	update_scoreboard()
 	update_player_details()
@@ -72,7 +75,7 @@ func update_visor() -> void:
 	subviewport_container.material.set("shader_parameter/bulge", visor_bulge)
 
 func update_sway(delta: float) -> void:
-	var clamped_input_look = car.steering
+	var clamped_input_look = car.steering if car.is_on_ground() else 0.0
 	var current_speed = car.speed_kmh
 	var intensity = clamp(current_speed / 200.0, 0.0, 1.0)
 	var sway_look = Vector2(

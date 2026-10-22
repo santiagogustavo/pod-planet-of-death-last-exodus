@@ -1,0 +1,61 @@
+[gd_scene format=3 uid="uid://cbennuildpalq"]
+
+[ext_resource type="Script" uid="uid://bb30w0l7er7yv" path="res://Scripts/UI/DebugStats.gd" id="1_bggsc"]
+[ext_resource type="FontFile" uid="uid://brbja0q7gswro" path="res://Fonts/MoonGlossDisplayThick.otf" id="1_xknmv"]
+[ext_resource type="FontFile" uid="uid://c6bnt2xtv7jm0" path="res://Fonts/MoonGlossDisplayMedium.otf" id="2_qmm6q"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_qmm6q"]
+font = ExtResource("1_xknmv")
+font_size = 24
+font_color = Color(0.9372549, 0.627451, 0.007843138, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_0i88t"]
+font = ExtResource("2_qmm6q")
+font_size = 24
+font_color = Color(1, 0, 0, 1)
+
+[node name="DebugStats" type="CanvasLayer" unique_id=763715148]
+layer = 4
+script = ExtResource("1_bggsc")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1645766371]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="Control" type="Control" parent="MarginContainer" unique_id=1044794995]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="MarginContainer/Control" unique_id=1691779286]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -28.0
+offset_right = 142.0
+grow_vertical = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Control/Panel" unique_id=2071481777]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 25.0
+grow_horizontal = 2
+theme_override_constants/separation = 16
+
+[node name="FPSLabel" type="Label" parent="MarginContainer/Control/Panel/HBoxContainer" unique_id=171435514]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "FPS:"
+label_settings = SubResource("LabelSettings_qmm6q")
+
+[node name="FPSValue" type="Label" parent="MarginContainer/Control/Panel/HBoxContainer" unique_id=1894983624]
+layout_mode = 2
+text = "999"
+label_settings = SubResource("LabelSettings_0i88t")

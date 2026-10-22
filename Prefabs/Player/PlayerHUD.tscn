@@ -509,21 +509,22 @@ vertical_alignment = 1
 
 [node name="CurrentPositionlabel" type="Label" parent="SwayContainer/SubViewport/MarginContainer/Control/RaceStats/PositionLabel" unique_id=818310511]
 layout_mode = 0
+offset_left = 5.0
 offset_top = -50.0
-offset_right = 47.0
+offset_right = 42.0
 offset_bottom = -8.0
-text = "11"
+text = "8"
 label_settings = SubResource("LabelSettings_h0y6g")
 horizontal_alignment = 2
 vertical_alignment = 2
 
 [node name="TotalPositionsLabel" type="Label" parent="SwayContainer/SubViewport/MarginContainer/Control/RaceStats/PositionLabel" unique_id=1768513681]
 layout_mode = 0
-offset_left = 47.0
+offset_left = 42.0
 offset_top = -50.0
-offset_right = 88.0
+offset_right = 78.0
 offset_bottom = -12.0
-text = "/11"
+text = "/8"
 label_settings = SubResource("LabelSettings_1t8f0")
 vertical_alignment = 2
 
@@ -540,9 +541,9 @@ vertical_alignment = 1
 
 [node name="CurrentLapLabel" type="Label" parent="SwayContainer/SubViewport/MarginContainer/Control/RaceStats/LapLabel" unique_id=589315704]
 layout_mode = 0
-offset_left = -3.0
+offset_left = -5.0
 offset_top = -32.0
-offset_right = 26.0
+offset_right = 24.0
 offset_bottom = -3.0
 text = "11"
 label_settings = SubResource("LabelSettings_3w5fx")
@@ -551,9 +552,9 @@ vertical_alignment = 1
 
 [node name="TotalLapsLabel" type="Label" parent="SwayContainer/SubViewport/MarginContainer/Control/RaceStats/LapLabel" unique_id=1395471891]
 layout_mode = 0
-offset_left = 26.0
+offset_left = 24.0
 offset_top = -32.0
-offset_right = 50.0
+offset_right = 48.0
 offset_bottom = -3.0
 text = "/11"
 label_settings = SubResource("LabelSettings_15wkl")

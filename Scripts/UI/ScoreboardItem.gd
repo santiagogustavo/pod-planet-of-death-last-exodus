@@ -20,7 +20,7 @@ const PAR_TIME_TIMEOUT: float = 5.0
 func _ready() -> void:
 	if is_current_player:
 		return
-	create_name_or_time_timeout()
+	GameManager.race.started.connect(create_name_or_time_timeout)
 
 func _process(_delta: float) -> void:
 	position_label.text = str(player_position)

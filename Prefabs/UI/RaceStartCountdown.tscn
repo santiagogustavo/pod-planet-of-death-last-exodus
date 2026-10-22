@@ -435,6 +435,7 @@ stream_1/stream = ExtResource("13_m2aq7")
 stream_2/stream = ExtResource("14_auh62")
 
 [node name="RaceStartCountdown" type="CanvasLayer" unique_id=707674675]
+process_mode = 1
 layer = 3
 script = ExtResource("1_q2j1f")
 
