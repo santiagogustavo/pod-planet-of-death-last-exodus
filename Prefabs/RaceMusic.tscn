@@ -12,13 +12,16 @@
 [ext_resource type="AudioStream" uid="uid://d1lksxtu8i27v" path="res://Music/Race/Breakbeat3.mp3" id="7_a5s88"]
 [ext_resource type="AudioStream" uid="uid://dg5ygf588hah6" path="res://Music/Race/Neurofunk2.mp3" id="7_s6sol"]
 [ext_resource type="AudioStream" uid="uid://ydemrdmtgwop" path="res://Music/Race/Neurofunk3.mp3" id="8_2b7a1"]
+[ext_resource type="AudioStream" uid="uid://ddjgtd53ns7xe" path="res://Music/Race/Metal1.mp3" id="8_s6sol"]
+[ext_resource type="AudioStream" uid="uid://b8uooi4ha3gmc" path="res://Music/Race/Metal2.mp3" id="9_2b7a1"]
 [ext_resource type="AudioStream" uid="uid://cudfns524ub7j" path="res://Music/Race/Psy1.mp3" id="9_gbwnm"]
+[ext_resource type="AudioStream" uid="uid://ceionrv21p31" path="res://Music/Race/Metal3.mp3" id="10_gbwnm"]
 [ext_resource type="AudioStream" uid="uid://dps0g2wqwhhwk" path="res://Music/Race/Psy2.mp3" id="10_xbiri"]
 [ext_resource type="AudioStream" uid="uid://t44i3xswjot0" path="res://Music/Race/Psy3.mp3" id="11_bgpfj"]
 [ext_resource type="AudioStream" uid="uid://cl2rp8w0chlpp" path="res://Music/Race/Schranz1.mp3" id="12_br2gl"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_ny1m1"]
-streams_count = 15
+streams_count = 18
 stream_0/stream = ExtResource("1_vmpci")
 stream_1/stream = ExtResource("2_18xwa")
 stream_2/stream = ExtResource("5_5l2rx")
@@ -34,6 +37,9 @@ stream_11/stream = ExtResource("4_gmby8")
 stream_12/stream = ExtResource("5_gmby8")
 stream_13/stream = ExtResource("6_5l2rx")
 stream_14/stream = ExtResource("7_a5s88")
+stream_15/stream = ExtResource("8_s6sol")
+stream_16/stream = ExtResource("9_2b7a1")
+stream_17/stream = ExtResource("10_gbwnm")
 
 [node name="RaceMusic" type="AudioStreamPlayer2D" unique_id=942074689]
 stream = SubResource("AudioStreamRandomizer_ny1m1")
