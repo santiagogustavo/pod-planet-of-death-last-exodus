@@ -10,7 +10,7 @@ func _process(_delta: float) -> void:
 	var car_instance = player.car_instance
 	global_position = Vector3(
 		car_instance.global_position.x,
-		0.0,
+		car_instance.global_position.y,
 		car_instance.global_position.z,
 	)
 	global_rotation = Vector3(0.0, car_instance.global_rotation.y, 0.0)

@@ -26,6 +26,7 @@ func update_mouse_mode() -> void:
 
 func update_race_time(delta: float) -> void:
 	if !race or !race.status == RaceManager.RaceStatus.Started:
+		time_elapsed = 0.0
 		return
 	time_elapsed += delta
 	time_string = format_lap_time(time_elapsed)

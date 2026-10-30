@@ -248,11 +248,12 @@ func update_brake(is_braking: bool) -> void:
 	brake = brake_force
 
 func update_brake_lights_and_sfx() -> void:
-	var is_braking: bool = brake > 0.0 and is_on_ground()
+	var is_braking: bool = brake > 0.0
 	for brake_light in brake_lights:
 		brake_light.visible = is_braking
 	if (
 		is_braking
+		and is_on_ground()
 		and !brake_sfx.playing
 		and GameManager.race.status == RaceManager.RaceStatus.Started
 	):

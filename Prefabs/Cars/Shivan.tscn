@@ -14,7 +14,8 @@
 [ext_resource type="PackedScene" uid="uid://boibhgtrwkg3m" path="res://Prefabs/Cars/Common/BrakeLight.tscn" id="8_muq0l"]
 [ext_resource type="Shader" uid="uid://1cpiujcq4qbx" path="res://addons/gputrail/shaders/trail_draw_pass.gdshader" id="8_utqks"]
 [ext_resource type="Texture2D" uid="uid://crk6pkb7e5rwc" path="res://addons/gputrail/defaults/texture.tres" id="9_muq0l"]
-[ext_resource type="Texture2D" uid="uid://ceyaayj2qbu2d" path="res://Textures/Flares/corona.png" id="9_ogm34"]
+[ext_resource type="Shader" uid="uid://dfp64qj12vy1p" path="res://addons/gputrail/shaders/trail.gdshader" id="10_sdk4a"]
+[ext_resource type="Script" uid="uid://d5uy3jx36tvx" path="res://addons/gputrail/GPUTrail3D.gd" id="12_h70vq"]
 [ext_resource type="Material" uid="uid://yv5qucfsr4q4" path="res://Materials/Cars/TireTreads1.tres" id="14_8hbrq"]
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_24any"]
@@ -119,13 +120,16 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_pvmid")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gsb2i"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_gsb2i"]
+load_path = "res://.godot/imported/corona.png-3e88bb0591aac2f2adba4b13e63402ba.s3tc.ctex"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pvmid"]
 transparency = 1
 blend_mode = 1
 shading_mode = 0
 vertex_color_use_as_albedo = true
-albedo_color = Color(0.26, 1, 0.48199993, 0.14901961)
-albedo_texture = ExtResource("9_ogm34")
+albedo_color = Color(0.25882354, 1, 0.48235294, 0.14901961)
+albedo_texture = SubResource("CompressedTexture2D_gsb2i")
 disable_receive_shadows = true
 billboard_mode = 3
 billboard_keep_scale = true
@@ -136,10 +140,104 @@ proximity_fade_enabled = true
 proximity_fade_distance = 0.1
 stencil_flags = 2
 
-[sub_resource type="QuadMesh" id="QuadMesh_8hbrq"]
-material = SubResource("StandardMaterial3D_gsb2i")
+[sub_resource type="QuadMesh" id="QuadMesh_fkwa5"]
+material = SubResource("StandardMaterial3D_pvmid")
 
-[sub_resource type="Shader" id="Shader_8hbrq"]
+[sub_resource type="Gradient" id="Gradient_h70vq"]
+resource_local_to_scene = true
+colors = PackedColorArray(0.25882354, 1, 0.48235294, 0.19607843, 0.25882354, 1, 0.48235294, 0)
+metadata/_snap_enabled = true
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_pvmid"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_h70vq")
+
+[sub_resource type="Curve" id="Curve_fkwa5"]
+resource_local_to_scene = true
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.2, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+metadata/_snap_enabled = true
+
+[sub_resource type="CurveTexture" id="CurveTexture_krkb0"]
+resource_local_to_scene = true
+curve = SubResource("Curve_fkwa5")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ofeyo"]
+shader = ExtResource("10_sdk4a")
+
+[sub_resource type="Gradient" id="Gradient_sdk4a"]
+resource_local_to_scene = true
+colors = PackedColorArray(0.25882354, 1, 0.48235294, 0.19607843, 0.25882354, 1, 0.48235294, 0)
+metadata/_snap_enabled = true
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_h70vq"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_sdk4a")
+
+[sub_resource type="Curve" id="Curve_pvmid"]
+resource_local_to_scene = true
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.2, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+metadata/_snap_enabled = true
+
+[sub_resource type="CurveTexture" id="CurveTexture_fkwa5"]
+resource_local_to_scene = true
+curve = SubResource("Curve_pvmid")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o5aom"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("8_utqks")
+shader_parameter/tex = ExtResource("9_muq0l")
+shader_parameter/mask_strength = 1.0
+shader_parameter/uv_offset = Vector2(0, 0)
+shader_parameter/color_ramp = SubResource("GradientTexture1D_h70vq")
+shader_parameter/curve = SubResource("CurveTexture_fkwa5")
+shader_parameter/emmission_transform = Projection(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
+shader_parameter/flags = 44
+
+[sub_resource type="QuadMesh" id="QuadMesh_bvquw"]
+material = SubResource("ShaderMaterial_o5aom")
+
+[sub_resource type="Gradient" id="Gradient_krkb0"]
+resource_local_to_scene = true
+colors = PackedColorArray(0.25882354, 1, 0.48235294, 0.19607843, 0.25882354, 1, 0.48235294, 0)
+metadata/_snap_enabled = true
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_0turk"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_krkb0")
+
+[sub_resource type="Curve" id="Curve_hv4ic"]
+resource_local_to_scene = true
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.2, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+metadata/_snap_enabled = true
+
+[sub_resource type="CurveTexture" id="CurveTexture_n6iut"]
+resource_local_to_scene = true
+curve = SubResource("Curve_hv4ic")
+
+[sub_resource type="Gradient" id="Gradient_0turk"]
+resource_local_to_scene = true
+colors = PackedColorArray(0.25882354, 1, 0.48235294, 0.19607843, 0.25882354, 1, 0.48235294, 0)
+metadata/_snap_enabled = true
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_hv4ic"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_0turk")
+
+[sub_resource type="Curve" id="Curve_n6iut"]
+resource_local_to_scene = true
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.2, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+metadata/_snap_enabled = true
+
+[sub_resource type="CurveTexture" id="CurveTexture_u7f34"]
+resource_local_to_scene = true
+curve = SubResource("Curve_n6iut")
+
+[sub_resource type="Shader" id="Shader_juscl"]
 resource_local_to_scene = true
 code = "shader_type particles;
 
@@ -186,9 +284,9 @@ void process() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_sdk4a"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1bpy8"]
 resource_local_to_scene = true
-shader = SubResource("Shader_8hbrq")
+shader = SubResource("Shader_juscl")
 
 [sub_resource type="Gradient" id="Gradient_fef0o"]
 colors = PackedColorArray(1, 1, 1, 0.09803922, 1, 1, 1, 0)
@@ -204,7 +302,7 @@ metadata/_snap_enabled = true
 [sub_resource type="CurveTexture" id="CurveTexture_sdk4a"]
 curve = SubResource("Curve_8r7kd")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_h70vq"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mcmjd"]
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("8_utqks")
@@ -216,11 +314,11 @@ shader_parameter/curve = SubResource("CurveTexture_sdk4a")
 shader_parameter/emmission_transform = Projection(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
 shader_parameter/flags = 46
 
-[sub_resource type="QuadMesh" id="QuadMesh_pvmid"]
+[sub_resource type="QuadMesh" id="QuadMesh_8feu0"]
 resource_local_to_scene = true
-material = SubResource("ShaderMaterial_h70vq")
+material = SubResource("ShaderMaterial_mcmjd")
 
-[sub_resource type="Shader" id="Shader_fkwa5"]
+[sub_resource type="Shader" id="Shader_n3egt"]
 resource_local_to_scene = true
 code = "shader_type particles;
 
@@ -267,11 +365,11 @@ void process() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_krkb0"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kye7k"]
 resource_local_to_scene = true
-shader = SubResource("Shader_fkwa5")
+shader = SubResource("Shader_n3egt")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_0turk"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_n7ods"]
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("8_utqks")
@@ -283,9 +381,9 @@ shader_parameter/curve = SubResource("CurveTexture_sdk4a")
 shader_parameter/emmission_transform = Projection(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
 shader_parameter/flags = 46
 
-[sub_resource type="QuadMesh" id="QuadMesh_hv4ic"]
+[sub_resource type="QuadMesh" id="QuadMesh_dcnfw"]
 resource_local_to_scene = true
-material = SubResource("ShaderMaterial_0turk")
+material = SubResource("ShaderMaterial_n7ods")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nn64n"]
 resource_name = "000000_G"
@@ -527,7 +625,7 @@ contact_monitor = true
 max_contacts_reported = 1
 script = ExtResource("1_mnj72")
 wheels = [NodePath("FR"), NodePath("RR"), NodePath("FL"), NodePath("RL")]
-brake_lights = [NodePath("CollisionShape3D/ChassisSR0/BrakeLight"), NodePath("CollisionShape3D/ChassisSR0/BrakeLight2")]
+brake_lights = [NodePath("CollisionShape3D/BrakeLight"), NodePath("CollisionShape3D/BrakeLight2")]
 skid_marks = [NodePath("SkidMarks/SkidMarks"), NodePath("SkidMarks/SkidMarks2"), NodePath("SkidMarks/SkidMarks3"), NodePath("SkidMarks/SkidMarks4")]
 wind_trails = [NodePath("CollisionShape3D/WindTrail"), NodePath("CollisionShape3D/WindTrail2")]
 custom_running_sfx = ExtResource("3_gsb2i")
@@ -549,31 +647,75 @@ transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 3.27
 [node name="HeadLight2" parent="CollisionShape3D/ChassisSR0" unique_id=372036736 instance=ExtResource("7_utqks")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 3.272, -0.508, 1.02)
 
-[node name="BrakeLight" parent="CollisionShape3D/ChassisSR0" unique_id=1199073536 instance=ExtResource("8_muq0l")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2701967, -0.44054842, -0.8528644)
+[node name="BrakeLight" parent="CollisionShape3D" unique_id=1199073536 instance=ExtResource("8_muq0l")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2738178, -0.3586539, -0.86960137)
 light_color = Color(0.25882354, 1, 0.48235294, 1)
 
-[node name="MeshInstance3D" parent="CollisionShape3D/ChassisSR0/BrakeLight" index="0" unique_id=659253709]
-mesh = SubResource("QuadMesh_8hbrq")
+[node name="MeshInstance3D" parent="CollisionShape3D/BrakeLight" index="0" unique_id=659253709]
+mesh = SubResource("QuadMesh_fkwa5")
 
-[node name="BrakeLight2" parent="CollisionShape3D/ChassisSR0" unique_id=756684670 instance=ExtResource("8_muq0l")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.27, -0.441, 0.853)
+[node name="GPUTrail3D" parent="CollisionShape3D/BrakeLight" index="1" unique_id=845435319]
+visible = false
+color_ramp = SubResource("GradientTexture1D_pvmid")
+curve = SubResource("CurveTexture_krkb0")
+
+[node name="GPUTrail3D2" type="GPUParticles3D" parent="CollisionShape3D/BrakeLight" unique_id=540845498]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0.11647773, 0, 0)
+amount = 10
+lifetime = 10.0
+explosiveness = 1.0
+fixed_fps = 143
+process_material = SubResource("ShaderMaterial_ofeyo")
+draw_pass_1 = SubResource("QuadMesh_bvquw")
+script = ExtResource("12_h70vq")
+length = 10
+length_seconds = 0.06993006993006994
+color_ramp = SubResource("GradientTexture1D_0turk")
+curve = SubResource("CurveTexture_n6iut")
+billboard = true
+_defaults_have_been_set = true
+metadata/_custom_type_script = "uid://d5uy3jx36tvx"
+
+[node name="BrakeLight2" parent="CollisionShape3D" unique_id=1515748665 instance=ExtResource("8_muq0l")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2736645, -0.35815763, 0.87)
 light_color = Color(0.25882354, 1, 0.48235294, 1)
 
-[node name="MeshInstance3D" parent="CollisionShape3D/ChassisSR0/BrakeLight2" index="0" unique_id=659253709]
-mesh = SubResource("QuadMesh_8hbrq")
+[node name="MeshInstance3D" parent="CollisionShape3D/BrakeLight2" index="0" unique_id=659253709]
+mesh = SubResource("QuadMesh_fkwa5")
+
+[node name="GPUTrail3D" parent="CollisionShape3D/BrakeLight2" index="1" unique_id=845435319]
+visible = false
+color_ramp = SubResource("GradientTexture1D_hv4ic")
+curve = SubResource("CurveTexture_u7f34")
+
+[node name="GPUTrail3D2" type="GPUParticles3D" parent="CollisionShape3D/BrakeLight2" unique_id=98560140]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0.11647773, 0, 0)
+amount = 10
+lifetime = 10.0
+explosiveness = 1.0
+fixed_fps = 143
+process_material = SubResource("ShaderMaterial_ofeyo")
+draw_pass_1 = SubResource("QuadMesh_bvquw")
+script = ExtResource("12_h70vq")
+length = 10
+length_seconds = 0.06993006993006994
+color_ramp = SubResource("GradientTexture1D_h70vq")
+curve = SubResource("CurveTexture_fkwa5")
+billboard = true
+_defaults_have_been_set = true
+metadata/_custom_type_script = "uid://d5uy3jx36tvx"
 
 [node name="WindTrail" parent="CollisionShape3D" unique_id=986200328 instance=ExtResource("7_6gkjx")]
 transform = Transform3D(-2.1855695e-09, 0, -0.05, 0, 0.05, 0, 0.05, 0, -2.1855695e-09, -1.9958292, 0.20418906, -1.6161374)
-process_material = SubResource("ShaderMaterial_sdk4a")
-draw_pass_1 = SubResource("QuadMesh_pvmid")
+process_material = SubResource("ShaderMaterial_1bpy8")
+draw_pass_1 = SubResource("QuadMesh_8feu0")
 color_ramp = SubResource("GradientTexture1D_8hbrq")
 curve = SubResource("CurveTexture_sdk4a")
 
 [node name="WindTrail2" parent="CollisionShape3D" unique_id=341939609 instance=ExtResource("7_6gkjx")]
 transform = Transform3D(-2.1855695e-09, 0, -0.05, 0, 0.05, 0, 0.05, 0, -2.1855695e-09, -1.996, 0.204, 1.616)
-process_material = SubResource("ShaderMaterial_krkb0")
-draw_pass_1 = SubResource("QuadMesh_hv4ic")
+process_material = SubResource("ShaderMaterial_kye7k")
+draw_pass_1 = SubResource("QuadMesh_dcnfw")
 color_ramp = SubResource("GradientTexture1D_8hbrq")
 curve = SubResource("CurveTexture_sdk4a")
 
@@ -665,5 +807,5 @@ wheel = NodePath("../../RL")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.212, 0, 2.069)
 wheel = NodePath("../../RR")
 
-[editable path="CollisionShape3D/ChassisSR0/BrakeLight"]
-[editable path="CollisionShape3D/ChassisSR0/BrakeLight2"]
+[editable path="CollisionShape3D/BrakeLight"]
+[editable path="CollisionShape3D/BrakeLight2"]

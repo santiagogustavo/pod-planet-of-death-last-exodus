@@ -1,6 +1,10 @@
 [gd_scene format=3 uid="uid://boibhgtrwkg3m"]
 
 [ext_resource type="Texture2D" uid="uid://ceyaayj2qbu2d" path="res://Textures/Flares/corona.png" id="1_jkcfh"]
+[ext_resource type="Shader" uid="uid://dfp64qj12vy1p" path="res://addons/gputrail/shaders/trail.gdshader" id="2_7hefo"]
+[ext_resource type="Shader" uid="uid://1cpiujcq4qbx" path="res://addons/gputrail/shaders/trail_draw_pass.gdshader" id="3_70x28"]
+[ext_resource type="Texture2D" uid="uid://crk6pkb7e5rwc" path="res://addons/gputrail/defaults/texture.tres" id="4_70x28"]
+[ext_resource type="Script" uid="uid://d5uy3jx36tvx" path="res://addons/gputrail/GPUTrail3D.gd" id="4_c6fup"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7lllc"]
 transparency = 1
@@ -22,6 +26,62 @@ stencil_flags = 2
 [sub_resource type="QuadMesh" id="QuadMesh_d8ndu"]
 material = SubResource("StandardMaterial3D_7lllc")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ofeyo"]
+shader = ExtResource("2_7hefo")
+
+[sub_resource type="Gradient" id="Gradient_0turk"]
+resource_local_to_scene = true
+colors = PackedColorArray(0.25882354, 1, 0.48235294, 0.19607843, 0.25882354, 1, 0.48235294, 0)
+metadata/_snap_enabled = true
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_hv4ic"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_0turk")
+
+[sub_resource type="Curve" id="Curve_n6iut"]
+resource_local_to_scene = true
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.2, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+metadata/_snap_enabled = true
+
+[sub_resource type="CurveTexture" id="CurveTexture_u7f34"]
+resource_local_to_scene = true
+curve = SubResource("Curve_n6iut")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o5aom"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("3_70x28")
+shader_parameter/tex = ExtResource("4_70x28")
+shader_parameter/mask_strength = 1.0
+shader_parameter/uv_offset = Vector2(0, 0)
+shader_parameter/color_ramp = SubResource("GradientTexture1D_hv4ic")
+shader_parameter/curve = SubResource("CurveTexture_u7f34")
+shader_parameter/emmission_transform = Projection(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
+shader_parameter/flags = 44
+
+[sub_resource type="QuadMesh" id="QuadMesh_bvquw"]
+material = SubResource("ShaderMaterial_o5aom")
+
+[sub_resource type="Gradient" id="Gradient_7hefo"]
+resource_local_to_scene = true
+colors = PackedColorArray(1, 0, 0, 0.19607843, 1, 0, 0, 0)
+metadata/_snap_enabled = true
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_7hefo"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_7hefo")
+
+[sub_resource type="Curve" id="Curve_7hefo"]
+resource_local_to_scene = true
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.2, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+metadata/_snap_enabled = true
+
+[sub_resource type="CurveTexture" id="CurveTexture_7hefo"]
+resource_local_to_scene = true
+curve = SubResource("Curve_7hefo")
+
 [node name="BrakeLight" type="OmniLight3D" unique_id=1199073536]
 light_color = Color(0.972549, 0.29803923, 0.36862746, 1)
 light_energy = 0.15
@@ -30,3 +90,20 @@ light_energy = 0.15
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -0.09046078, 0, 0)
 cast_shadow = 0
 mesh = SubResource("QuadMesh_d8ndu")
+
+[node name="GPUTrail3D" type="GPUParticles3D" parent="." unique_id=845435319]
+transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, 0, 0, 0)
+amount = 10
+lifetime = 10.0
+explosiveness = 1.0
+fixed_fps = 143
+process_material = SubResource("ShaderMaterial_ofeyo")
+draw_pass_1 = SubResource("QuadMesh_bvquw")
+script = ExtResource("4_c6fup")
+length = 10
+length_seconds = 0.06993006993006994
+color_ramp = SubResource("GradientTexture1D_7hefo")
+curve = SubResource("CurveTexture_7hefo")
+billboard = true
+_defaults_have_been_set = true
+metadata/_custom_type_script = "uid://d5uy3jx36tvx"
