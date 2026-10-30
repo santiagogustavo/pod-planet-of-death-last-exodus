@@ -1,0 +1,46 @@
+[gd_resource type="Theme" format=3 uid="uid://b5744ve1k3urp"]
+
+[ext_resource type="FontFile" uid="uid://c6bnt2xtv7jm0" path="res://Fonts/MoonGlossDisplayMedium.otf" id="1_agqgc"]
+[ext_resource type="FontVariation" uid="uid://b60fegx7eq7ja" path="res://Fonts/MoonGlossDisplayExtraThick.tres" id="2_4msy0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bwf5y"]
+bg_color = Color(0.9843137, 0.7411765, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4msy0"]
+content_margin_left = 16.0
+content_margin_right = 16.0
+bg_color = Color(0.9843137, 0.7411765, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mrpck"]
+content_margin_left = 16.0
+content_margin_right = 16.0
+bg_color = Color(0.9843137, 0.7411765, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8f2ha"]
+content_margin_left = 16.0
+content_margin_right = 16.0
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_bottom = 4
+border_color = Color(0.9372549, 0.627451, 0.007843138, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5tlj2"]
+content_margin_left = 16.0
+content_margin_right = 16.0
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[resource]
+Button/colors/font_focus_color = Color(0, 0, 0, 1)
+Button/colors/font_hover_color = Color(0, 0, 0, 1)
+Button/font_sizes/font_size = 24
+Button/fonts/font = ExtResource("1_agqgc")
+Button/styles/focus = SubResource("StyleBoxFlat_bwf5y")
+Button/styles/hover = SubResource("StyleBoxFlat_bwf5y")
+Label/font_sizes/font_size = 18
+Label/fonts/font = ExtResource("1_agqgc")
+TabContainer/colors/font_hovered_color = Color(0, 0, 0, 1)
+TabContainer/font_sizes/font_size = 24
+TabContainer/fonts/font = ExtResource("2_4msy0")
+TabContainer/styles/tab_focus = SubResource("StyleBoxFlat_4msy0")
+TabContainer/styles/tab_hovered = SubResource("StyleBoxFlat_mrpck")
+TabContainer/styles/tab_selected = SubResource("StyleBoxFlat_8f2ha")
+TabContainer/styles/tab_unselected = SubResource("StyleBoxFlat_5tlj2")

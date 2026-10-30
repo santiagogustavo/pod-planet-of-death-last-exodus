@@ -41,7 +41,6 @@ class_name PlayerHUD
 var scoreboard_items: Array[ScoreboardItem] = []
 
 func _ready() -> void:
-	process_mode = Node.PROCESS_MODE_ALWAYS
 	scoreboard_item_debug_1.queue_free()
 	scoreboard_item_debug_2.queue_free()
 	update_visor()
@@ -57,9 +56,6 @@ func _process(delta: float) -> void:
 		return
 	else:
 		hud_container.visible = true
-	if Input.is_action_just_pressed("pause"):
-		GameManager.toggle_pause()
-	get_tree().paused = GameManager.is_paused
 	if GameManager.is_paused:
 		return
 	update_sway(delta)

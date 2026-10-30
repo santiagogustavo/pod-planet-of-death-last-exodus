@@ -30,6 +30,7 @@ func _ready() -> void:
 	GameManager.race = self
 	instantiate_race_music()
 	spawn_players_to_gates()
+	start_race_countdown()
 
 func instantiate_race_music() -> void:
 	var race_music_instance: RaceMusic = race_music_prefab.instantiate()
@@ -43,6 +44,14 @@ func spawn_players_to_gates() -> void:
 		player_instance.start_gate_index = gate_index
 		get_tree().root.add_child.call_deferred(player_instance)
 		gate_index += 1
+
+func restart_race() -> void:
+	status = RaceStatus.Idle
+	for player in players:
+		player.queue_free()
+	players.clear()
+	spawn_players_to_gates()
+	start_race_countdown()
 
 func start_race_countdown() -> void:
 	countdown.emit()

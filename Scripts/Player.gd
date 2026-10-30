@@ -14,6 +14,8 @@ var player_bot_ai: PlayerBotAI
 
 var car_instance: Car
 var hud_instance: PlayerHUD
+var player_input_instance: PlayerInput
+var chase_camera_instance: ChaseCamera
 var next_gate_indicator: Node3D = Node3D.new()
 var current_lap: int = 0
 var current_gate: int = 0
@@ -40,10 +42,10 @@ func _ready() -> void:
 		player_bot_ai = load("res://Prefabs/Player/PlayerBotAI.tscn").instantiate()
 		car_instance.add_child(player_bot_ai)
 	if player_details.player_type == PlayerDetails.PlayerType.Player1:
-		var player_input_instance = PlayerInput.new()
+		player_input_instance = PlayerInput.new()
 		car_instance.add_child(player_input_instance)
 		car_instance.player_input = player_input_instance
-		var chase_camera_instance: ChaseCamera = chase_camera_prefab.instantiate()
+		chase_camera_instance = chase_camera_prefab.instantiate()
 		chase_camera_instance.car = car_instance
 		car_instance.add_child(chase_camera_instance)
 		hud_instance = hud_prefab.instantiate()
@@ -64,7 +66,6 @@ func _process(delta: float) -> void:
 		else:
 			wrong_way_time_buffer = 0.0
 			hud_instance.is_wrong_way = false
-
 	near_miss_detector.global_position = car_instance.global_position
 	near_miss_detector.global_rotation = car_instance.global_rotation
 	next_gate_indicator.look_at(GameManager.race.track.circuit_gates[current_gate].global_position)

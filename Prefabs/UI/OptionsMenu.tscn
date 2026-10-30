@@ -1,0 +1,228 @@
+[gd_scene format=3 uid="uid://cdbkchiy4grk6"]
+
+[ext_resource type="Script" uid="uid://co4prxwhryck8" path="res://Scripts/UI/OptionsMenu.gd" id="1_case4"]
+[ext_resource type="FontFile" uid="uid://brbja0q7gswro" path="res://Fonts/MoonGlossDisplayThick.otf" id="1_kbjkt"]
+[ext_resource type="FontFile" uid="uid://d2aikdifuviiw" path="res://Fonts/AlienAlphabet.otf" id="2_geayf"]
+[ext_resource type="PackedScene" uid="uid://4tfkpbq1bur8" path="res://Prefabs/UI/InputInstruction.tscn" id="3_geayf"]
+[ext_resource type="Script" uid="uid://btrk5ejvf3vuo" path="res://Scripts/UI/SoundTab.gd" id="4_hropp"]
+[ext_resource type="Script" uid="uid://b4ec7qjjfp4o4" path="res://Scripts/UI/InputTab.gd" id="5_mrpck"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_case4"]
+font = ExtResource("1_kbjkt")
+font_size = 42
+font_color = Color(0.9372549, 0.627451, 0.007843138, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_hropp"]
+font = ExtResource("2_geayf")
+font_color = Color(0.9372549, 0.627451, 0.007843138, 1)
+
+[node name="OptionsMenu" type="CanvasLayer" unique_id=1330618320]
+layer = 5
+script = ExtResource("1_case4")
+
+[node name="Control" type="Control" parent="." unique_id=966427486]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="Control" unique_id=1090293560]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.39215687)
+
+[node name="MarginContainer" type="MarginContainer" parent="Control" unique_id=909233295]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 64
+theme_override_constants/margin_top = 64
+theme_override_constants/margin_right = 64
+theme_override_constants/margin_bottom = 64
+
+[node name="Control" type="Control" parent="Control/MarginContainer" unique_id=1488774214]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="Control/MarginContainer/Control" unique_id=706741957]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 55.0
+grow_horizontal = 2
+
+[node name="Label" type="Label" parent="Control/MarginContainer/Control/Panel" unique_id=44055498]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 20.0
+offset_top = -21.5
+offset_right = 180.0
+offset_bottom = 21.5
+grow_vertical = 2
+text = "Options"
+label_settings = SubResource("LabelSettings_case4")
+
+[node name="LabelAlien" type="Label" parent="Control/MarginContainer/Control/Panel/Label" unique_id=369512093]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -2.5
+offset_right = 93.0
+offset_bottom = 21.5
+grow_horizontal = 0
+grow_vertical = 2
+text = "Options"
+label_settings = SubResource("LabelSettings_hropp")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TabContainer" type="TabContainer" parent="Control/MarginContainer/Control" unique_id=1845718169]
+layout_mode = 0
+offset_top = 89.0
+offset_right = 1024.0
+offset_bottom = 459.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+current_tab = 0
+
+[node name="Sound" type="MarginContainer" parent="Control/MarginContainer/Control/TabContainer" unique_id=1037621986]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+script = ExtResource("4_hropp")
+metadata/_tab_index = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer/Control/TabContainer/Sound" unique_id=410006987]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="MasterVolume" type="HBoxContainer" parent="Control/MarginContainer/Control/TabContainer/Sound/VBoxContainer" unique_id=556435442]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 64
+
+[node name="Label" type="Label" parent="Control/MarginContainer/Control/TabContainer/Sound/VBoxContainer/MasterVolume" unique_id=1033133255]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Master"
+
+[node name="HSlider" type="HSlider" parent="Control/MarginContainer/Control/TabContainer/Sound/VBoxContainer/MasterVolume" unique_id=2045094808]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.1
+value = 1.0
+scrollable = false
+ticks_on_borders = true
+
+[node name="MusicVolume" type="HBoxContainer" parent="Control/MarginContainer/Control/TabContainer/Sound/VBoxContainer" unique_id=349408894]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 64
+
+[node name="Label" type="Label" parent="Control/MarginContainer/Control/TabContainer/Sound/VBoxContainer/MusicVolume" unique_id=1216571843]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Music"
+
+[node name="HSlider" type="HSlider" parent="Control/MarginContainer/Control/TabContainer/Sound/VBoxContainer/MusicVolume" unique_id=1405038173]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.1
+value = 1.0
+scrollable = false
+ticks_on_borders = true
+
+[node name="SFXVolume" type="HBoxContainer" parent="Control/MarginContainer/Control/TabContainer/Sound/VBoxContainer" unique_id=222088374]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 64
+
+[node name="Label" type="Label" parent="Control/MarginContainer/Control/TabContainer/Sound/VBoxContainer/SFXVolume" unique_id=989149518]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Sound Effects"
+
+[node name="HSlider" type="HSlider" parent="Control/MarginContainer/Control/TabContainer/Sound/VBoxContainer/SFXVolume" unique_id=1062903192]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.1
+value = 1.0
+scrollable = false
+ticks_on_borders = true
+
+[node name="Input" type="MarginContainer" parent="Control/MarginContainer/Control/TabContainer" unique_id=325286514]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+script = ExtResource("5_mrpck")
+metadata/_tab_index = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer/Control/TabContainer/Input" unique_id=1208737875]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="VibrationToggle" type="HBoxContainer" parent="Control/MarginContainer/Control/TabContainer/Input/VBoxContainer" unique_id=1751219062]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 64
+
+[node name="Label" type="Label" parent="Control/MarginContainer/Control/TabContainer/Input/VBoxContainer/VibrationToggle" unique_id=1395383214]
+layout_mode = 2
+text = "Controller Vibration"
+
+[node name="CheckButton" type="CheckButton" parent="Control/MarginContainer/Control/TabContainer/Input/VBoxContainer/VibrationToggle" unique_id=663537863]
+layout_mode = 2
+
+[node name="InstructionsContainer" type="HBoxContainer" parent="Control/MarginContainer/Control" unique_id=551696975]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/separation = 16
+
+[node name="InputInstruction" parent="Control/MarginContainer/Control/InstructionsContainer" unique_id=1975978946 instance=ExtResource("3_geayf")]
+layout_mode = 2
+size_flags_vertical = 4
+actions = Array[int]([0])
+
+[node name="InputInstruction2" parent="Control/MarginContainer/Control/InstructionsContainer" unique_id=245529258 instance=ExtResource("3_geayf")]
+layout_mode = 2
+size_flags_vertical = 4
+actions = Array[int]([1])
+
+[node name="InputInstruction3" parent="Control/MarginContainer/Control/InstructionsContainer" unique_id=1049081246 instance=ExtResource("3_geayf")]
+layout_mode = 2
+size_flags_vertical = 4
+actions = Array[int]([2, 3, 4, 5])
+custom_label_translation = "ui_change"

@@ -17,8 +17,6 @@ var active_racing_lines: Array[RacingLine] = []
 
 
 func _ready() -> void:
-	GameManager.race.start_race_countdown()
-
 	if !GameManager.race.track:
 		GameManager.race.track = self
 
