@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://d40slsa17rdc"]
+
+[ext_resource type="PackedScene" uid="uid://d01wlqah057mh" path="res://Prefabs/Flares/FlareCorona.tscn" id="1_j3x42"]
+
+[node name="BridgeSpot" type="SpotLight3D" unique_id=1002356145]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+light_energy = 2.0
+light_size = 1.0
+shadow_enabled = true
+shadow_caster_mask = 4294967281
+distance_fade_enabled = true
+distance_fade_begin = 75.0
+distance_fade_shadow = 100.0
+distance_fade_length = 50.0
+spot_range = 100.0
+spot_attenuation = 0.11
+spot_angle = 60.0
+
+[node name="FlareCorona" parent="." unique_id=1913354364 instance=ExtResource("1_j3x42")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
+cast_shadow = 0

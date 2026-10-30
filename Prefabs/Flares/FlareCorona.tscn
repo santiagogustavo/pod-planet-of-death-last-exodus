@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://d01wlqah057mh"]
+
+[ext_resource type="Texture2D" uid="uid://ceyaayj2qbu2d" path="res://Textures/Flares/corona.png" id="1_yg4pt"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ckb4l"]
+transparency = 4
+shading_mode = 0
+albedo_color = Color(1, 0.95000005, 0.5, 0.19607843)
+albedo_texture = ExtResource("1_yg4pt")
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+proximity_fade_enabled = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_0i88t"]
+material = SubResource("StandardMaterial3D_ckb4l")
+size = Vector2(20, 20)
+
+[node name="FlareCorona" type="MeshInstance3D" unique_id=1913354364]
+mesh = SubResource("QuadMesh_0i88t")

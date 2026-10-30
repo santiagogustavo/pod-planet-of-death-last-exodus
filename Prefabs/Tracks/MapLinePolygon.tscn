@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://p56kdq5wlksk"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g1fnq"]
+shading_mode = 0
+albedo_color = Color(0.35, 0.23916666, 0, 1)
+
+[node name="MapLinePolygon" type="CSGPolygon3D" unique_id=1791075014]
+layers = 8
+polygon = PackedVector2Array(-10, 0, 0, 0.1, 10, 0.1, 0, 0)
+mode = 2
+path_node = NodePath("../Path3D")
+path_interval_type = 0
+path_interval = 1.0
+path_simplify_angle = 0.0
+path_rotation = 2
+path_rotation_accurate = false
+path_local = false
+path_continuous_u = true
+path_u_distance = 1.0
+path_joined = false
+material = SubResource("StandardMaterial3D_g1fnq")
