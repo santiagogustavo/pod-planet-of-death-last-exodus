@@ -12,7 +12,7 @@ dest_files=["res://.godot/imported/Schranz3.mp3-ae7c3582c29078ec65195ce9bee93dd8
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0.0
 bpm=0.0
 beat_count=0

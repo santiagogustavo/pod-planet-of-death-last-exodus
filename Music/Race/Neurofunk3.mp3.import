@@ -12,7 +12,7 @@ dest_files=["res://.godot/imported/Neurofunk3.mp3-80c33930a901b1762594173b65e2a4
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0.0
 bpm=0.0
 beat_count=0

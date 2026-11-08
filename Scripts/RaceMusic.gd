@@ -5,3 +5,4 @@ func _ready() -> void:
 	GameManager.race.started.connect(func ():
 		play()
 	)
+	finished.connect(play)

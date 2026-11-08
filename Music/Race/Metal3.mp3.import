@@ -12,7 +12,7 @@ dest_files=["res://.godot/imported/Metal3.mp3-bb39da7361e9f4e1e5f942d1169c6a10.m
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0.0
 bpm=0.0
 beat_count=0
