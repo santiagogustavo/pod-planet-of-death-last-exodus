@@ -1,8 +1,13 @@
 extends Node3D
 class_name Track
 
+enum Weather {
+	Sunny,
+	Rainy,
+}
 
 @export var track_name: String = ""
+@export var weather: Weather = Weather.Sunny
 
 @export var start_gates: Array[StartGate] = []
 @export var circuit_gates: Array[CircuitGate] = []

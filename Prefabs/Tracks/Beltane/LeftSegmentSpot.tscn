@@ -2,19 +2,19 @@
 
 [ext_resource type="PackedScene" uid="uid://d01wlqah057mh" path="res://Prefabs/Flares/FlareCorona.tscn" id="1_rcbsp"]
 
-[node name="LeftSegmentSpot" type="SpotLight3D" unique_id=589584068]
+[node name="LeftSegmentSpot" type="OmniLight3D" unique_id=337557561]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
 light_energy = 2.0
 light_size = 1.0
 light_cull_mask = 4294967281
 shadow_enabled = true
+shadow_caster_mask = 4293918721
 distance_fade_enabled = true
 distance_fade_begin = 75.0
 distance_fade_shadow = 100.0
 distance_fade_length = 50.0
-spot_range = 25.0
-spot_attenuation = 0.11
-spot_angle = 60.0
+omni_range = 25.0
+omni_attenuation = 0.0
 
 [node name="FlareCorona" parent="." unique_id=1913354364 instance=ExtResource("1_rcbsp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)

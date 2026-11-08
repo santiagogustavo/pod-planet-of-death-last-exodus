@@ -8,7 +8,7 @@ collision_layer = 16
 reverb_bus_enabled = true
 reverb_bus_name = &"ReverbZone"
 reverb_bus_amount = 1.0
-reverb_bus_uniformity = 1.0
+reverb_bus_uniformity = 0.25
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=349881632]
 shape = SubResource("BoxShape3D_0i88t")

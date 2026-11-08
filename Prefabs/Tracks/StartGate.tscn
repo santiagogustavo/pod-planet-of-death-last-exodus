@@ -29,6 +29,7 @@ script = ExtResource("1_am0mj")
 [node name="Gizmo" type="MeshInstance3D" parent="." unique_id=1487992357]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
 layers = 2
+cast_shadow = 0
 mesh = SubResource("QuadMesh_77uo8")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Gizmo" unique_id=364304106]

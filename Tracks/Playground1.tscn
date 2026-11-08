@@ -5,26 +5,18 @@
 [ext_resource type="Texture2D" uid="uid://bwofyd6rf0wrm" path="res://Textures/Skyboxes/Panorama do Deserto Pós-Apocalíptico.png" id="1_iv1r6"]
 [ext_resource type="Script" uid="uid://f3pn6opmjm42" path="res://Scripts/RaceManager.gd" id="2_aem2t"]
 [ext_resource type="Script" uid="uid://kklog68nroj3" path="res://Resources/PlayerDetails.gd" id="4_iv1r6"]
-[ext_resource type="Resource" uid="uid://c7hia5efiavo7" path="res://Resources/Cars/Saber.tres" id="4_ixirv"]
-[ext_resource type="Texture2D" uid="uid://d0e1m4ihuouun" path="res://Textures/UI/Avatars/avatar_9.png" id="4_uemjy"]
 [ext_resource type="Texture2D" uid="uid://cgu3cyfmer4ik" path="res://Textures/UI/Avatars/avatar_13.png" id="5_wjxlm"]
 [ext_resource type="Resource" uid="uid://ujw7vnhlgryx" path="res://Resources/Cars/Jaero.tres" id="7_wjxlm"]
 [ext_resource type="PackedScene" uid="uid://cauynapb07dmw" path="res://Prefabs/Tracks/CircuitGate.tscn" id="8_aem2t"]
 [ext_resource type="Resource" uid="uid://db76wikpidtqx" path="res://Resources/Cars/Arc.tres" id="8_u5uis"]
 [ext_resource type="Texture2D" uid="uid://bs1dsqnsfaehm" path="res://Textures/UI/Avatars/avatar_24.png" id="8_wjxlm"]
 [ext_resource type="PackedScene" uid="uid://46gclodm1vd1" path="res://Prefabs/Tracks/DirectionArrows.tscn" id="10_wjxlm"]
+[ext_resource type="Script" uid="uid://dlsn5q3ua6llp" path="res://Scripts/Sun.gd" id="11_l62yx"]
 [ext_resource type="PackedScene" uid="uid://qb2i6ryebs1t" path="res://Prefabs/Tracks/ReverbZone.tscn" id="14_5lv4d"]
 [ext_resource type="Script" uid="uid://c4dlira2rncbm" path="res://Scripts/Tracks/RacingLine.gd" id="14_p2v43"]
 [ext_resource type="PackedScene" uid="uid://p56kdq5wlksk" path="res://Prefabs/Tracks/MapLinePolygon.tscn" id="15_ixirv"]
 [ext_resource type="PackedScene" uid="uid://c8mt1nrc3wp1t" path="res://Prefabs/Tracks/StartGate.tscn" id="15_p2v43"]
 [ext_resource type="PackedScene" uid="uid://sdkgnpih7y1q" path="res://Prefabs/Tracks/OutOfBoundsZone.tscn" id="16_xtlau"]
-
-[sub_resource type="Resource" id="Resource_aem2t"]
-script = ExtResource("4_iv1r6")
-player_name = "Player 1"
-player_avatar = ExtResource("4_uemjy")
-car_data = ExtResource("4_ixirv")
-metadata/_custom_type_script = "uid://kklog68nroj3"
 
 [sub_resource type="Resource" id="Resource_064l1"]
 script = ExtResource("4_iv1r6")
@@ -55,6 +47,9 @@ sky = SubResource("Sky_ckb4l")
 glow_enabled = true
 glow_bloom = 0.3
 glow_blend_mode = 0
+volumetric_fog_enabled = true
+volumetric_fog_anisotropy = 0.6
+volumetric_fog_length = 4.0
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ks1um"]
 points = PackedVector3Array(-150, 0, -150, -150, 0, 150, 150, 0, -150, 150, 0, 150)
@@ -132,16 +127,19 @@ metadata/_custom_type_script = "uid://ck8p1x0h0qtk"
 [node name="RaceManager" type="Node" parent="." unique_id=534910278 node_paths=PackedStringArray("track")]
 script = ExtResource("2_aem2t")
 track = NodePath("..")
-predefined_players = Array[ExtResource("4_iv1r6")]([SubResource("Resource_aem2t"), SubResource("Resource_064l1"), SubResource("Resource_wjxlm")])
+laps = 1
+predefined_players = Array[ExtResource("4_iv1r6")]([SubResource("Resource_064l1"), SubResource("Resource_wjxlm")])
 metadata/_custom_type_script = "uid://f3pn6opmjm42"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1124827985]
 environment = SubResource("Environment_0i88t")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1996811174]
-transform = Transform3D(0.9659258, -1.131334e-08, 0.25881904, -0.25881904, -4.222196e-08, 0.9659258, 0, -1, -4.371139e-08, 0, 7, 0)
-light_energy = 0.1
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=529625894]
+transform = Transform3D(0.55915904, -0.40893394, -0.7211893, 0.7508743, -0.118979834, 0.6496395, -0.35146666, -0.9047744, 0.24052943, -205.38864, 175.54443, 148.86578)
+light_energy = 0.35
 shadow_enabled = true
+script = ExtResource("11_l62yx")
+metadata/_custom_type_script = "uid://dlsn5q3ua6llp"
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1352415093]
 collision_layer = 2
@@ -208,6 +206,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 2, -56)
 
 [node name="MapLinePolygon" parent="." unique_id=1791075014 instance=ExtResource("15_ixirv")]
 path_node = NodePath("../RacingLine")
+
+[node name="MapLinePolygon2" parent="." unique_id=1236896663 instance=ExtResource("15_ixirv")]
+path_node = NodePath("../RacingLine2")
 
 [node name="StartGate" parent="." unique_id=1242529026 instance=ExtResource("15_p2v43")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 6)
