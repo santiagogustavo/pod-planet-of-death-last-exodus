@@ -2,6 +2,10 @@ extends MeshInstance3D
 class_name PlayerIndicator
 
 @export var player_index: int = -1
+@onready var big_indicator: MeshInstance3D = $BigIndicator
+
+func _ready() -> void:
+	big_indicator.visible = true
 
 func _process(_delta: float) -> void:
 	if player_index == -1 or !GameManager.race:

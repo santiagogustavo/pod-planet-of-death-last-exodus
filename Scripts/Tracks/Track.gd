@@ -15,6 +15,7 @@ enum Weather {
 @export var default_racing_line: RacingLine
 @export var racing_lines: Array[RacingLine] = []
 
+@export var map_subviewport: SubViewport
 
 var accumulate_distances: Array[float] = []
 

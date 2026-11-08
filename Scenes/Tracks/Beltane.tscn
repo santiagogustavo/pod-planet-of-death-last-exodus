@@ -927,6 +927,9 @@ _data = {
 }
 point_count = 3
 
+[sub_resource type="Environment" id="Environment_y025l"]
+tonemap_exposure = 2.93
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_byh87"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_j0gfn"]
@@ -1581,13 +1584,14 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_cwcod")
 
-[node name="Beltane" type="Node3D" unique_id=811253920 node_paths=PackedStringArray("start_gates", "circuit_gates", "default_racing_line", "racing_lines")]
+[node name="Beltane" type="Node3D" unique_id=811253920 node_paths=PackedStringArray("start_gates", "circuit_gates", "default_racing_line", "racing_lines", "map_subviewport")]
 script = ExtResource("1_g4wom")
 track_name = "Beltane"
 start_gates = [NodePath("GatesForward/GateF0/StartGate"), NodePath("GatesForward/GateF1/StartGate"), NodePath("GatesForward/GateF2/StartGate"), NodePath("GatesForward/GateF3/StartGate"), NodePath("GatesForward/GateF4/StartGate"), NodePath("GatesForward/GateF5/StartGate"), NodePath("GatesForward/GateF6/StartGate"), NodePath("GatesForward/GateF7/StartGate")]
 circuit_gates = [NodePath("BeaconsForward/CircuitGateBridge"), NodePath("BeaconsForward/CircuitGateRightSegment"), NodePath("BeaconsForward/CircuitGateRightSegment2"), NodePath("BeaconsForward/CircuitGateRightSegment3"), NodePath("BeaconsForward/CircuitGateRightSegment4"), NodePath("BeaconsForward/CircuitGateRightSegment5"), NodePath("BeaconsForward/CircuitGateRightSegment6"), NodePath("BeaconsForward/CircuitGateBridge2"), NodePath("BeaconsForward/CircuitGateBridge3"), NodePath("BeaconsForward/CircuitGateBridge4"), NodePath("BeaconsForward/CircuitGateBridge5"), NodePath("BeaconsForward/CircuitGateLeftSegment"), NodePath("BeaconsForward/CircuitGateLeftSegment2"), NodePath("BeaconsForward/CircuitGateLeftSegment3"), NodePath("BeaconsForward/CircuitGateLeftSegment4"), NodePath("BeaconsForward/CircuitGateLeftSegment5"), NodePath("BeaconsForward/CircuitGateBridge6"), NodePath("BeaconsForward/CircuitGateBridge7"), NodePath("BeaconsForward/CircuitGateBridge8"), NodePath("BeaconsForward/CircuitGateBridge9")]
 default_racing_line = NodePath("BeaconsForward/TrailFH0")
 racing_lines = [NodePath("BeaconsForward/TrailFH0"), NodePath("BeaconsForward/TrailFH1"), NodePath("BeaconsForward/TrailFH2"), NodePath("BeaconsForward/TrailFH3"), NodePath("BeaconsForward/TrailFH4"), NodePath("BeaconsForward/TrailFH5"), NodePath("BeaconsForward/TrailFH6"), NodePath("BeaconsForward/TrailFH7"), NodePath("BeaconsForward/TrailFH8")]
+map_subviewport = NodePath("Sections/Map/SubViewport")
 metadata/_custom_type_script = "uid://ck8p1x0h0qtk"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=678212510]
@@ -1688,24 +1692,38 @@ smoothing_angle = 15.0
 polygon = PackedVector2Array(-25, 0, 0, 0.1, 25, 0.1, 0, 0)
 path_node = NodePath("../../../BeaconsForward/TrailFH0")
 path_local = true
+path_joined = true
 
 [node name="MapLinePolygon2" parent="Sections/Map" unique_id=1685099943 instance=ExtResource("26_wqwlm")]
 smoothing_angle = 15.0
 polygon = PackedVector2Array(-25, 0, 0, 0.1, 25, 0.1, 0, 0)
 path_node = NodePath("../Shortcut1")
 path_local = true
+path_joined = true
 
 [node name="MapLinePolygon3" parent="Sections/Map" unique_id=307578213 instance=ExtResource("26_wqwlm")]
 smoothing_angle = 15.0
 polygon = PackedVector2Array(-25, 0, 0, 0.1, 25, 0.1, 0, 0)
 path_node = NodePath("../Shortcut2")
 path_local = true
+path_joined = true
 
 [node name="Shortcut1" type="Path3D" parent="Sections/Map" unique_id=225867454]
 curve = SubResource("Curve3D_ewodv")
 
 [node name="Shortcut2" type="Path3D" parent="Sections/Map" unique_id=601943586]
 curve = SubResource("Curve3D_22gem")
+
+[node name="SubViewport" type="SubViewport" parent="Sections/Map" unique_id=299824742]
+transparent_bg = true
+size = Vector2i(1700, 512)
+
+[node name="Camera3D" type="Camera3D" parent="Sections/Map/SubViewport" unique_id=1853310856]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -472, 89, -3.8903136e-06)
+cull_mask = 24
+environment = SubResource("Environment_y025l")
+projection = 1
+size = 1000.0
 
 [node name="Lighting" type="Node3D" parent="Sections" unique_id=1166692019]
 

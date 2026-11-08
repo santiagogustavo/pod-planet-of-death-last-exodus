@@ -15,5 +15,19 @@ material = SubResource("StandardMaterial3D_16du7")
 size = Vector2(12, 12)
 orientation = 1
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k1hhu"]
+render_priority = 2
+transparency = 4
+no_depth_test = true
+shading_mode = 0
+albedo_color = Color(0, 1, 0.6666667, 1)
+albedo_texture = ExtResource("2_ymt07")
+uv1_scale = Vector3(1, -1, 1)
+billboard_mode = 1
+billboard_keep_scale = true
+
 [node name="EnemyIndicator" unique_id=443761290 instance=ExtResource("1_k1hhu")]
 mesh = SubResource("QuadMesh_upthg")
+
+[node name="BigIndicator" parent="." index="0" unique_id=61018204]
+surface_material_override/0 = SubResource("StandardMaterial3D_k1hhu")

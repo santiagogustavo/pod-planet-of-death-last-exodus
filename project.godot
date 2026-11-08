@@ -151,6 +151,7 @@ locale/translations=PackedStringArray("res://Locales/ui.en.translation")
 3d_render/layer_2="Debug"
 3d_render/layer_3="Indicator"
 3d_render/layer_4="Map"
+3d_render/layer_5="BigIndicator"
 3d_physics/layer_1="Car"
 3d_physics/layer_2="Road"
 3d_physics/layer_3="Wall"
