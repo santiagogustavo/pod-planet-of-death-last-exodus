@@ -36,26 +36,32 @@ func grab_first_button_focus() -> void:
 
 func bind_resume_button() -> void:
 	resume_button.pressed.connect(handle_toggle_pause)
+	resume_button.focus_entered.connect(handle_focus_sfx)
 	resume_button.mouse_entered.connect(func (): handle_focus_button(resume_button))
 
 func bind_restart_button() -> void:
 	restart_button.pressed.connect(handle_restart_race)
+	restart_button.focus_entered.connect(handle_focus_sfx)
 	restart_button.mouse_entered.connect(func (): handle_focus_button(restart_button))
 
 func bind_options_button() -> void:
 	options_button.pressed.connect(handle_open_options)
+	options_button.focus_entered.connect(handle_focus_sfx)
 	options_button.mouse_entered.connect(func (): handle_focus_button(options_button))
 
 func bind_quit_button() -> void:
 	quit_button.pressed.connect(handle_quit)
+	quit_button.focus_entered.connect(handle_focus_sfx)
 	quit_button.mouse_entered.connect(func (): handle_focus_button(quit_button))
 
 func bind_options_menu() -> void:
 	options_menu.closed.connect(grab_first_button_focus)
 
 func handle_focus_button(button: Button) -> void:
-	focus_sfx.play()
 	button.grab_focus()
+
+func handle_focus_sfx() -> void:
+	focus_sfx.play()
 
 func handle_toggle_pause() -> void:
 	select_sfx.play()
@@ -70,4 +76,7 @@ func handle_open_options() -> void:
 	options_menu.open_menu()
 
 func handle_quit() -> void:
-	get_tree().quit()
+	GameManager.is_paused = false
+	GameManager.unlock_cursor()
+	GameManager.clear_race()
+	SceneManager.load_scene_file("res://Scenes/MainMenu.tscn")

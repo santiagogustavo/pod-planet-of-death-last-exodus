@@ -1,0 +1,226 @@
+[gd_scene format=3 uid="uid://s1mrd8xtfv28"]
+
+[ext_resource type="Script" uid="uid://ujutwod2siy0" path="res://Scripts/UI/SavingOverlayManager.gd" id="1_gmi7h"]
+[ext_resource type="FontFile" uid="uid://c6bnt2xtv7jm0" path="res://Fonts/MoonGlossDisplayMedium.otf" id="2_d2ehn"]
+[ext_resource type="Script" uid="uid://cflhks7suarqv" path="res://Scripts/UI/LabelRandomizerEffect.gd" id="3_im482"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d2ehn"]
+bg_color = Color(0.2, 0.13333334, 0.003921569, 0.78431374)
+
+[sub_resource type="LabelSettings" id="LabelSettings_vnm65"]
+font = ExtResource("2_d2ehn")
+font_color = Color(1, 0.7166667, 0, 1)
+
+[sub_resource type="Animation" id="Animation_kqydi"]
+resource_name = "Idle"
+length = 2.0
+loop_mode = 1
+step = 0.1
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Control/MarginContainer/Control/Panel/LabelRandomizerEffect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"play_effect"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_2eyve"]
+length = 0.001
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_40low"]
+_data = {
+&"Idle": SubResource("Animation_kqydi"),
+&"RESET": SubResource("Animation_2eyve")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ph4af"]
+animation = &"Idle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bfnsk"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_8ge13"]
+states/Idle/node = SubResource("AnimationNodeAnimation_ph4af")
+states/Idle/position = Vector2(426, 100)
+transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_bfnsk")]
+
+[sub_resource type="Animation" id="Animation_6jeos"]
+resource_name = "FadeIn"
+length = 0.3
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_4gc06"]
+resource_name = "FadeOut"
+length = 0.3
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_drtfy"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xdttn"]
+_data = {
+&"FadeIn": SubResource("Animation_6jeos"),
+&"FadeOut": SubResource("Animation_4gc06"),
+&"RESET": SubResource("Animation_drtfy")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_2sj5p"]
+animation = &"FadeIn"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_yuopp"]
+animation = &"FadeOut"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_wt2rk"]
+animation = &"RESET"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_87exf"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_60vwr"]
+advance_mode = 2
+advance_condition = &"is_saving"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6jpaq"]
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"saved"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bahst"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_jxf6o"]
+states/FadeIn/node = SubResource("AnimationNodeAnimation_2sj5p")
+states/FadeIn/position = Vector2(341, -34.9375)
+states/FadeOut/node = SubResource("AnimationNodeAnimation_yuopp")
+states/FadeOut/position = Vector2(608, -34.875)
+states/RESET/node = SubResource("AnimationNodeAnimation_wt2rk")
+states/RESET/position = Vector2(489, 101.25)
+transitions = ["Start", "RESET", SubResource("AnimationNodeStateMachineTransition_87exf"), "RESET", "FadeIn", SubResource("AnimationNodeStateMachineTransition_60vwr"), "FadeIn", "FadeOut", SubResource("AnimationNodeStateMachineTransition_6jpaq"), "FadeOut", "RESET", SubResource("AnimationNodeStateMachineTransition_bahst")]
+graph_offset = Vector2(114, -116)
+
+[node name="SavingOverlay" type="CanvasLayer" unique_id=442282138]
+layer = 127
+visible = false
+script = ExtResource("1_gmi7h")
+
+[node name="Control" type="Control" parent="." unique_id=116549131]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Control" unique_id=2208863]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="Control" type="Control" parent="Control/MarginContainer" unique_id=1355879363]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="Control/MarginContainer/Control" unique_id=437448737]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -82.0
+offset_top = -40.0
+offset_right = 82.0
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset_ratio = Vector2(0.5, 0.5)
+theme_override_styles/panel = SubResource("StyleBoxFlat_d2ehn")
+
+[node name="LabelRandomizerEffect" type="Label" parent="Control/MarginContainer/Control/Panel" unique_id=455415267]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -58.5
+offset_top = -9.5
+offset_right = 58.5
+offset_bottom = 9.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Saving..."
+label_settings = SubResource("LabelSettings_vnm65")
+horizontal_alignment = 1
+script = ExtResource("3_im482")
+play_on_start = false
+typing_time = 1.0
+start_with_random = true
+metadata/_custom_type_script = "uid://cflhks7suarqv"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Control/MarginContainer/Control" unique_id=1845481581]
+root_node = NodePath("../../../..")
+libraries/ = SubResource("AnimationLibrary_40low")
+
+[node name="AnimationTree" type="AnimationTree" parent="Control/MarginContainer/Control" unique_id=1778420751]
+root_node = NodePath("../../../..")
+tree_root = SubResource("AnimationNodeStateMachine_8ge13")
+anim_player = NodePath("../AnimationPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Control" unique_id=207331131]
+libraries/ = SubResource("AnimationLibrary_xdttn")
+
+[node name="AnimationTree" type="AnimationTree" parent="Control" unique_id=273625125]
+tree_root = SubResource("AnimationNodeStateMachine_jxf6o")
+anim_player = NodePath("../AnimationPlayer")
+parameters/conditions/is_saving = false
+parameters/conditions/saved = false

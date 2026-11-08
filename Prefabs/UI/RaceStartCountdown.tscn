@@ -612,7 +612,6 @@ libraries/ = SubResource("AnimationLibrary_drced")
 libraries/ = SubResource("AnimationLibrary_f0pnn")
 
 [node name="AnimationTree" type="AnimationTree" parent="." unique_id=1934525658]
-callback_mode_method = 1
 callback_mode_discrete = 0
 tree_root = SubResource("AnimationNodeStateMachine_0i88t")
 anim_player = NodePath("../AnimationPlayer")

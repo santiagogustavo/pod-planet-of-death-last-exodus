@@ -6,13 +6,15 @@ signal closed
 @export var is_open: bool = false
 
 @onready var tab_container: TabContainer = $Control/MarginContainer/Control/TabContainer
+@onready var animation_tree: AnimationTree = $AnimationTree
 
 func _process(_delta: float) -> void:
-	visible = is_open
 	if !is_open:
 		return
 	if Input.is_action_just_pressed("ui_cancel"):
 		close_menu()
+	animation_tree.set("parameters/conditions/is_open", is_open)
+	animation_tree.set("parameters/conditions/is_closed", !is_open)
 
 func open_menu() -> void:
 	is_open = true
@@ -22,3 +24,4 @@ func close_menu() -> void:
 	is_open = false
 	closed.emit()
 	SettingsManager.save_settings()
+	PlayerProfileManager.save_settings()

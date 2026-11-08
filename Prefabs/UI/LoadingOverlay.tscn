@@ -1,0 +1,330 @@
+[gd_scene format=3 uid="uid://dvsspxf017kvk"]
+
+[ext_resource type="Script" uid="uid://sc01oubu7abq" path="res://Scripts/UI/LoadingOverlayManager.gd" id="1_v5vkg"]
+[ext_resource type="FontFile" uid="uid://c6bnt2xtv7jm0" path="res://Fonts/MoonGlossDisplayMedium.otf" id="2_gavr1"]
+[ext_resource type="Script" uid="uid://cflhks7suarqv" path="res://Scripts/UI/LabelRandomizerEffect.gd" id="3_1drgg"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gavr1"]
+bg_color = Color(0.2, 0.13333334, 0.003921569, 0.78431374)
+
+[sub_resource type="LabelSettings" id="LabelSettings_0i88t"]
+font = ExtResource("2_gavr1")
+font_color = Color(1, 0.7166667, 0, 1)
+
+[sub_resource type="Animation" id="Animation_kqydi"]
+resource_name = "Idle"
+length = 2.0
+loop_mode = 1
+step = 0.1
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BG/MarginContainer/Control/Panel/LabelRandomizerEffect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"play_effect"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_2eyve"]
+length = 0.001
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_a3j8u"]
+_data = {
+&"Idle": SubResource("Animation_kqydi"),
+&"RESET": SubResource("Animation_2eyve")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ph4af"]
+animation = &"Idle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bfnsk"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_fyawd"]
+states/Idle/node = SubResource("AnimationNodeAnimation_ph4af")
+states/Idle/position = Vector2(426, 100)
+transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_bfnsk")]
+
+[sub_resource type="Animation" id="Animation_6jeos"]
+resource_name = "FadeIn"
+length = 0.3
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BG:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("..:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("..")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"get_current_screen_texture"
+}]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CurrentScreen:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_4gc06"]
+resource_name = "FadeOut"
+length = 0.3
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BG:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("..:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CurrentScreen:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_drtfy"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BG:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("..:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CurrentScreen:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xdttn"]
+_data = {
+&"FadeIn": SubResource("Animation_6jeos"),
+&"FadeOut": SubResource("Animation_4gc06"),
+&"RESET": SubResource("Animation_drtfy")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_2sj5p"]
+animation = &"FadeIn"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_yuopp"]
+animation = &"FadeOut"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_wt2rk"]
+animation = &"RESET"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_87exf"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_60vwr"]
+advance_mode = 2
+advance_condition = &"is_saving"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6jpaq"]
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"saved"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bahst"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_n8gxt"]
+states/FadeIn/node = SubResource("AnimationNodeAnimation_2sj5p")
+states/FadeIn/position = Vector2(341, -34.9375)
+states/FadeOut/node = SubResource("AnimationNodeAnimation_yuopp")
+states/FadeOut/position = Vector2(608, -34.875)
+states/RESET/node = SubResource("AnimationNodeAnimation_wt2rk")
+states/RESET/position = Vector2(489, 101.25)
+transitions = ["Start", "RESET", SubResource("AnimationNodeStateMachineTransition_87exf"), "RESET", "FadeIn", SubResource("AnimationNodeStateMachineTransition_60vwr"), "FadeIn", "FadeOut", SubResource("AnimationNodeStateMachineTransition_6jpaq"), "FadeOut", "RESET", SubResource("AnimationNodeStateMachineTransition_bahst")]
+graph_offset = Vector2(114, -116)
+
+[node name="LoadingOverlay" type="CanvasLayer" unique_id=1875121323]
+layer = 127
+visible = false
+script = ExtResource("1_v5vkg")
+
+[node name="Control" type="Control" parent="." unique_id=1906118491]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CurrentScreen" type="TextureRect" parent="Control" unique_id=1392849701]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+
+[node name="BG" type="ColorRect" parent="Control" unique_id=881902944]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/BG" unique_id=2029853262]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="Control" type="Control" parent="Control/BG/MarginContainer" unique_id=165477952]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="Control/BG/MarginContainer/Control" unique_id=1607202998]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -82.0
+offset_top = -20.0
+offset_right = 82.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+theme_override_styles/panel = SubResource("StyleBoxFlat_gavr1")
+
+[node name="LabelRandomizerEffect" type="Label" parent="Control/BG/MarginContainer/Control/Panel" unique_id=1449504593]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -58.5
+offset_top = -9.5
+offset_right = 58.5
+offset_bottom = 9.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Now loading..."
+label_settings = SubResource("LabelSettings_0i88t")
+script = ExtResource("3_1drgg")
+play_on_start = false
+typing_time = 1.0
+start_with_random = true
+metadata/_custom_type_script = "uid://cflhks7suarqv"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Control/BG/MarginContainer/Control" unique_id=712064001]
+root_node = NodePath("../../../..")
+libraries/ = SubResource("AnimationLibrary_a3j8u")
+
+[node name="AnimationTree" type="AnimationTree" parent="Control/BG/MarginContainer/Control" unique_id=2105745128]
+root_node = NodePath("../../../..")
+tree_root = SubResource("AnimationNodeStateMachine_fyawd")
+anim_player = NodePath("../AnimationPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Control" unique_id=1170493325]
+libraries/ = SubResource("AnimationLibrary_xdttn")
+
+[node name="AnimationTree" type="AnimationTree" parent="Control" unique_id=548903861]
+tree_root = SubResource("AnimationNodeStateMachine_n8gxt")
+anim_player = NodePath("../AnimationPlayer")
+parameters/conditions/is_saving = false
+parameters/conditions/saved = false

@@ -1,4 +1,4 @@
-extends MarginContainer
+extends OptionsTab
 class_name SoundTab
 
 @onready var master_slider: HSlider = $VBoxContainer/MasterVolume/HSlider
@@ -14,6 +14,11 @@ func _process(_delta: float) -> void:
 	master_slider.value = AudioSettingsManager.get_volume("Master")
 	music_slider.value = AudioSettingsManager.get_volume("Music")
 	sfx_slider.value = AudioSettingsManager.get_volume("SoundEffects")
+
+func bind_click_focus() -> void:
+	tab_click_focused.connect(func ():
+		master_slider.grab_focus()
+	)
 
 func bind_master_slider() -> void:
 	master_slider.value_changed.connect(func (value: float):

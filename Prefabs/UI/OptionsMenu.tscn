@@ -3,9 +3,14 @@
 [ext_resource type="Script" uid="uid://co4prxwhryck8" path="res://Scripts/UI/OptionsMenu.gd" id="1_case4"]
 [ext_resource type="FontFile" uid="uid://brbja0q7gswro" path="res://Fonts/MoonGlossDisplayThick.otf" id="1_kbjkt"]
 [ext_resource type="FontFile" uid="uid://d2aikdifuviiw" path="res://Fonts/AlienAlphabet.otf" id="2_geayf"]
+[ext_resource type="Script" uid="uid://cflhks7suarqv" path="res://Scripts/UI/LabelRandomizerEffect.gd" id="3_1au28"]
 [ext_resource type="PackedScene" uid="uid://4tfkpbq1bur8" path="res://Prefabs/UI/InputInstruction.tscn" id="3_geayf"]
 [ext_resource type="Script" uid="uid://btrk5ejvf3vuo" path="res://Scripts/UI/SoundTab.gd" id="4_hropp"]
 [ext_resource type="Script" uid="uid://b4ec7qjjfp4o4" path="res://Scripts/UI/InputTab.gd" id="5_mrpck"]
+[ext_resource type="Script" uid="uid://nrl3esmjmlw2" path="res://Scripts/UI/VideoTab.gd" id="6_8f2ha"]
+[ext_resource type="Script" uid="uid://bc370l7k5vo5p" path="res://Scripts/UI/GameplayTab.gd" id="8_es20e"]
+[ext_resource type="Script" uid="uid://byl4mkrvtbkef" path="res://Scripts/UI/PlayerTab.gd" id="8_fvbnt"]
+[ext_resource type="Texture2D" uid="uid://dbplofx2vjqje" path="res://Textures/UI/Avatars/avatar_1.png" id="9_fvbnt"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_case4"]
 font = ExtResource("1_kbjkt")
@@ -16,8 +21,199 @@ font_color = Color(0.9372549, 0.627451, 0.007843138, 1)
 font = ExtResource("2_geayf")
 font_color = Color(0.9372549, 0.627451, 0.007843138, 1)
 
+[sub_resource type="Animation" id="Animation_fvbnt"]
+resource_name = "Close"
+length = 0.15
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Control:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.25, 1.25)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Control:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.15),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.15),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_1au28"]
+resource_name = "Open"
+length = 0.15
+step = 0.05
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Control/MarginContainer/Control/Panel/Label")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"play_effect"
+}]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Control/MarginContainer/Control/Panel/Label/LabelAlien")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"play_effect"
+}]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Control:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.15),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1.25, 1.25), Vector2(1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Control:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.15),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_55v74"]
+resource_name = "RESET"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Control:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Control:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_55v74"]
+_data = {
+&"Close": SubResource("Animation_fvbnt"),
+&"Open": SubResource("Animation_1au28"),
+&"RESET": SubResource("Animation_55v74")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fvbnt"]
+animation = &"Close"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_1au28"]
+animation = &"Open"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_55v74"]
+animation = &"RESET"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fvbnt"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_es20e"]
+advance_mode = 2
+advance_condition = &"is_open"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_mxfv1"]
+advance_mode = 2
+advance_condition = &"is_closed"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_gpx07"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_1au28"]
+states/Close/node = SubResource("AnimationNodeAnimation_fvbnt")
+states/Close/position = Vector2(597, -9)
+states/Open/node = SubResource("AnimationNodeAnimation_1au28")
+states/Open/position = Vector2(402, -9)
+states/RESET/node = SubResource("AnimationNodeAnimation_55v74")
+states/RESET/position = Vector2(503, 100)
+transitions = ["Start", "RESET", SubResource("AnimationNodeStateMachineTransition_fvbnt"), "RESET", "Open", SubResource("AnimationNodeStateMachineTransition_es20e"), "Open", "Close", SubResource("AnimationNodeStateMachineTransition_mxfv1"), "Close", "RESET", SubResource("AnimationNodeStateMachineTransition_gpx07")]
+graph_offset = Vector2(0, -46)
+
 [node name="OptionsMenu" type="CanvasLayer" unique_id=1330618320]
 layer = 5
+visible = false
 script = ExtResource("1_case4")
 
 [node name="Control" type="Control" parent="." unique_id=966427486]
@@ -27,6 +223,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
 
 [node name="ColorRect" type="ColorRect" parent="Control" unique_id=1090293560]
 layout_mode = 1
@@ -59,20 +256,23 @@ anchor_right = 1.0
 offset_bottom = 55.0
 grow_horizontal = 2
 
-[node name="Label" type="Label" parent="Control/MarginContainer/Control/Panel" unique_id=44055498]
+[node name="Label" type="Label" parent="Control/MarginContainer/Control/Panel" unique_id=1421945454]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
 offset_left = 20.0
 offset_top = -21.5
-offset_right = 180.0
+offset_right = 208.0
 offset_bottom = 21.5
 grow_vertical = 2
 text = "Options"
 label_settings = SubResource("LabelSettings_case4")
+script = ExtResource("3_1au28")
+start_with_random = true
+metadata/_custom_type_script = "uid://cflhks7suarqv"
 
-[node name="LabelAlien" type="Label" parent="Control/MarginContainer/Control/Panel/Label" unique_id=369512093]
+[node name="LabelAlien" type="Label" parent="Control/MarginContainer/Control/Panel/Label" unique_id=320967181]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -88,6 +288,9 @@ text = "Options"
 label_settings = SubResource("LabelSettings_hropp")
 horizontal_alignment = 1
 vertical_alignment = 1
+script = ExtResource("3_1au28")
+start_with_random = true
+metadata/_custom_type_script = "uid://cflhks7suarqv"
 
 [node name="TabContainer" type="TabContainer" parent="Control/MarginContainer/Control" unique_id=1845718169]
 layout_mode = 0
@@ -198,6 +401,139 @@ text = "Controller Vibration"
 [node name="CheckButton" type="CheckButton" parent="Control/MarginContainer/Control/TabContainer/Input/VBoxContainer/VibrationToggle" unique_id=663537863]
 layout_mode = 2
 
+[node name="Video" type="MarginContainer" parent="Control/MarginContainer/Control/TabContainer" unique_id=1238980114]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+script = ExtResource("6_8f2ha")
+metadata/_tab_index = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer/Control/TabContainer/Video" unique_id=1597906211]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="FullscreenToggle" type="HBoxContainer" parent="Control/MarginContainer/Control/TabContainer/Video/VBoxContainer" unique_id=718877735]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 64
+
+[node name="Label" type="Label" parent="Control/MarginContainer/Control/TabContainer/Video/VBoxContainer/FullscreenToggle" unique_id=1051843418]
+layout_mode = 2
+text = "Fullscreen"
+
+[node name="CheckButton" type="CheckButton" parent="Control/MarginContainer/Control/TabContainer/Video/VBoxContainer/FullscreenToggle" unique_id=1785953312]
+layout_mode = 2
+
+[node name="RenderingScaleSlider" type="HBoxContainer" parent="Control/MarginContainer/Control/TabContainer/Video/VBoxContainer" unique_id=1572036703]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 64
+
+[node name="Label" type="Label" parent="Control/MarginContainer/Control/TabContainer/Video/VBoxContainer/RenderingScaleSlider" unique_id=760367640]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Rendering Scale"
+
+[node name="HSlider" type="HSlider" parent="Control/MarginContainer/Control/TabContainer/Video/VBoxContainer/RenderingScaleSlider" unique_id=697434428]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.1
+value = 1.0
+scrollable = false
+ticks_on_borders = true
+
+[node name="Gameplay" type="MarginContainer" parent="Control/MarginContainer/Control/TabContainer" unique_id=1020980263]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+script = ExtResource("8_es20e")
+metadata/_tab_index = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer/Control/TabContainer/Gameplay" unique_id=1152494881]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="MetricOption" type="HBoxContainer" parent="Control/MarginContainer/Control/TabContainer/Gameplay/VBoxContainer" unique_id=437885220]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 64
+
+[node name="Label" type="Label" parent="Control/MarginContainer/Control/TabContainer/Gameplay/VBoxContainer/MetricOption" unique_id=7763593]
+layout_mode = 2
+text = "Metric"
+
+[node name="OptionButton" type="OptionButton" parent="Control/MarginContainer/Control/TabContainer/Gameplay/VBoxContainer/MetricOption" unique_id=373666715]
+layout_mode = 2
+selected = 0
+item_count = 2
+popup/item_0/text = "KMH"
+popup/item_0/id = 0
+popup/item_1/text = "MPH"
+popup/item_1/id = 1
+
+[node name="Player" type="MarginContainer" parent="Control/MarginContainer/Control/TabContainer" unique_id=991046074]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+script = ExtResource("8_fvbnt")
+metadata/_custom_type_script = "uid://bj22ehmfo0akm"
+metadata/_tab_index = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer/Control/TabContainer/Player" unique_id=249217505]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="NameLineEdit" type="HBoxContainer" parent="Control/MarginContainer/Control/TabContainer/Player/VBoxContainer" unique_id=535232029]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 64
+
+[node name="Label" type="Label" parent="Control/MarginContainer/Control/TabContainer/Player/VBoxContainer/NameLineEdit" unique_id=1014877940]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Player Name"
+
+[node name="LineEdit" type="LineEdit" parent="Control/MarginContainer/Control/TabContainer/Player/VBoxContainer/NameLineEdit" unique_id=1787462963]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Player 1"
+
+[node name="AvatarSlider" type="HBoxContainer" parent="Control/MarginContainer/Control/TabContainer/Player/VBoxContainer" unique_id=859605007]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 64
+
+[node name="Label" type="Label" parent="Control/MarginContainer/Control/TabContainer/Player/VBoxContainer/AvatarSlider" unique_id=236387503]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Avatar"
+
+[node name="HSlider" type="HSlider" parent="Control/MarginContainer/Control/TabContainer/Player/VBoxContainer/AvatarSlider" unique_id=1438305793]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 23.0
+value = 1.0
+
+[node name="TextureRect" type="TextureRect" parent="Control/MarginContainer/Control/TabContainer/Player/VBoxContainer/AvatarSlider" unique_id=95245684]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("9_fvbnt")
+expand_mode = 5
+stretch_mode = 4
+
 [node name="InstructionsContainer" type="HBoxContainer" parent="Control/MarginContainer/Control" unique_id=551696975]
 layout_mode = 1
 anchors_preset = 3
@@ -226,3 +562,12 @@ layout_mode = 2
 size_flags_vertical = 4
 actions = Array[int]([2, 3, 4, 5])
 custom_label_translation = "ui_change"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1641534220]
+libraries/ = SubResource("AnimationLibrary_55v74")
+
+[node name="AnimationTree" type="AnimationTree" parent="." unique_id=1143333844]
+tree_root = SubResource("AnimationNodeStateMachine_1au28")
+anim_player = NodePath("../AnimationPlayer")
+parameters/conditions/is_closed = false
+parameters/conditions/is_open = false

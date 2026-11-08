@@ -4,7 +4,7 @@ class_name PlayerIndicator
 @export var player_index: int = -1
 
 func _process(_delta: float) -> void:
-	if player_index == -1:
+	if player_index == -1 or !GameManager.race:
 		return
 	var player: Player = GameManager.race.players[player_index]
 	var car_instance = player.car_instance
