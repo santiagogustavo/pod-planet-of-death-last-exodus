@@ -200,7 +200,7 @@ smooth_speed = 5.0
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=409683162]
 transform = Transform3D(1, 0, 0, 0, 0.9659258, 0.25881904, 0, -0.25881904, 0.9659258, 0, 4, 7)
-cull_mask = 1048565
+cull_mask = 1048549
 
 [node name="CameraEffects" type="CanvasLayer" parent="Camera3D" unique_id=1082692377]
 

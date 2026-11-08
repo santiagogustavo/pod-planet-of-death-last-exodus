@@ -38,6 +38,7 @@ func _ready() -> void:
 	camera_debug_texture.queue_free()
 	car.collided.connect(handle_car_collision)
 	set_speed_lines()
+	camera.make_current()
 
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("change_camera"):
