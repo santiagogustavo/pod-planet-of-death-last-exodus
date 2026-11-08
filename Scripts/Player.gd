@@ -76,6 +76,7 @@ func _process(delta: float) -> void:
 	
 	near_miss_detector.global_position = car_instance.global_position
 	near_miss_detector.global_rotation = car_instance.global_rotation
+	car_instance.has_completed_race = has_completed_race
 	
 	if !hud_instance:
 		return

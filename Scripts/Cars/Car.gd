@@ -54,6 +54,10 @@ var flipped_timer: float = 0.0
 var need_physics_reset: bool = false
 const TIME_TO_TRIGGER_RESET: float = 2.0
 
+const SPEED_MS_GRIND_THRESHOLD: float = 5.0
+
+var has_completed_race: bool = false
+
 func _ready() -> void:
 	can_sleep = false
 	engine_force = 0.0
@@ -76,7 +80,7 @@ func _ready() -> void:
 					InputManager.vibrate_controller(0, 0.5, 0.0, 0.1)
 
 			1, 4:
-				if !grinding_sfx.playing:
+				if !grinding_sfx.playing and speed_ms >= SPEED_MS_GRIND_THRESHOLD:
 					grinding_sfx.play()
 
 				if !collision_wall_sfx.playing:
@@ -101,10 +105,7 @@ func _process(delta: float) -> void:
 
 	if player_input:
 		update_player_input(delta)
-	if (
-		!GameManager.race
-		or GameManager.race.status == RaceManager.RaceStatus.Ended
-	):
+	if has_completed_race:
 		engine_force = 0.0
 		brake = brake_force
 
@@ -235,6 +236,9 @@ func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
 
 		flipped_timer = 0.0
 		need_physics_reset = false
+
+	if speed_ms < SPEED_MS_GRIND_THRESHOLD:
+		return
 
 	var contact_count = state.get_contact_count()
 
