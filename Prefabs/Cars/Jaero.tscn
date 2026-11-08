@@ -314,6 +314,44 @@ stencil_flags = 2
 [sub_resource type="QuadMesh" id="QuadMesh_s5qo7"]
 material = SubResource("StandardMaterial3D_db3pr")
 
+[sub_resource type="Gradient" id="Gradient_02yp4"]
+resource_local_to_scene = true
+colors = PackedColorArray(1, 0, 0, 0.19607843, 1, 0, 0, 0)
+metadata/_snap_enabled = true
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_eywgd"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_02yp4")
+
+[sub_resource type="Curve" id="Curve_qyikp"]
+resource_local_to_scene = true
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.2, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+metadata/_snap_enabled = true
+
+[sub_resource type="CurveTexture" id="CurveTexture_re344"]
+resource_local_to_scene = true
+curve = SubResource("Curve_qyikp")
+
+[sub_resource type="Gradient" id="Gradient_ycowj"]
+resource_local_to_scene = true
+colors = PackedColorArray(1, 0, 0, 0.19607843, 1, 0, 0, 0)
+metadata/_snap_enabled = true
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_u1ny7"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ycowj")
+
+[sub_resource type="Curve" id="Curve_k8sfa"]
+resource_local_to_scene = true
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.2, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+metadata/_snap_enabled = true
+
+[sub_resource type="CurveTexture" id="CurveTexture_djdtv"]
+resource_local_to_scene = true
+curve = SubResource("Curve_k8sfa")
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ctum3"]
 resource_name = "000000_W_G"
 albedo_color = Color(0, 0, 0, 1)
@@ -503,6 +541,7 @@ physics_material_override = ExtResource("1_dfuln")
 gravity_scale = 4.0
 center_of_mass_mode = 1
 center_of_mass = Vector3(0, -0.1, -0.5)
+continuous_cd = true
 contact_monitor = true
 max_contacts_reported = 1
 script = ExtResource("1_jr3dp")
@@ -583,12 +622,20 @@ light_color = Color(0.25882354, 1, 0.8901961, 1)
 [node name="MeshInstance3D" parent="CollisionShape3D/ChassisSR0/BrakeLight" index="0" unique_id=659253709]
 mesh = SubResource("QuadMesh_s5qo7")
 
+[node name="GPUTrail3D" parent="CollisionShape3D/ChassisSR0/BrakeLight" index="1" unique_id=845435319]
+color_ramp = SubResource("GradientTexture1D_eywgd")
+curve = SubResource("CurveTexture_re344")
+
 [node name="BrakeLight2" parent="CollisionShape3D/ChassisSR0" unique_id=1516194028 instance=ExtResource("8_vlcms")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.941, 0.901403, 1.406)
 light_color = Color(0.25882354, 1, 0.8901961, 1)
 
 [node name="MeshInstance3D" parent="CollisionShape3D/ChassisSR0/BrakeLight2" index="0" unique_id=659253709]
 mesh = SubResource("QuadMesh_s5qo7")
+
+[node name="GPUTrail3D" parent="CollisionShape3D/ChassisSR0/BrakeLight2" index="1" unique_id=845435319]
+color_ramp = SubResource("GradientTexture1D_u1ny7")
+curve = SubResource("CurveTexture_djdtv")
 
 [node name="FL" type="VehicleWheel3D" parent="." unique_id=612183460]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -1.1615745, 0.5230206, -1.8325194)

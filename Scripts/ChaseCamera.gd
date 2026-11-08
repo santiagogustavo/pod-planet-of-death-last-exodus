@@ -3,8 +3,8 @@ class_name ChaseCamera
 
 @export var car: Car
 @export var fov_increase: float = 15.0
-@export var camera_distances: Array[float] = [0.0, 6.0, 7.5]
-@export var default_distance: int = 1
+@export var camera_distances: Array[float] = [0.0, 5.0, 6.0, 7.5]
+@export var default_distance: int = 2
 @export var camera_up_degrees: float = 7.5
 @export var camera_tilt_x_position: float = 5.0
 @export var camera_tilt_x_smooth: float = 5.0
@@ -32,6 +32,7 @@ const COLLISION_SPEED_THRESHOLD: float = 150.0
 
 var direction_override_timer: float = 0.0
 var look_back: bool = false
+var bonnet_distance: bool = false
 
 func _ready() -> void:
 	camera_debug_texture.queue_free()
@@ -45,6 +46,7 @@ func _process(_delta: float) -> void:
 		else:
 			current_distance = 0
 	look_back = Input.is_action_pressed("look_back")
+	bonnet_distance = current_distance == 0.0
 	update_camera_cull_mask()
 	update_spring_arm()
 
@@ -100,7 +102,7 @@ func get_rotation_from_direction(look_direction: Vector3) -> Basis:
 func update_camera(delta: float) -> void:
 	var current_speed = car.speed_kmh
 	var intensity = clamp(current_speed ** 2 / 10000.0, 0.0, 1.0)
-	var apply_tilt_and_rotation = car.is_on_ground() and !look_back
+	var apply_tilt_and_rotation = car.is_on_ground() and !look_back and !bonnet_distance
 	var tilt_position = (
 		-car.steering * camera_tilt_x_position * intensity
 		if apply_tilt_and_rotation
@@ -112,7 +114,12 @@ func update_camera(delta: float) -> void:
 		else 0.0
 	)
 	camera.fov = initial_fov + fov_increase * intensity
-	camera.rotation_degrees.x = initial_rotation_x + camera_up_degrees * intensity
+	camera.rotation_degrees.x = (
+		initial_rotation_x + camera_up_degrees * intensity
+		if !bonnet_distance
+		else car.rotation_degrees.x
+	)
+	camera.rotation_degrees.z = 0.0 if !bonnet_distance else car.rotation_degrees.z
 	camera.position.x = lerp(
 		camera.position.x,
 		tilt_position,
@@ -128,7 +135,8 @@ func update_camera(delta: float) -> void:
 		rotation_degrees.y = 180
 
 func update_camera_cull_mask() -> void:
-	camera.set_cull_mask_value(VisibilityLayers.DEBUG, GameManager.is_debug_mode)
+	car.visible = !bonnet_distance
+	camera.set_cull_mask_value(VisibilityLayers.DEBUG, GameManager.is_debug_mode and GameManager.debug_cull_visible)
 
 func update_camera_collision(delta: float) -> void:
 	camera.global_transform.origin = lerp(

@@ -28,6 +28,7 @@ class_name PlayerHUD
 @onready var player_avatar: PlayerAvatar = $SwayContainer/SubViewport/MarginContainer/Control/PlayerAvatar
 @onready var next_gate_indicator: TextureRect = $SwayContainer/SubViewport/MarginContainer/Control/NextGateIndicator
 @onready var speed_label: Label = $SwayContainer/SubViewport/MarginContainer/Control/Speedometer/SpeedLabel
+@onready var speed_unit: Label = $SwayContainer/SubViewport/MarginContainer/Control/Speedometer/SpeedLabel/SpeedUnit
 @onready var speed_gauge: TextureRect = $SwayContainer/SubViewport/MarginContainer/Control/Speedometer/SpeedGauge
 @onready var race_time_label: Label = $SwayContainer/SubViewport/MarginContainer/Control/RaceTime/Label
 @onready var current_position_label: Label =  $SwayContainer/SubViewport/MarginContainer/Control/RaceStats/PositionLabel/CurrentPositionlabel
@@ -37,6 +38,7 @@ class_name PlayerHUD
 @onready var race_current_time: Label = $SwayContainer/SubViewport/MarginContainer/Control/RaceStats/CurrentLap/Value
 @onready var race_best_time: Label = $SwayContainer/SubViewport/MarginContainer/Control/RaceStats/BestLap/Value
 @onready var wrong_way_animation_tree: AnimationTree = $SwayContainer/SubViewport/MarginContainer/Control/WrongWayLabel/AnimationTree
+@onready var final_lap_panel: FinalLapPanel = $SwayContainer/SubViewport/MarginContainer/Control/FinalLapPanel
 
 var scoreboard_items: Array[ScoreboardItem] = []
 
@@ -51,7 +53,10 @@ func _ready() -> void:
 		GameManager.race.countdown.connect(instantiate_race_countdown)
 
 func _process(delta: float) -> void:
-	if GameManager.race.status != RaceManager.RaceStatus.Started:
+	if (
+		!GameManager.race
+		or GameManager.race.status != RaceManager.RaceStatus.Started
+	):
 		hud_container.visible = false
 		return
 	else:
@@ -121,7 +126,10 @@ func update_next_gate_indicator() -> void:
 	next_gate_indicator.rotation = -next_gate_rotation.y
 
 func update_speedometer() -> void:
-	speed_label.text = str(clamp(roundi(car.speed_kmh), 0, 999)).pad_zeros(3)
+	var is_kmh: bool = GameplaySettingsManager.metric == GameplaySettingsManager.Metric.KMH
+	var metrical_speed: float = car.speed_kmh if is_kmh else car.speed_mph
+	speed_label.text = str(clamp(roundi(metrical_speed), 0, 999)).pad_zeros(3)
+	speed_unit.text = "KMH" if is_kmh else "MPH"
 	speed_gauge.material.set("shader_parameter/current_val", car.speed_kmh)
 	speed_gauge.material.set("shader_parameter/max_val", car.max_speed)
 
@@ -139,3 +147,7 @@ func update_race_stats() -> void:
 func update_wrong_way_animation_tree() -> void:
 	wrong_way_animation_tree.set("parameters/conditions/is_wrong_way", is_wrong_way)
 	wrong_way_animation_tree.set("parameters/conditions/is_not_wrong_way", !is_wrong_way)
+
+func compute_final_lap(lap: int) -> void:
+	if lap == GameManager.race.laps - 1:
+		final_lap_panel.play_final_lap()

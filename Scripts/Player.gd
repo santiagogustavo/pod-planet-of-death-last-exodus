@@ -1,9 +1,16 @@
 extends Node3D
 class_name Player
 
+signal lap_complete
+signal race_complete
+
 @export var player_type: PlayerDetails.PlayerType = PlayerDetails.PlayerType.Player1
 @export var player_details: PlayerDetails
 @export var start_gate_index: int
+
+@export_category("Next Gate Indicator")
+@export var gate_indicator_look_ahead: float = 12.0
+@export var gate_indicator_rotation_speed: float = 5.0
 
 @onready var chase_camera_prefab: PackedScene = load("res://Prefabs/Player/ChaseCamera.tscn")
 @onready var hud_prefab: PackedScene = load("res://Prefabs/Player/PlayerHUD.tscn")
@@ -24,6 +31,7 @@ var checkpoints: Array[Checkpoint] = []
 var laps: Array[float] = []
 
 var wrong_way_time_buffer: float = 0.0
+var has_completed_race: bool = false
 
 func _ready() -> void:
 	GameManager.race.started.connect(func ():
@@ -53,29 +61,49 @@ func _ready() -> void:
 		hud_instance.player_resource_name = name
 		hud_instance.player_details = player_details
 		add_child(hud_instance)
+		lap_complete.connect(hud_instance.compute_final_lap)
+		race_complete.connect(func ():
+			GameManager.race.end_race()
+		)
+	race_complete.connect(func():
+		has_completed_race = true
+	)
 	GameManager.race.add_player(self)
 
 func _process(delta: float) -> void:
-	# Atualiza o status de contramão usando produto escalar
-	if hud_instance:
-		if check_if_wrong_way():
-			# Só liga o HUD se o jogador persistir na contramão por mais de 0.8 segundos
-			wrong_way_time_buffer += delta
-			if wrong_way_time_buffer >= 0.8:
-				hud_instance.is_wrong_way = true
-		else:
-			wrong_way_time_buffer = 0.0
-			hud_instance.is_wrong_way = false
+	if player_details.player_type == PlayerDetails.PlayerType.Player1:
+		update_player_one_profile()
+	
 	near_miss_detector.global_position = car_instance.global_position
 	near_miss_detector.global_rotation = car_instance.global_rotation
-	next_gate_indicator.look_at(GameManager.race.track.circuit_gates[current_gate].global_position)
-	if hud_instance:
-		hud_instance.current_lap = current_lap
-		hud_instance.current_time_string = GameManager.format_lap_time(compute_lap_time(current_lap))
-		hud_instance.best_time_string = GameManager.format_lap_time(get_best_lap_time())
-		hud_instance.next_gate_rotation = next_gate_indicator.rotation
+	
+	if !hud_instance:
+		return
+
+	# Atualiza o status de contramão usando produto escalar
+	if check_if_wrong_way():
+		# Só liga o HUD se o jogador persistir na contramão por mais de 0.8 segundos
+		wrong_way_time_buffer += delta
+		if wrong_way_time_buffer >= 0.8:
+			hud_instance.is_wrong_way = true
+	else:
+		wrong_way_time_buffer = 0.0
+		hud_instance.is_wrong_way = false
+	
+	update_next_gate_indicator(delta)
+	hud_instance.current_lap = current_lap
+	hud_instance.current_time_string = GameManager.format_lap_time(compute_lap_time(current_lap))
+	hud_instance.best_time_string = GameManager.format_lap_time(get_best_lap_time())
+	hud_instance.next_gate_rotation = next_gate_indicator.rotation
+
+func update_player_one_profile() -> void:
+	player_details.player_name = PlayerProfileManager.player_name
+	player_details.player_avatar = load(Avatars.PATHS[PlayerProfileManager.avatar_index])
 
 func check_if_wrong_way() -> bool:
+	if !GameManager.race or !GameManager.race.track:
+		return false
+
 	var gates = GameManager.race.track.circuit_gates
 	if gates.size() < 2:
 		return false
@@ -115,6 +143,9 @@ func handle_gate_passed(gate_rid: RID, gate_index: int) -> void:
 	if current_gate == 0:
 		if current_lap != 0:
 			laps.append(compute_lap_time(current_lap))
+			lap_complete.emit(current_lap)
+		if current_lap == GameManager.race.laps:
+			race_complete.emit()
 		current_lap += 1
 	if checkpoints.filter(func (checkpoint: Checkpoint):
 		return checkpoint.gate_rid == gate_rid and checkpoint.lap == current_lap
@@ -145,6 +176,8 @@ func get_best_lap_time() -> float:
 	return laps.min() if laps.size() else 0.0
 
 func compute_total_traveled_distance() -> float:
+	if !GameManager.race:
+		return 0.0
 	var total_gates = GameManager.race.track.circuit_gates.size()
 	
 	var last_index = current_gate - 1
@@ -166,3 +199,52 @@ func compute_total_traveled_distance() -> float:
 	segment_traveled_distance = max(0.0, segment_traveled_distance) 
 
 	return base_distance + segment_traveled_distance
+
+func get_next_gate_target_position() -> Vector3:
+	if !GameManager.race or !GameManager.race.track:
+		return Vector3.ZERO
+
+	var gates = GameManager.race.track.circuit_gates
+
+	if gates.is_empty():
+		return car_instance.global_position
+
+	var current_gate_node = gates[current_gate]
+
+	# Godot utiliza -Z como direção frontal.
+	var gate_forward = -current_gate_node.global_transform.basis.z.normalized()
+
+	# Projeta o destino à frente do Gate.
+	return (
+		current_gate_node.global_position +
+		gate_forward * gate_indicator_look_ahead
+	)
+
+func update_next_gate_indicator(delta: float) -> void:
+	var target_position = get_next_gate_target_position()
+
+	var direction = (
+		target_position - next_gate_indicator.global_position
+	).normalized()
+
+	if direction.is_zero_approx():
+		return
+
+	# Orientação desejada.
+	var target_basis = Basis.looking_at(direction, Vector3.UP)
+	var target_rotation = target_basis.get_rotation_quaternion()
+
+	# Orientação atual.
+	var current_rotation = (
+		next_gate_indicator.global_basis.get_rotation_quaternion()
+	)
+
+	# Interpolação independente da taxa de FPS.
+	var weight = 1.0 - exp(-gate_indicator_rotation_speed * delta)
+
+	var smoothed_rotation = current_rotation.slerp(
+		target_rotation,
+		weight
+	)
+
+	next_gate_indicator.global_basis = Basis(smoothed_rotation)

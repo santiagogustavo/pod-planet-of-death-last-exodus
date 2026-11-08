@@ -21,6 +21,7 @@ enum RaceStatus {
 @onready var race_music_prefab: PackedScene = load("res://Prefabs/RaceMusic.tscn")
 
 var status: RaceStatus = RaceStatus.Idle
+var race_music_instance: RaceMusic
 
 class PlayerProgress:
 	var player_name: String
@@ -29,12 +30,20 @@ class PlayerProgress:
 func _ready() -> void:
 	GameManager.race = self
 	instantiate_race_music()
+	create_player_one()
 	spawn_players_to_gates()
 	start_race_countdown()
 
 func instantiate_race_music() -> void:
-	var race_music_instance: RaceMusic = race_music_prefab.instantiate()
+	race_music_instance = race_music_prefab.instantiate()
 	add_child(race_music_instance)
+
+func create_player_one() -> void:
+	var player_one: PlayerDetails = PlayerDetails.new()
+	player_one.player_name = PlayerProfileManager.player_name
+	player_one.player_avatar = load(Avatars.PATHS[PlayerProfileManager.avatar_index])
+	player_one.car_data = load(PlayerProfileManager.car_resource)
+	predefined_players.push_front(player_one)
 
 func spawn_players_to_gates() -> void:
 	var gate_index: int = 0
@@ -52,6 +61,17 @@ func restart_race() -> void:
 	players.clear()
 	spawn_players_to_gates()
 	start_race_countdown()
+	race_music_instance.stop()
+
+func end_race() -> void:
+	status = RaceStatus.Ended
+
+func clear_race() -> void:
+	for player in players:
+		player.queue_free()
+	track.queue_free()
+	race_music_instance.queue_free()
+	queue_free()
 
 func start_race_countdown() -> void:
 	countdown.emit()

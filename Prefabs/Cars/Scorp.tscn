@@ -636,6 +636,7 @@ physics_material_override = ExtResource("1_mpicf")
 gravity_scale = 4.0
 center_of_mass_mode = 1
 center_of_mass = Vector3(0, -0.1, -0.5)
+continuous_cd = true
 contact_monitor = true
 max_contacts_reported = 1
 script = ExtResource("1_rejy5")

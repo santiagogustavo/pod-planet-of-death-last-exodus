@@ -20,6 +20,8 @@
 [ext_resource type="Script" uid="uid://5h1gvjbt5r7p" path="res://Scripts/UI/HUDMap.gd" id="18_7n8ah"]
 [ext_resource type="Shader" uid="uid://o7w4l7bh0eme" path="res://Materials/Shaders/CRT.gdshader" id="18_tp8h6"]
 [ext_resource type="PackedScene" uid="uid://bce0cmhcx24i0" path="res://Prefabs/UI/PlayerIndicator.tscn" id="20_7n8ah"]
+[ext_resource type="Script" uid="uid://cs0bohhb4w83b" path="res://Scripts/UI/FinalLapPanel.gd" id="21_8qtgk"]
+[ext_resource type="FontFile" uid="uid://d2aikdifuviiw" path="res://Fonts/AlienAlphabet.otf" id="21_g720x"]
 
 [sub_resource type="Animation" id="Animation_7n8ah"]
 resource_name = "FadeIn"
@@ -79,11 +81,11 @@ shader_parameter/uv_mode = false
 shader_parameter/y_factor = 1.0
 shader_parameter/bulge = 4.7499999933364734e-08
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7n8ah"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8qtgk"]
 resource_local_to_scene = true
 bg_color = Color(0, 0, 0, 0.19607843)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g720x"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bhtsl"]
 resource_local_to_scene = true
 bg_color = Color(0, 0, 0, 0.19607843)
 
@@ -285,6 +287,102 @@ viewport_path = NodePath("SwayContainer/SubViewport/MarginContainer/Control/Map/
 [sub_resource type="Environment" id="Environment_7n8ah"]
 background_mode = 1
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_34pxd"]
+bg_color = Color(0.2, 0.13466667, 0.0039999965, 0.78431374)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ujstf"]
+font = ExtResource("11_f0vpv")
+font_size = 42
+font_color = Color(0.9372549, 0.627451, 0.007843138, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_7cv51"]
+font = ExtResource("21_g720x")
+font_size = 32
+font_color = Color(0.94, 0.6298, 0.009399991, 0.78431374)
+
+[sub_resource type="Animation" id="Animation_x161b"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_7enc0"]
+resource_name = "Show"
+length = 2.0
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.15, 1.85, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 0), Vector2(1, 1), Vector2(1, 1), Vector2(1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mdqfc"]
+_data = {
+&"RESET": SubResource("Animation_x161b"),
+&"Show": SubResource("Animation_7enc0")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_g720x"]
+animation = &"RESET"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8qtgk"]
+animation = &"Show"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bhtsl"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_34pxd"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_0i88t"]
+states/RESET/node = SubResource("AnimationNodeAnimation_g720x")
+states/RESET/position = Vector2(506, 100)
+states/Show/node = SubResource("AnimationNodeAnimation_8qtgk")
+states/Show/position = Vector2(509, -17)
+transitions = ["Start", "RESET", SubResource("AnimationNodeStateMachineTransition_bhtsl"), "Show", "RESET", SubResource("AnimationNodeStateMachineTransition_34pxd")]
+graph_offset = Vector2(-7, -68)
+
 [node name="PlayerHUD" type="CanvasLayer" unique_id=138282145]
 layer = 2
 script = ExtResource("1_s7acx")
@@ -343,11 +441,11 @@ scale = Vector2(0.75, 0.75)
 
 [node name="ScoreboardItemDebug" parent="SwayContainer/SubViewport/MarginContainer/Control/Scoreboard" unique_id=117532597 instance=ExtResource("14_1t8f0")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_7n8ah")
+theme_override_styles/panel = SubResource("StyleBoxFlat_8qtgk")
 
 [node name="ScoreboardItemDebug2" parent="SwayContainer/SubViewport/MarginContainer/Control/Scoreboard" unique_id=647372254 instance=ExtResource("14_1t8f0")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_g720x")
+theme_override_styles/panel = SubResource("StyleBoxFlat_bhtsl")
 player_position = 2
 player_details = SubResource("Resource_14gyj")
 is_current_player = false
@@ -707,3 +805,65 @@ cull_mask = 8
 environment = SubResource("Environment_7n8ah")
 
 [node name="PlayerIndicator" parent="SwayContainer/SubViewport/MarginContainer/Control/Map/CRT/MapViewport" unique_id=443761290 instance=ExtResource("20_7n8ah")]
+
+[node name="FinalLapPanel" type="Panel" parent="SwayContainer/SubViewport/MarginContainer/Control" unique_id=1974022314]
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -154.0
+offset_top = 142.0
+offset_right = 154.0
+offset_bottom = 231.0
+grow_horizontal = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+theme_override_styles/panel = SubResource("StyleBoxFlat_34pxd")
+script = ExtResource("21_8qtgk")
+
+[node name="Normal" type="Label" parent="SwayContainer/SubViewport/MarginContainer/Control/FinalLapPanel" unique_id=1064562706]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -242.0
+offset_top = -33.5
+offset_right = 242.0
+offset_bottom = 9.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Final Lap"
+label_settings = SubResource("LabelSettings_ujstf")
+horizontal_alignment = 1
+script = ExtResource("13_bf77d")
+typing_time = 1.0
+start_with_random = true
+metadata/_custom_type_script = "uid://cflhks7suarqv"
+
+[node name="Alien" type="Label" parent="SwayContainer/SubViewport/MarginContainer/Control/FinalLapPanel/Normal" unique_id=741759632]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -242.0
+offset_top = 43.0
+offset_right = 242.0
+offset_bottom = 75.0
+grow_horizontal = 2
+text = "Final Lap"
+label_settings = SubResource("LabelSettings_7cv51")
+horizontal_alignment = 1
+script = ExtResource("13_bf77d")
+typing_time = 1.0
+start_with_random = true
+metadata/_custom_type_script = "uid://cflhks7suarqv"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="SwayContainer/SubViewport/MarginContainer/Control/FinalLapPanel" unique_id=1035994572]
+libraries/ = SubResource("AnimationLibrary_mdqfc")
+
+[node name="AnimationTree" type="AnimationTree" parent="SwayContainer/SubViewport/MarginContainer/Control/FinalLapPanel" unique_id=1980074449]
+tree_root = SubResource("AnimationNodeStateMachine_0i88t")
+anim_player = NodePath("../AnimationPlayer")
+parameters/conditions/show_final_lap = false

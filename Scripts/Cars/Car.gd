@@ -34,6 +34,11 @@ var speed_kmh: float = 0.0
 var speed_mph: float = 0.0
 var acceleration: float = 0.0
 var handbrake: bool = false
+var is_parked: bool = false
+
+# Tempo durante o qual o travamento fica suspenso após uma colisão.
+var collision_release_timer: float = 0.0
+const COLLISION_RELEASE_TIME: float = 0.3
 
 enum EngineStatus {
 	Forward,
@@ -42,7 +47,6 @@ enum EngineStatus {
 }
 
 var engine_status: EngineStatus = EngineStatus.Stopped
-var can_reverse: bool = false
 var reverse_timeout: float = 1.0
 var collided_bodies: Array[Node3D] = []
 
@@ -54,49 +58,97 @@ func _ready() -> void:
 	can_sleep = false
 	engine_force = 0.0
 	brake = max_brake
+
 	if custom_running_sfx:
 		running_sfx.stream = custom_running_sfx
 		running_sfx.play()
+
 	body_entered.connect(func (body: CollisionObject3D) -> void:
+		# Libera temporariamente a física após uma colisão.
+		collision_release_timer = COLLISION_RELEASE_TIME
+
 		match body.collision_layer:
 			2:
 				if !collision_road_sfx.playing:
 					collision_road_sfx.play()
+
 				if player_input:
 					InputManager.vibrate_controller(0, 0.5, 0.0, 0.1)
+
 			1, 4:
 				if !grinding_sfx.playing:
 					grinding_sfx.play()
+
 				if !collision_wall_sfx.playing:
 					collision_wall_sfx.play()
+
 				if player_input:
 					InputManager.vibrate_controller(0, 0.0, 1.0, 0.1)
 	)
+
 	body_exited.connect(func (body: CollisionObject3D) -> void:
 		if collided_bodies.find(body) != -1:
 			collided_bodies.remove_at(collided_bodies.find(body))
+
 		grinding_sfx.stop()
 	)
 
 func _process(delta: float) -> void:
+	update_parked()
 	update_sound()
 	update_wind_trails()
 	update_brake_lights_and_sfx()
+
 	if player_input:
 		update_player_input(delta)
+	if (
+		!GameManager.race
+		or GameManager.race.status == RaceManager.RaceStatus.Ended
+	):
+		engine_force = 0.0
+		brake = brake_force
 
 func _physics_process(delta: float) -> void:
-	speed_ms = linear_velocity.length()
+	speed_ms = Vector3(
+		linear_velocity.x,
+		0.0,
+		linear_velocity.z,
+	).length()
+
 	speed_kmh = speed_ms * 3.6
 	speed_mph = speed_ms * 2.23694
+
 	check_flipped_car(delta)
 	update_engine_status()
 
 func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
+	if !GameManager.race or !GameManager.race.track:
+		return
 	var ai_node = get_node_or_null("PlayerBotAI")
 
 	if ai_node and ai_node.has_method("car_custom_integrate_forces"):
 		ai_node.car_custom_integrate_forces(state)
+
+	# Atualiza o tempo de liberação após colisões.
+	collision_release_timer = maxf(
+		0.0,
+		collision_release_timer - state.step
+	)
+
+	# Mantém o carro parado em superfícies inclinadas,
+	# mas não interfere na resposta física de uma colisão.
+	if (
+		ai_node == null
+		and is_on_ground()
+		and acceleration == 0.0
+		and state.linear_velocity.length() < 2.0
+		and collision_release_timer <= 0.0
+	):
+		state.linear_velocity = Vector3.ZERO
+		state.angular_velocity = Vector3.ZERO
+
+		engine_force = 0.0
+		brake = max_brake
 
 	if need_physics_reset:
 		var parent_player: Player = get_parent()
@@ -170,7 +222,11 @@ func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
 				global_position + Vector3.UP * 0.5
 			)
 
-		state.linear_velocity = Vector3(0.0, -1.0, 0.0)
+		state.linear_velocity = Vector3(
+			0.0,
+			state.linear_velocity.y,
+			0.0
+		)
 		state.angular_velocity = Vector3.ZERO
 
 		engine_force = 0.0
@@ -200,7 +256,7 @@ func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
 
 func check_flipped_car(delta: float) -> void:
 	var car_up_vector = global_transform.basis.y
-	if car_up_vector.dot(Vector3.UP) < 0.2: 
+	if car_up_vector.dot(Vector3.UP) < 0.2:
 		if has_method("set_sleeping"):
 			sleeping = false
 		flipped_timer += delta
@@ -209,6 +265,9 @@ func check_flipped_car(delta: float) -> void:
 			return
 	else:
 		flipped_timer = max(0.0, flipped_timer - delta * 2)
+
+func update_parked() -> void:
+	is_parked = linear_velocity.length() < 2.0
 
 func update_player_input(delta: float) -> void:
 	steering = move_toward(
@@ -220,11 +279,6 @@ func update_player_input(delta: float) -> void:
 	acceleration = player_input.acceleration if player_input and !handbrake else 0.0
 	need_physics_reset = need_physics_reset or player_input.reset_car
 	update_acceleration_and_brake()
-	if acceleration == 0.0 and linear_velocity.length() < 1.0:
-		linear_velocity = Vector3.ZERO
-		angular_velocity = Vector3.ZERO
-		engine_force = 0.0
-		brake = max_brake
 
 func update_acceleration_and_brake() -> void:
 	if acceleration < 0.0 and engine_status == EngineStatus.Forward:
@@ -248,14 +302,15 @@ func update_brake(is_braking: bool) -> void:
 	brake = brake_force
 
 func update_brake_lights_and_sfx() -> void:
-	var is_braking: bool = brake > 0.0
+	var is_braking: bool = brake > 0.0 and !is_parked
+
 	for brake_light in brake_lights:
 		brake_light.visible = is_braking
+
 	if (
 		is_braking
 		and is_on_ground()
 		and !brake_sfx.playing
-		and GameManager.race.status == RaceManager.RaceStatus.Started
 	):
 		brake_sfx.play()
 
@@ -263,7 +318,7 @@ func update_engine_status() -> void:
 	var forward_dir = -global_transform.basis.z
 	var forward_speed = linear_velocity.dot(forward_dir)
 	var threshold = 1.0
-	
+
 	if forward_speed > threshold:
 		engine_status = EngineStatus.Forward
 	elif forward_speed < -threshold:
@@ -274,10 +329,19 @@ func update_engine_status() -> void:
 func update_wind_trails() -> void:
 	var current_speed = speed_kmh
 	var intensity = clamp(current_speed / 200.0, 0.0, 1.0)
-	var image = Image.create_empty(32, 32, false,Image.FORMAT_RGBA8)
+
+	var image = Image.create_empty(
+		32,
+		32,
+		false,
+		Image.FORMAT_RGBA8
+	)
+
 	image.fill(Color(intensity, 0.0, 0.0))
+
 	var texture = ImageTexture.create_from_image(image)
 	texture.update(image)
+
 	for wind_trail in wind_trails:
 		wind_trail.visible = is_on_ground()
 		wind_trail.texture = texture
@@ -285,26 +349,39 @@ func update_wind_trails() -> void:
 func update_sound() -> void:
 	var running_pitch: float = (linear_velocity.length() / 52) + 0.5
 	running_sfx.pitch_scale = running_pitch
+
 	var intensity = clamp(speed_kmh / 50.0, 0.0, 1.0)
 	running_sfx.unit_size = 5.0 + intensity * 5.0
 
 func handle_car_collision(point: Vector3, normal: Vector3, collision_body: Node3D) -> void:
 	if collided_bodies.find(collision_body) != -1:
 		return
-	collided.emit(speed_kmh, (collision_body as CollisionObject3D).collision_layer)
+
+	collided.emit(
+		speed_kmh,
+		(collision_body as CollisionObject3D).collision_layer
+	)
+
 	collided_bodies.append(collision_body)
+
 	var debris_instance: GPUParticles3D = debris_prefab.instantiate()
 	get_tree().root.add_child(debris_instance)
+
 	debris_instance.global_position = point
+
 	var look_at_pos = point + normal + Vector3(0.001, 0, 0)
+
 	debris_instance.look_at(look_at_pos)
 	debris_instance.emitting = true
 
 func handle_car_grinding_collision(point: Vector3, normal: Vector3) -> void:
 	var sparks_instance: GPUParticles3D = sparks_prefab.instantiate()
 	get_tree().root.add_child(sparks_instance)
+
 	sparks_instance.global_position = point
+
 	var look_at_pos = point + normal + Vector3(0.001, 0, 0)
+
 	sparks_instance.look_at(look_at_pos)
 	sparks_instance.emitting = true
 
@@ -315,4 +392,5 @@ func is_on_ground() -> bool:
 	for wheel in wheels:
 		if wheel.is_in_contact():
 			return true
+
 	return false

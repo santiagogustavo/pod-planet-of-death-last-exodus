@@ -768,6 +768,7 @@ func _build_debug_mesh() -> void:
 	debug_material.vertex_color_use_as_albedo = true
 
 	debug_mesh_instance = MeshInstance3D.new()
+	debug_mesh_instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	debug_mesh_instance.mesh = debug_mesh
 	debug_mesh_instance.material_override = debug_material
 	debug_mesh_instance.set_layer_mask_value(VisibilityLayers.GENERAL, false)

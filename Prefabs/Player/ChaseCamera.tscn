@@ -2,22 +2,147 @@
 
 [ext_resource type="Script" uid="uid://d070hhqucoddt" path="res://Scripts/ChaseCamera.gd" id="1_s6rlj"]
 [ext_resource type="Texture2D" uid="uid://bjn3swyv8w8hg" path="res://Textures/pod-10.webp" id="2_wrxoa"]
+[ext_resource type="Shader" uid="uid://biuhp2sithdsq" path="res://Materials/Shaders/ScreenFlare.gdshader" id="3_014gi"]
 [ext_resource type="PackedScene" uid="uid://bmda88435d447" path="res://Prefabs/Player/CameraSplatter.tscn" id="3_cbpny"]
+[ext_resource type="Script" uid="uid://cf8o12t3ovymr" path="res://Scripts/UI/CameraEffects/Flare.gd" id="3_ds1cy"]
 [ext_resource type="Shader" uid="uid://djnkwxncn0e5e" path="res://Materials/Shaders/RadialBlur.gdshader" id="3_ecuig"]
+[ext_resource type="Texture2D" uid="uid://c1fvles84mqaq" path="res://Textures/UI/CameraEffects/droplets_1.png" id="3_j81kb"]
+[ext_resource type="Script" uid="uid://bb7w0rmbs5bll" path="res://Scripts/UI/CameraEffects/CameraRain2d.gd" id="3_n70ob"]
+[ext_resource type="Texture2D" uid="uid://dq8j1qirnl1dy" path="res://Textures/UI/CameraEffects/dust.png" id="4_ds1cy"]
+[ext_resource type="Texture2D" uid="uid://cu515vpdnqqnn" path="res://Textures/UI/CameraEffects/droplets_3.png" id="4_j81kb"]
 [ext_resource type="Shader" uid="uid://dnw21us1inoy1" path="res://Materials/Shaders/SpeedLines.gdshader" id="4_wrxoa"]
 
-[sub_resource type="Gradient" id="Gradient_wrxoa"]
-interpolation_mode = 2
-offsets = PackedFloat32Array(0.5, 1)
-colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 0.5882353)
-metadata/_snap_enabled = true
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_05yul"]
+shader = ExtResource("3_014gi")
+shader_parameter/sun_position = Vector2(0, 0)
+shader_parameter/tint = Vector3(1.4, 1.2, 1)
+shader_parameter/noise_texture = ExtResource("4_ds1cy")
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_ckb4l"]
-gradient = SubResource("Gradient_wrxoa")
-fill = 1
-fill_from = Vector2(0.5, 0.5)
-fill_to = Vector2(0.5, 0)
-metadata/_snap_enabled = true
+[sub_resource type="Animation" id="Animation_1v2fl"]
+resource_name = "FadeIn"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_ty11r"]
+resource_name = "FadeOut"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_r0mro"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_oo3p1"]
+_data = {
+&"FadeIn": SubResource("Animation_1v2fl"),
+&"FadeOut": SubResource("Animation_ty11r"),
+&"RESET": SubResource("Animation_r0mro")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_wibjv"]
+animation = &"FadeIn"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_gs7sy"]
+animation = &"FadeOut"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_k4ry8"]
+animation = &"RESET"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_0i5gd"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_qhucv"]
+advance_mode = 2
+advance_condition = &"visible"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_tcfyd"]
+advance_mode = 2
+advance_condition = &"hidden"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bhhnp"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_7rmu1"]
+states/FadeIn/node = SubResource("AnimationNodeAnimation_wibjv")
+states/FadeIn/position = Vector2(393, -50)
+states/FadeOut/node = SubResource("AnimationNodeAnimation_gs7sy")
+states/FadeOut/position = Vector2(626.5, -49.375)
+states/RESET/node = SubResource("AnimationNodeAnimation_k4ry8")
+states/RESET/position = Vector2(509.5, 102.25)
+transitions = ["Start", "RESET", SubResource("AnimationNodeStateMachineTransition_0i5gd"), "RESET", "FadeIn", SubResource("AnimationNodeStateMachineTransition_qhucv"), "FadeIn", "FadeOut", SubResource("AnimationNodeStateMachineTransition_tcfyd"), "FadeOut", "RESET", SubResource("AnimationNodeStateMachineTransition_bhhnp")]
+graph_offset = Vector2(-18, -122)
+
+[sub_resource type="Curve" id="Curve_ecuig"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_jnkm7"]
+curve = SubResource("Curve_ecuig")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_cbpny"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(800, 400, 1)
+angle_min = -90.0
+angle_max = 90.0
+gravity = Vector3(0, 0, 0)
+scale_min = 3.0
+scale_max = 5.0
+color = Color(1, 1, 1, 0.0392157)
+alpha_curve = SubResource("CurveTexture_jnkm7")
+
+[sub_resource type="Curve" id="Curve_j81kb"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_u3loa"]
+curve = SubResource("Curve_j81kb")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_n70ob"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(800, 400, 1)
+angle_min = -90.0
+angle_max = 90.0
+gravity = Vector3(0, 0, 0)
+scale_min = 1.5
+scale_max = 2.0
+color = Color(1, 1, 1, 0.0784314)
+alpha_curve = SubResource("CurveTexture_u3loa")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ejm2k"]
 shader = ExtResource("3_ecuig")
@@ -32,6 +157,19 @@ metadata/_snap_enabled = true
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_0i88t"]
 gradient = SubResource("Gradient_ejm2k")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0)
+metadata/_snap_enabled = true
+
+[sub_resource type="Gradient" id="Gradient_wrxoa"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0.5, 1)
+colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 0.6862745)
+metadata/_snap_enabled = true
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ckb4l"]
+gradient = SubResource("Gradient_wrxoa")
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.5, 0)
@@ -61,7 +199,7 @@ script = ExtResource("1_s6rlj")
 smooth_speed = 5.0
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=409683162]
-transform = Transform3D(1, 0, 0, 0, 0.9659259, 0.25881907, 0, -0.25881907, 0.9659258, 0, 4, 7)
+transform = Transform3D(1, 0, 0, 0, 0.9659258, 0.25881904, 0, -0.25881904, 0.9659258, 0, 4, 7)
 cull_mask = 1048565
 
 [node name="CameraEffects" type="CanvasLayer" parent="Camera3D" unique_id=1082692377]
@@ -82,6 +220,71 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_wrxoa")
+
+[node name="Flare" type="Control" parent="Camera3D/CameraEffects/Control" unique_id=1025766767]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_ds1cy")
+effect_enabled = true
+metadata/_custom_type_script = "uid://cf8o12t3ovymr"
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="Camera3D/CameraEffects/Control/Flare" unique_id=200288937]
+material = SubResource("ShaderMaterial_05yul")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0)
+metadata/_edit_use_anchors_ = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Camera3D/CameraEffects/Control/Flare" unique_id=2129701326]
+libraries/ = SubResource("AnimationLibrary_oo3p1")
+
+[node name="AnimationTree" type="AnimationTree" parent="Camera3D/CameraEffects/Control/Flare" unique_id=506211876]
+tree_root = SubResource("AnimationNodeStateMachine_7rmu1")
+anim_player = NodePath("../AnimationPlayer")
+parameters/conditions/hidden = false
+parameters/conditions/visible = false
+
+[node name="Rain" type="Control" parent="Camera3D/CameraEffects/Control" unique_id=188683379]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_n70ob")
+effect_enabled = true
+minimum_camera_rotation = -90
+metadata/_custom_type_script = "uid://bb7w0rmbs5bll"
+
+[node name="Droplets1" type="GPUParticles2D" parent="Camera3D/CameraEffects/Control/Rain" unique_id=1473681694]
+emitting = false
+amount = 20
+texture = ExtResource("3_j81kb")
+lifetime = 0.3
+process_material = SubResource("ParticleProcessMaterial_cbpny")
+
+[node name="Droplets2" type="GPUParticles2D" parent="Camera3D/CameraEffects/Control/Rain" unique_id=1240680767]
+emitting = false
+amount = 10
+texture = ExtResource("4_j81kb")
+lifetime = 0.5
+process_material = SubResource("ParticleProcessMaterial_n70ob")
 
 [node name="Splatters" type="Control" parent="Camera3D/CameraEffects/Control" unique_id=669526437]
 layout_mode = 1
@@ -110,17 +313,6 @@ position = Vector2(20, 20)
 emitting = false
 one_shot = true
 
-[node name="Vignette" type="TextureRect" parent="Camera3D/CameraEffects/Control" unique_id=295757539]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(1.5, 1.5)
-pivot_offset_ratio = Vector2(0.5, 0.5)
-texture = SubResource("GradientTexture2D_ckb4l")
-
 [node name="RadialBlur" type="TextureRect" parent="Camera3D/CameraEffects/Control" unique_id=1634254876]
 material = SubResource("ShaderMaterial_ejm2k")
 layout_mode = 1
@@ -130,6 +322,17 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_0i88t")
+
+[node name="Vignette" type="TextureRect" parent="Camera3D/CameraEffects/Control" unique_id=295757539]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.45, 1.45)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture = SubResource("GradientTexture2D_ckb4l")
 
 [node name="SpeedLines" type="ColorRect" parent="Camera3D/CameraEffects/Control" unique_id=2062662582]
 material = SubResource("ShaderMaterial_ecuig")
